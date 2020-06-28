@@ -141,7 +141,7 @@
 @section('content')
 <div class="position-relative overflow-hidden p-3 text-center bg-light">
     <div class="col-md-5 mx-auto my-5">
-        <h1 class="font-weight-normal">Punny headline</h1>
+        <h1 class="font-weight-normal">Sistem Wakaf</h1>
         <p class="lead">And an even wittier subheading to boot. Jumpstart your marketing efforts
             with this example based on Apple’s marketing pages.</p>
         <a class="btn btn-outline-secondary" href="{{route('projek.create')}}">Galang Dana</a>
@@ -150,33 +150,5 @@
     <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <div class="box">
-                <figure class="box-img"><img alt="Rumah Yatim"
-                        src="https://kitabisa-userupload-01.s3-ap-southeast-1.amazonaws.com/_production/campaign/36696/31_36696_1505353544_778910_f.png"
-                        class="cTDNTQ">
-                </figure>
-                <div class="box-desc"><span
-                        class="box-title">Rumah Yatim</span>
-                    <div class="box-mitra"><span>Rumah Yatim</span>
-                        <img src="https://assets.kitabisa.cc/images/icons/icon__verified-org.svg" alt="icon__badge">
-                    </div>
-                    <div class="box-line-container">
-                        <div class="box-line">
-                            <div color="green" class="line"></div>
-                        </div>
-                    </div>
-                    <div class="box-dana-container">
-                        <div type="donationCollected" class="box-dana-desc">
-                            <span>Terkumpul</span><span>Rp 13.212.289.390</span></div>
-                        <div type="dayLeft" class="box-dana-date"><span>Sisa
-                                hari</span><span>12</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 @endsection

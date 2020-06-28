@@ -96,7 +96,7 @@
                     <a class="dropdown-item" href="#">
                         <i class="fa fa-gear icon"></i> Settings </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="login.html">
+                    <a class="dropdown-item" href="#">
                         <i class="fa fa-power-off icon"></i> Logout </a>
                 </div>
             </li>

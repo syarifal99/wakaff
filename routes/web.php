@@ -50,6 +50,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::resource('mitra', 'MitraController');
     Route::get('api-mitra', 'MitraController@apiMitra')->name('api.mitra');
     
+    Route::resource('pendanaan', 'PendanaanController');
+    Route::get('api-pendanaan', 'PendanaanController@apiPendanaan')->name('api.pendanaan');
+    
+    Route::resource('pencairan', 'PencairanController');
+    Route::get('api-pencairan', 'PencairanController@apipencairan')->name('api.pencairan');
+    
     Route::resource('users', 'UserController');
     Route::get('api-users', 'UserController@apiUsers')->name('api.users');
     

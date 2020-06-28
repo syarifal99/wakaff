@@ -16,6 +16,46 @@
             <span>Dashboard</span></a>
     </li>
 
+    @hasanyrole('mitra')
+
+    <div class="sidebar-heading">
+        Grafik
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item {{Request::is('dashboard/mitra')? 'active':''}}">
+        <a class="nav-link" href="{{route('mitra.index')}}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Grafik</span></a>
+    </li>
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item {{Request::is('dashboard/mitra')? 'active':''}}">
+        <a class="nav-link" href="{{route('mitra.index')}}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Total Projek</span></a>
+    </li>
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Master
+    </div>
+    
+    <li class="nav-item {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? 'active':''}}">
+        <a class="nav-link {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? '':'collapsed'}}" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+            aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Menu</span>
+        </a>
+        <div id="collapsePages" class="collapse {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? 'show':''}}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item {{Request::is('dashboard/pendanaan')? 'active':''}}" href="{{route('pendanaan.index')}}">Pendanaan</a>
+                <a class="collapse-item {{Request::is('dashboard/pencairan')? 'active':''}}" href="{{route('pencairan.index')}}">Pencairan</a>
+            </div>
+        </div>
+    </li>
+    @endhasanyrole
+
+    @hasanyrole('superadmin|admin')
     <!-- Divider -->
     <hr class="sidebar-divider">
     <!-- Heading -->
@@ -30,13 +70,11 @@
             <span>Mitra</span></a>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-    @hasanyrole('superadmin|admin')
     <!-- Heading -->
     <div class="sidebar-heading">
         Users & Roles Management
     </div>
+    
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{Request::is('dashboard/roles-permissions') || Request::is('dashboard/users')? 'active':''}}">
         <a class="nav-link {{Request::is('dashboard/roles-permissions') || Request::is('dashboard/users')? '':'collapsed'}}" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
