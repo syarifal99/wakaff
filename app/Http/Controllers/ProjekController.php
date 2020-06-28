@@ -31,7 +31,8 @@ class ProjekController extends Controller
             'label_id'      => 'required',
             'kota_id'       => 'required',
         ]);
-
+        
+        
         $projek = Projek::create([
             'nama'          => $request->nama,
             'slug'          => $request->nama,

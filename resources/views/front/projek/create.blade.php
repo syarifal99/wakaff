@@ -206,7 +206,7 @@
                 </div>
                 <div class="form-group">
                     <label for="gambar">Gambar</label>
-                    <input type="file" class="@error('nominal') is-invalid @enderror form-control-file" id="gambar" name="gambar">
+                    <input type="file" class="@error('gambar') is-invalid @enderror form-control-file" id="gambar" name="gambar">
                     @error('gambar')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
