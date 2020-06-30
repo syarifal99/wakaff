@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Validasi;
 use App\Pendaftaran;
 use App\Mitra;
+use App\Projek;
 
 class ValidasiController extends Controller
 {
@@ -30,6 +31,18 @@ class ValidasiController extends Controller
         $pendaftaran = Pendaftaran::all();
         $mitra = Mitra::all();
         return view('validasi.create', compact('pendaftaran', 'mitra'));
+    }
+
+    public function validasi(Request $request, $id)
+    {
+        $projek = Projek::where('id', $id)
+            ->firstOrFail();
+
+        $projek->update([
+            'status'    => $request->status
+        ]);
+        
+        return response()->json(['success' =>false, 'message' => 'Projek disetujui.']);
     }
 
     /**
@@ -63,7 +76,21 @@ class ValidasiController extends Controller
      */
     public function edit($id)
     {
-        //
+        $mitra = User::whereHas('mitra_attr')->get();
+        $projek = Projek::where('slug', $slug)
+            ->with('user', 'mitra')
+            ->firstOrFail();
+
+        if(!$projek) return abort(404);
+
+        $data = [
+            'mitra' => $mitra,
+            'project'   => $projek,
+            'success' =>false, 
+            'message' => 'Projek disetujui.'
+        ];
+        
+        return $data;
     }
 
     /**
