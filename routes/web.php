@@ -24,6 +24,9 @@ Route::get('/', 'PagesController@home')->name('landing');
 Route::group(['middleware' => 'auth'], function () {
     
     Route::resource('projek', 'ProjekController');
+    
+    Route::get('donasi/{id}', 'DonasiController@create')->name('donasi.create');
+    Route::post('donasi', 'DonasiController@store')->name('donasi.store');
     // SAMA DENGAN (menghemat baris kode)
     // Route::get('projek', 'ProjekController@index')->name('projek.index');
     // Route::get('projek/create', 'ProjekController@create')->name('projek.create');

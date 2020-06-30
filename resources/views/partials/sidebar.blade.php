@@ -54,8 +54,30 @@
         </div>
     </li>
     @endhasanyrole
-
-    @hasanyrole('superadmin|admin')
+    
+    @hasanyrole('admin')
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Master Data
+    </div>
+    
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item {{Request::is('dashboard/mitra')? 'active':''}}">
+        <a class="nav-link" href="{{route('mitra.index')}}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Data Mitra</span></a>
+    </li>
+    <li class="nav-item {{Request::is('dashboard/mitra')? 'active':''}}">
+        <a class="nav-link" href="{{route('mitra.index')}}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Data Projek</span></a>
+    </li>
+        
+    @endhasanyrole
+    
+    @hasanyrole('superadmin')
     <!-- Divider -->
     <hr class="sidebar-divider">
     <!-- Heading -->

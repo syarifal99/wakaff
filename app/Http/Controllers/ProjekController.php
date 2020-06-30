@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Projek;
 use App\Provinsi;
+use App\Pendanaan;
+use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class ProjekController extends Controller
 {
@@ -21,9 +24,8 @@ class ProjekController extends Controller
 
     public function store(Request $request){
         // return $request;
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'nama'          => 'required|unique:projek',
-            'deskripsi'     => 'required',
             'tenggat_waktu' => 'required',
             'nominal'       => 'required',
             'gambar'        => 'image|nullable',
@@ -32,13 +34,23 @@ class ProjekController extends Controller
             'kota_id'       => 'required',
         ]);
 
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+        $input = $request->all();
+        $input['gambar'] = null;
+        if ($request->hasFile('gambar')) {
+            $input['gambar'] = '/upload/projek/' . str_slug($input['nama'], '-') . '.' . $request->gambar->getClientOriginalExtension();
+            $request->gambar->move(public_path('/upload/projek/'), $input['gambar']);
+        }
+        
         $projek = Projek::create([
             'nama'          => $request->nama,
             'slug'          => $request->nama,
             'deskripsi'     => $request->deskripsi,
             'tenggat_waktu' => $request->tenggat_waktu,
             'nominal'       => $request->nominal,
-            'gambar'        => $request->gambar,
+            'gambar'        => $input['gambar'],
             'kategori_id'   => $request->kategori_id,
             'label_id'      => $request->label_id,
             'user_id'       => Auth::user()->id,
@@ -50,13 +62,20 @@ class ProjekController extends Controller
 
     public function show($slug){
         $projek = Projek::where('slug', $slug)
-            ->with('user', 'mitra')
+            ->with('user', 'mitra', 'pendanaan')
             ->firstOrFail();
+        $q = Pendanaan::query();
+        $q->where('projek_id', $projek->id);
+        $q->select(DB::raw('sum(nominal) as total'));
+        $pendanaan = $q->get();
+        $pendanaan_count = $q->count();
 
         if(!$projek) return abort(404);
 
         return view('front.projek.show', [
-            'projek' => $projek
+            'projek' => $projek,
+            'pendanaan' => $pendanaan[0],
+            'pendanaan_count' => $pendanaan_count,
         ]);
     }
 
