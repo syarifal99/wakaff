@@ -16,6 +16,20 @@
             <span>Dashboard</span></a>
     </li>
 
+         <!-- Divider -->
+         <hr class="sidebar-divider">
+         <!-- Heading -->
+         <div class="sidebar-heading">
+             Project galang dana
+         </div>
+     
+         <!-- Nav Item - Pages Collapse Menu -->
+         <li class="nav-item {{Request::is('dashboard/project')? 'active':''}}">
+             <a class="nav-link" href="{{route('project.index')}}">
+                 <i class="fas fa-fw fa-tachometer-alt"></i>
+                 <span>Project</span></a>
+         </li>
+
     @hasanyrole('mitra')
 
     <div class="sidebar-heading">

@@ -50,6 +50,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     
     Route::get('/', 'DashboardController@dashboard')->name('dashboard');
     
+    Route::resource('project', 'ProjectController');
+    Route::get('api-project', 'ProjectController@apiProject')->name('api.project');
+    
+    Route::get('project/validasi/{id}', 'validasiController@validasi');
+
     Route::resource('mitra', 'MitraController');
     Route::get('api-mitra', 'MitraController@apiMitra')->name('api.mitra');
     
