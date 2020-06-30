@@ -12,7 +12,7 @@
         </a>
         <a class="py-2 d-none d-md-inline-block" href="{{route('landing')}}">Beranda</a>
         <a class="py-2 d-none d-md-inline-block" href="{{route('projek.index')}}">Projek</a>
-        <a class="py-2 d-none d-md-inline-block" href="#">Inbox</a>
+        <a class="py-2 d-none d-md-inline-block" href="{{route('projek.create')}}">Buat Projek</a>
         <a class="py-2 d-none d-md-inline-block" href="{{route('login')}}">Akun</a>
     </div>
 </nav>

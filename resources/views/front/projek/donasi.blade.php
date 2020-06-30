@@ -139,35 +139,58 @@
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="row">
-        @foreach ($projek as $p)
-        <div class="col-12">
-            <a href="{{route('donasi.create', $p->id)}}">    
-                <div class="box">
-                    <figure class="box-img"><img alt="Rumah Yatim"
-                            src="{{$p->gambar}}"class="cTDNTQ">
-                    </figure>
-                    <div class="box-desc"><span
-                            class="box-title">{{$p->nama}}</span>
-                        <div class="box-mitra"><span>{{$p->nama}}</span>
-                            <img src="https://assets.kitabisa.cc/images/icons/icon__verified-org.svg" alt="icon__badge">
-                        </div>
-                        <div class="box-line-container">
-                            <div class="box-line">
-                                <div color="green" class="line"></div>
-                            </div>
-                        </div>
-                        <div class="box-dana-container">
-                            <div type="donationCollected" class="box-dana-desc">
-                                <span>Terkumpul</span><span>Rp {{$p->nominal}}</span></div>
-                            <div type="dayLeft" class="box-dana-date"><span>{{date('j M Y', strtotime($p->tenggat_waktu))}}</span><span>12</span></div>
-                        </div>
-                    </div>
-                </div>
-            </a>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-12">
+            <h1>Donasi</h1>
         </div>
-        @endforeach
+    </div>
+</div>
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-12">
+            <form method="post" action="{{route('donasi.store')}}" enctype='multipart/form-data'>
+                @csrf
+                <input type="hidden" name="projek_id" id="projek_id" value="{{$projek->id}}">
+                <div class="form-group">
+                    <label id="name" for="nama">nama</label>
+                    <input type="text" class="form-control" id="nama" name="nama" value="{{Auth::user()->name}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label id="labelNominal" for="nominal">Nominal</label>
+                    <input type="text" class="@error('nominal') is-invalid @enderror form-control" id="nominal" placeholder="Pilih nominal" name="nominal">
+                    @error('nominal')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label id="metode" for="metode">Metode Pembayaran</label>
+                    <select class="form-control" id="metode" name="metode">
+                        <option value="">-- Pilih Metode --</option>
+                        <option value="Tunai">Tunai</option>
+                        <option value="Transfer">Transfer</option>
+                    </select>
+                    @error('metode')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="bukti">Bukti Pembayaran</label>
+                    <input type="file" class="@error('bukti') is-invalid @enderror form-control-file" id="bukti" name="bukti">
+                    @error('bukti')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label id="keterangan" for="keterangan">Keterangan</label>
+                    <input type="textarea" class="@error('keterangan') is-invalid @enderror form-control" id="keterangan" placeholder="Pilih keterangan" name="keterangan">
+                    @error('keterangan')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <button type="submit" class="btn btn-primary my-3">Submit</button>
+            </form>
+        </div>
     </div>
 </div>
 @endsection

@@ -144,36 +144,43 @@
         <div class="col-10">
             <div class="card">
                 {{-- <img class="card-img-top" alt="{{$projek->nama}}" src="{{asset('uploads/projek/'.$projek->gambar)}}"> --}}
-                <img class="card-img-top" alt="{{$projek->nama}}" src="https://kitabisa-userupload-01.s3-ap-southeast-1.amazonaws.com/_production/campaign/36696/31_36696_1505353544_778910_f.png">
+                <img class="card-img-top" alt="{{$projek->nama}}" src="{{$projek->gambar}}">
                 <div class="card-body">
                     <h5 class="card-title" style="font-weight: bold;">{{$projek->nama}}</h5>
-                    <p class="card-text">{{$projek->deskripsi}}dsadas</p>
+                    <p class="card-text">{{$projek->deskripsi}}</p>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><span>{{isset($projek->mitra)?$projek->mitra->name: '-'}}</span><img
                             src="https://assets.kitabisa.cc/images/icons/icon__verified-org.svg" alt="icon__badge"></li>
                     <li class="list-group-item">
                         <div class="box-line-container">
-                            <span style="font-size: 15px;">72 Donasi</span>
+                            <span style="font-size: 15px;">{{$pendanaan_count}} donasi</span>
                             <div class="box-line">
                                 <div color="green" class="line"></div>
                             </div>
                         </div>
                         <div class="box-dana-container">
                             <div type="donationCollected" class="box-dana-desc">
-                                <span style="font-size: 18px;">Rp 13.212.289.390</span></div>
+                                <span style="font-size: 18px;">Rp {{$pendanaan->total}}</span></div>
                             <div type="dayLeft" class="box-dana-date">
-                                <span style="font-size: 15px; font-weight: bold;">7 Hari lagi</span>
+                                <span style="font-size: 15px; font-weight: bold;">{{date('j M Y', strtotime($projek->tenggat_waktu))}}</span>
                             </div>
                         </div>
                     </li>
                 </ul>
                 <div class="card-body">
-                    <a href="#" class="btn btn-secondary">Donasi sekarang</a>
+                    <a href="donasi" class="btn btn-secondary">Donasi sekarang</a>
                 </div>
             </div>
         </div>
     </div>
+    @if (Session::get('message'))
+        <div class="row">
+            <div class="col-12">
+                <p>{{Session::get('message')}}</p>
+            </div>
+        </div>
+    @endif
     <div class="row justify-content-center">
         <div class="col-12">
             <h2>Kabar Terbaru</h2>
@@ -187,35 +194,6 @@
                 </div>
             </div>
             <p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis distinctio saepe illo aperiam reprehenderit rerum vel magnam architecto ut, obcaecati quas cupiditate doloremque dolores dolor aspernatur laborum accusantium modi quo.</p>
-        </div>
-    </div>
-</div>
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-12">
-            <div class="box">
-                <figure class="box-img"><img alt="Rumah Yatim"
-                        src="https://kitabisa-userupload-01.s3-ap-southeast-1.amazonaws.com/_production/campaign/36696/31_36696_1505353544_778910_f.png"
-                        class="cTDNTQ">
-                </figure>
-                <div class="box-desc"><span class="box-title">Rumah Yatim</span>
-                    <div class="box-mitra"><span>Rumah Yatim</span>
-                        <img src="https://assets.kitabisa.cc/images/icons/icon__verified-org.svg" alt="icon__badge">
-                    </div>
-                    <div class="box-line-container">
-                        <div class="box-line">
-                            <div color="green" class="line"></div>
-                        </div>
-                    </div>
-                    <div class="box-dana-container">
-                        <div type="donationCollected" class="box-dana-desc">
-                            <span>Terkumpul</span><span>Rp 13.212.289.390</span></div>
-                        <div type="dayLeft" class="box-dana-date"><span>Sisa
-                                hari</span><span>12</span></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
