@@ -143,14 +143,14 @@
     <div class="row">
         @foreach ($projek as $p)
         <div class="col-12">
-            <a href="{{route('donasi.create', $p->id)}}">    
+            <a href="{{route('donasi.create', $p->id)}}">
                 <div class="box">
-                    <figure class="box-img"><img alt="Rumah Yatim"
+                    <figure class="box-img"><img alt="{{$p->nama}}"
                             src="{{$p->gambar}}"class="cTDNTQ">
                     </figure>
                     <div class="box-desc"><span
                             class="box-title">{{$p->nama}}</span>
-                        <div class="box-mitra"><span>{{$p->nama}}</span>
+                        <div class="box-mitra"><span>{{$p->user->name}}</span>
                             <img src="https://assets.kitabisa.cc/images/icons/icon__verified-org.svg" alt="icon__badge">
                         </div>
                         <div class="box-line-container">

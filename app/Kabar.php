@@ -11,11 +11,11 @@ class Kabar extends Model
 
     public function author()
     {
-        return $this->belongsTo(Artikel::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function projek()
     {
-        return $this->belongsTo(Projek::class, 'projek_id');
+        return $this->belongsTo(Projek::class, 'projek_id',);
     }
 }

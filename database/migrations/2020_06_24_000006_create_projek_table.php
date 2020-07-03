@@ -25,7 +25,7 @@ class CreateProjekTable extends Migration
             $table->increments('id');
             $table->string('nama', 191);
             $table->string('slug', 191);
-            $table->text('deskripsi');
+            $table->text('deskripsi')->nullable()->default(null);
             $table->date('tenggat_waktu')->nullable();
             $table->string('nominal', 191);
             $table->string('gambar', 191)->nullable();
@@ -34,7 +34,7 @@ class CreateProjekTable extends Migration
             $table->unsignedInteger('label_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('kota_id');
-	        $table->unsignedInteger('mitra')->nullable()->default(NULL);
+	        $table->unsignedInteger('mitra_id')->nullable()->default(NULL);
 
             $table->index(["kota_id"], 'fk_projek_kota1_idx');
 

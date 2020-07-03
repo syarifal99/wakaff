@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class KabarController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		return view('kabars.index');
+		return view('kabar.index');
 	}
 
 	/**
@@ -34,18 +34,17 @@ class KabarController extends Controller {
 	 */
 	public function store(Request $request) {
 		$this->validate($request, [
-			'name' 		=> 'required|max:191',
-			'address' 	=> 'required',
-			'phone' 	=> 'required|min:10',
-			'email' 	=> 'nullable|email|unique:kabars',
-			'image' 	=> 'nullable|image|max:1999',
+			'judul' 	=> 'required|max:191',
+			'gambar' 	=> 'nullable|gambar|max:1999',
+			'projek_id' => 'required',
+			'konten' 	=> 'required',
 		]);
 
 		$input = $request->all();
-        $input['image'] = null;
-        if ($request->hasFile('image')){
-            $input['image'] = '/upload/kabars/'.str_slug($input['name'], '-').'.'.$request->image->getClientOriginalExtension();
-            $request->image->move(public_path('/upload/kabars/'), $input['image']);
+        $input['gambar'] = null;
+        if ($request->hasFile('gambar')){
+            $input['gambar'] = '/upload/kabar/'.str_slug($input['nama'], '-').'.'.$request->gambar>getClientOriginalExtension();
+            $request->gambar->move(public_path('/upload/kabar/'), $input['gambar']);
         }
 		Kabar::create($input);
 
@@ -86,24 +85,27 @@ class KabarController extends Controller {
 	 */
 	public function update(Request $request, $id) {
 		$this->validate($request, [
-			'name' 		=> 'required|max:191',
-			'address' 	=> 'required',
-			'phone' 	=> 'required|min:10',
-			'email' 	=> 'nullable|email|unique:kabars,email,'.$id.',id',
-			'image' 	=> 'nullable|image|max:1999',
+			'judul' 	=> 'required|max:191',
+			'gambar' 	=> 'nullable|gambar|max:1999',
+			'Konten' 	=> 'required',
+			// 'name' 		=> 'required|max:191',
+			// 'address' 	=> 'required',
+			// 'phone' 	=> 'required|min:10',
+			// 'email' 	=> 'nullable|email|unique:kabars,email,'.$id.',id',
+			// 'gambar' 	=> 'nullable|gambar|max:1999',
 		]);
 		$kabar = Kabar::findOrFail($id);
 		$input = $request->all();
-        $input['image'] = $kabar->image;
-        if ($request->hasFile('image')){
-            if (!$kabar->image == NULL){
-                try {unlink(public_path($kabar->image));} catch (\Throwable $th) {}
+        $input['gambar'] = $kabar->gambar;
+        if ($request->hasFile('gambar')){
+            if (!$kabar->gambar == NULL){
+                try {unlink(public_path($kabar->gambar));} catch (\Throwable $th) {}
             }
-            $input['image'] = '/upload/kabars/'.str_slug($input['name'], '-').'.'.$request->image->getClientOriginalExtension();
-            $request->image->move(public_path('/upload/kabars/'), $input['image']);
-		} else if($input['image_available']=='false') {
-			$input['image'] = NULL;
-			try {unlink(public_path($kabar->image));} catch (\Throwable $th) {}
+            $input['gambar'] = '/upload/kabar/'.str_slug($input['nama'], '-').'.'.$request->gambar->getClientOriginalExtension();
+            $request->gambar->move(public_path('/upload/kabar/'), $input['gambar']);
+		} else if($input['gambar_available']=='false') {
+			$input['gambar'] = NULL;
+			try {unlink(public_path($kabar->gambar));} catch (\Throwable $th) {}
 		}
 		$kabar->update($input);
 
@@ -121,12 +123,12 @@ class KabarController extends Controller {
 	 */
 	public function destroy($id) {
 		$kabar = Kabar::findOrFail($id);
-		if($kabar->products()->exists()){
-			return response()->json([
-                'success'    => true,
-                'message'    => 'Can\'t delete this kabar. Because there are products with this kabar.'
-            ]);
-		}
+		// if($kabar->products()->exists()){
+		// 	return response()->json([
+        //         'success'    => true,
+        //         'message'    => 'Can\'t delete this kabar. Because there are products with this kabar.'
+        //     ]);
+		// }
 		$kabar->delete();
 
 		return response()->json([
@@ -135,7 +137,7 @@ class KabarController extends Controller {
 		]);
 	}
 
-	public function apiKabars() {
+	public function apiKabar() {
 		$kabars = Kabar::all();
 
 		return Datatables::of($kabars)
@@ -147,7 +149,7 @@ class KabarController extends Controller {
                 if ($s->image == NULL){
                     return 'No Image';
                 }
-                return '<img class="rounded-square" width="50" height="50" src="'. url($s->image) .'" alt="">';
+                return '<img class="rounded-square" width="50" height="50" src="'. url($s->gambar) .'" alt="">';
             })
 			->rawColumns(['show_image','action'])->make(true);
 	}

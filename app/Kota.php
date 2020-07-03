@@ -11,6 +11,6 @@ class Kota extends Model
 
     public function provinsi()
     {
-        return $this->belongsTo('App\User', 'provinsi_id');
+        return $this->belongsTo(Provinsi::class, 'provinsi_id');
     }
 }

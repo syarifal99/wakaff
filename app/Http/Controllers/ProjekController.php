@@ -13,7 +13,7 @@ use DB;
 class ProjekController extends Controller
 {
     public function index(){
-        $projek = Projek::all();
+        $projek = Projek::where('status', 'DISETUJUI')->get();
         return view('front.projek.index', ['projek' => $projek]);
     }
 
@@ -71,7 +71,6 @@ class ProjekController extends Controller
         $pendanaan_count = $q->count();
 
         if(!$projek) return abort(404);
-
         return view('front.projek.show', [
             'projek' => $projek,
             'pendanaan' => $pendanaan[0],

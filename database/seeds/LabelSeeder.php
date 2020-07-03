@@ -13,10 +13,10 @@ class LabelSeeder extends Seeder
     public function run()
     {
         Label::create([
-            'label' => 'PRODUKTIF'
+            'label' => 'Produktif'
         ]);
         Label::create([
-            'label' => 'NON-PRODUKTIF'
+            'label' => 'Non Produktif'
         ]);
     }
 }

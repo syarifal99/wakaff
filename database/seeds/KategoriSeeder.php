@@ -13,10 +13,10 @@ class KategoriSeeder extends Seeder
     public function run()
     {
         Kategori::create([
-            'kategori' => 'WAQAF'
+            'kategori' => 'Wakah Aset'
         ]);
         Kategori::create([
-            'kategori' => 'ZAKAT'
+            'kategori' => 'Wakaf Tunai'
         ]);
     }
 }

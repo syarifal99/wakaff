@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Projek extends Model
 {
     protected $table = 'projek';
-    protected $fillable = ['nama','slug','deskripsi','tenggat_waktu','nominal','gambar','status','kategori_id','label_id','user_id','kota_id','mitra'];
+    protected $fillable = ['nama','slug','deskripsi','tenggat_waktu','nominal','gambar','status','kategori_id','label_id','user_id','kota_id','mitra_id'];
 
     public function artikel()
     {
@@ -46,6 +46,6 @@ class Projek extends Model
 
     public function mitra()
     {
-        return $this->belongsTo(User::class, 'mitra');
+        return $this->belongsTo(User::class, 'mitra_id');
     }
 }

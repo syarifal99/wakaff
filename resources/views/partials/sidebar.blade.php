@@ -29,10 +29,10 @@
             <span>Grafik</span></a>
     </li>
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item {{Request::is('dashboard/mitra')? 'active':''}}">
-        <a class="nav-link" href="{{route('mitra.index')}}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Total Projek</span></a>
+    <li class="nav-item {{Request::is('dashboard/project')? 'active':''}}">
+             <a class="nav-link" href="{{route('project.index')}}">
+                 <i class="fas fa-fw fa-tachometer-alt"></i>
+                 <span>Data Project</span></a>
     </li>
 
     <!-- Heading -->
@@ -53,6 +53,21 @@
             </div>
         </div>
     </li>
+
+     <!-- Divider -->
+     <hr class="sidebar-divider">
+     <!-- Heading -->
+     <div class="sidebar-heading">
+         Artikel
+     </div>
+ 
+     <!-- Nav Item - Pages Collapse Menu -->
+     <li class="nav-item {{Request::is('dashboard/kabar')? 'active':''}}">
+         <a class="nav-link" href="{{route('kabar.index')}}">
+             <i class="fas fa-fw fa-tachometer-alt"></i>
+             <span>Kabar</span></a>
+     </li>
+
     @endhasanyrole
     
     @hasanyrole('admin')
@@ -69,11 +84,12 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Data Mitra</span></a>
     </li>
-    <li class="nav-item {{Request::is('dashboard/mitra')? 'active':''}}">
-        <a class="nav-link" href="{{route('mitra.index')}}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Data Projek</span></a>
-    </li>
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item {{Request::is('dashboard/project')? 'active':''}}">
+             <a class="nav-link" href="{{route('project.index')}}">
+                 <i class="fas fa-fw fa-tachometer-alt"></i>
+                 <span>Data Project</span></a>
+         </li>
         
     @endhasanyrole
     

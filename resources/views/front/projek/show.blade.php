@@ -150,7 +150,7 @@
                     <p class="card-text">{{$projek->deskripsi}}</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><span>{{isset($projek->mitra)?$projek->mitra->name: '-'}}</span><img
+                    <li class="list-group-item"><span>{{isset($projek->mitra)?$projek->user->name: '-'}}</span><img
                             src="https://assets.kitabisa.cc/images/icons/icon__verified-org.svg" alt="icon__badge"></li>
                     <li class="list-group-item">
                         <div class="box-line-container">
@@ -169,7 +169,7 @@
                     </li>
                 </ul>
                 <div class="card-body">
-                    <a href="donasi" class="btn btn-secondary">Donasi sekarang</a>
+                    <a href="{{route('donasi.create', $projek->id)}}" class="btn btn-secondary">Donasi sekarang</a>
                 </div>
             </div>
         </div>

@@ -37,7 +37,9 @@ Route::group(['middleware' => 'auth'], function () {
     // Route::delete('projek/{$id}', 'ProjekController@delete')->name('projek.delete');
 
     Route::resource('provinsi', 'ProvinsiController');
-
+    
+    Route::resource('kota', 'KotaController');
+    
     Route::resource('kategori', 'KategoriController');
 
     Route::resource('label', 'LabelController');
@@ -46,12 +48,19 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
+// Route::group(['prefix' => 'dashboard', 'middleware' => ['role:admin']], function () {
+// Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role:admin']], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     
     Route::get('/', 'DashboardController@dashboard')->name('dashboard');
     
     Route::resource('mitra', 'MitraController');
     Route::get('api-mitra', 'MitraController@apiMitra')->name('api.mitra');
+
+    Route::resource('project', 'ProjectController');
+    Route::get('api-project', 'ProjectController@apiProject')->name('api.project');
+
+    Route::get('project/validasi/{id}', 'ValidasiController@validasi');
     
     Route::resource('pendanaan', 'PendanaanController');
     Route::get('api-pendanaan', 'PendanaanController@apiPendanaan')->name('api.pendanaan');
@@ -61,6 +70,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     
     Route::resource('users', 'UserController');
     Route::get('api-users', 'UserController@apiUsers')->name('api.users');
+
+    Route::resource('kabar', 'KabarController');
+    Route::get('api-kabar', 'KabarController@apiKabar')->name('api.kabar');
     
     Route::resource('roles', 'RoleController');
     Route::get('api-roles', 'RoleController@apiRoles')->name('api.roles');
