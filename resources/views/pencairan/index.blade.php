@@ -1,7 +1,77 @@
 @extends('layouts.master')
 @section('title')
-Dashboard
+Pencairan
 @endsection
+@section('css')
+<link rel="stylesheet" href="{{asset('assets/vendor/datatables/dataTables.bootstrap4.min.css')}}">
+<style>
+    .file-upload {
+        background-color: #ffffff;
+        width: 18em;
+        position: relative;
+    }
+
+    .box-remove {
+        position: absolute;
+        display: none;
+        bottom: 0;
+        right: 0;
+        margin: 10px;
+        z-index: 1;
+    }
+
+    .file-upload-content {
+        display: none;
+        text-align: center;
+    }
+
+    .file-upload-input {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .image-upload-wrap {
+        margin-top: 20px;
+        bolrder: 2px dashed #949494;
+        position: relative;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: transparent;
+        min-height: 18em;
+        border-radilus: 50%;
+    }
+
+    .image-dropping,
+    .image-upload-wrap:hover {
+        box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.15) !important;
+        background-color: #f8f6ff;
+    }
+
+    .image-title-wrap {
+        padding: 0 15px 15px 15px;
+        color: #222;
+    }
+
+    .drag-text {
+        text-align: center;
+    }
+
+    .drag-text h5 {
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
+        margin-top: 4em;
+        font-weight: 100;
+        color: #828081;
+    }
+</style>
+@endsection
+
 @section('content')
 <!-- Page Heading -->
 <div class="breadcrumbs">
@@ -10,19 +80,21 @@ Dashboard
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h5>Dashboard</h5>
+                        <h5>Pencairan Terbaru</h5>
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-sm-8">
+            <div class="col-sm-8">
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
                             <li><a href="{{route('dashboard')}}">Dashboard</a></li>
+                            <li> / </li>
+                            <li class="active"> Pencairan</li>
                         </ol>
                     </div>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
 </div>
@@ -35,8 +107,8 @@ Dashboard
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Mitra</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{$mitra_count}}</div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -52,8 +124,8 @@ Dashboard
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Project</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$projek_count}}</div>
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -113,9 +185,75 @@ Dashboard
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
+                {{-- <div class="card-header">
+                    <h4>Pencairan Management</h4>
+                </div> --}}
                 <div class="card-body">
-                    <h5>Selamat datang, {{Auth::user()->name}}!</h5>
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="btn-group btn-group-md">
+                            <button onclick="addForm()" class="btn btn-success">Tambahkan Pencairan</button>
+                        </div>
+                        <div class="btn-group btn-group-md">
+                            <button type="button" class="btn btn-outline-success btn-sm" id="btn-refresh"
+                                title="Refresh data"><i class="fas fa-sync-alt"></i></button>
+                        </div>
+                    </div>
+                    <table id="pencairan-table" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Perojek</th>
+                                <th>Nominal</th>
+                                <th>Deskripsi</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-formLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form id="form-role" method="post" class="form-horizontal" data-toggle="validator"
+                    enctype="multipart/form-data" autocomplete="off">
+                    {{ csrf_field() }} {{ method_field('POST') }}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-formLabel">Scrolling Long Content Modal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="root">
+                        <input type="hidden" id="id" name="id">
+                        <div class="form-group row justify-content-center">
+                        </div>
+                        <div class="form-group">
+                            <label for="projek_id">Projek</label>
+                            <select class="form-control" id="projek_id" placeholder="Pilih projek" name="projek_id">
+                                <option value="" disabled>-- Pilih projek --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nominal</label>
+                            <input type="text" class="form-control" id="nominal" name="nominal" required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Deskripsi</label>
+                            <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -147,42 +285,23 @@ Dashboard
         //         }
         //     }
         // })
+
+
         $('#btn-refresh').on('click', function(){
-            $('#mitra-table').DataTable().draw(true)
+            $('#pencairan-table').DataTable().draw(true)
         })
-        var table = $('#mitra-table').DataTable({
+        var table = $('#pencairan-table').DataTable({
             processing: true,
             serverSide: true,
             responsive: true,
             scrollX: true,
-            ajax: "{{ route('api.mitra') }}",
+            ajax: "{{ route('api.pencairan') }}",
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'show_image', name: 'show_image'},
-                {data: 'name', name: 'name'},
-                {data: 'username', name: 'username'},
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.mitra_attr) return '-'
-                        return data.mitra_attr.pj
-                    }
-                },
-                {data: 'email', name: 'email'},
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.no_hp) return '-'
-                        return data.no_hp
-                    }
-                },
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.no_rek) return '-'
-                        return data.no_rek
-                    }
-                },
+                {data: 'projek.nama', name: 'projek.nama'},
+                {data: 'nominal', name: 'nominal'},
+                {data: 'deskripsi', name: 'deskripsi'},
+                {data: 'status', name: 'status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
@@ -190,8 +309,8 @@ Dashboard
         $('#modal-form form').validator().on('submit', function (e) {
             if (!e.isDefaultPrevented()){
                 var id = $('#id').val();
-                if (save_method == 'add') url = "{{ url('dashboard/mitra') }}";
-                else url = "{{ url('dashboard/mitra') . '/' }}" + id;
+                if (save_method == 'add') url = "{{ url('dashboard/pencairan') }}";
+                else url = "{{ url('dashboard/pencairan') . '/' }}" + id;
 
                 $.ajax({
                     url : url,
@@ -235,10 +354,28 @@ Dashboard
     function addForm() {
         removeUpload()
         save_method = "add";
-        $('input[name=_method]').val('POST');
+        $('input[nama=_method]').val('POST');
+
+        $.ajax({
+            url : "{{ route('project.getAll') }}" ,
+            type : "GET",
+            success: function(res){
+                console.log(res)
+
+                $("#projek_id").empty();
+                $("#projek_id").append(`<option value="" selected disabled>-- Pilih Projek --</option>`);
+                $.each(res, function(key, item) {
+                    $("#projek_id").append(`<option value="` + item.id + `">` + item.nama +` </option>`);
+                });
+
+            }, error: function(error){
+                console.log(error);
+            }
+        });
+
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Add mitra');
+        $('.modal-title').text('Add pencairan');
     }
 
     function editForm(id) {
@@ -246,37 +383,21 @@ Dashboard
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
-        $.ajax({
-            url: "{{ url('dashboard/mitra') }}" + '/' + id + "/edit",
-            type: "GET",
-            dataType: "JSON",
-            success: function(data) {
-                console.log(data)
-                $('#modal-form').modal('show');
-                $('.modal-title').text('Edit mitra');
 
-                $('#id').val(data.id);
-                $('#name').val(data.name);
-                $('#username').val(data.username);
-                $('#pj').val(data.mitra_attr.pj);
-                $('#no_hp').val(data.no_hp);
-                $('#no_rek').val(data.no_rek);
-                $('#email').val(data.email);
-                if(data.image){
-                    $(".image-upload-wrap").css({
-                        "background-image": `url(${data.image})`,
-                        border: "0px solid #fff"
-                    });
-                    $('#image_available').val(true)
-                    $(".image-upload-wrap h5").hide();
-                    $(".box-remove").css("display", "absolute");
-                    $(".box-remove").show();
-                    $(".image-title").html(data.image);
-                }
-            },
-            error : function(err) {
-                console.log(err)
-                alert("Data not found!");
+        $.ajax({
+            url : "{{ route('project.getAll') }}" ,
+            type : "GET",
+            success: function(res){
+                console.log(res)
+
+                $("#projek_id").empty();
+                $("#projek_id").append(`<option value="" selected disabled>-- Pilih Projek --</option>`);
+                $.each(res, function(key, item) {
+                    $("#projek_id").append(`<option value="` + item.id + `">` + item.nama +` </option>`);
+                });
+
+            }, error: function(error){
+                console.log(error);
             }
         });
     }
@@ -293,11 +414,11 @@ Dashboard
             confirmButtonText: 'Yes, delete it!'
         }).then(function () {
             $.ajax({
-                url : "{{ url('dashboard/mitra') }}" + '/' + id,
+                url : "{{ url('dashboard/pencairan') }}" + '/' + id,
                 type : "POST",
                 data : {'_method' : 'DELETE', '_token' : csrf_token},
                 success : function(data) {
-                    $('#mitra-table').DataTable().draw(true);
+                    $('#pencairan-table').DataTable().draw(true);
                     swal({
                         title: 'Success!',
                         text: data.message,

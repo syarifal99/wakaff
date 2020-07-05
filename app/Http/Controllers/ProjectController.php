@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
+    public function getAll(){
+        $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
+		$projek = Projek::where('mitra_id', $user->mitra_attr->id)->get();
+		return  $projek;
+	}
     /**
      * Display a listing of the resource.
      *
@@ -55,7 +60,7 @@ class ProjectController extends Controller
         $input = $request->all();
         $input['gambar'] = null;
         if ($request->hasFile('gambar')) {
-            $input['gambar'] = '/upload/projek/' . str_slug($input['name'], '-') . '.' . $request->gambar->getClientOriginalExtension();
+            $input['gambar'] = '/upload/projek/' . str_slug($input['nama'], '-') . '.' . $request->gambar->getClientOriginalExtension();
             $request->gambar->move(public_path('/upload/projek/'), $input['gambar']);
         }            
         $projek = Projek::create([
@@ -69,6 +74,7 @@ class ProjectController extends Controller
             'label_id'      => $request->label_id,
             'user_id'       => Auth::user()->id,
             'kota_id'       => $request->kota_id,
+            'status'        => $request->status,
         ]);
 
         if($request->ajax()) return response()->json(['success' =>false, 'message' => 'Projek berhasil dibuat.']);
@@ -173,13 +179,14 @@ class ProjectController extends Controller
         ]);
     }
     public function apiProject(){
-        $user = Auth::user();
-        $q = Projek::query();
-        if(!$user->hasRole('superadmin')){
-            $q->where('mitra_id', Auth::user()->id);
+        $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
+        $query = Projek::query();
+
+        if( !$user->hasRole(['superadmin', 'admin']) ){
+            $query->where('mitra_id', $user->mitra_attr->id);
         }
-        $q->with(['kategori','label','kota.provinsi','user', 'mitra']);
-        $projek = $q->get();
+        $query->with(['kategori','label','kota.provinsi','user', 'mitra']);
+        $projek = $query->get();
 
 		return Datatables::of($projek)
             ->addColumn('action', function ($u) {

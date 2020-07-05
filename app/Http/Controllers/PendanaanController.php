@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
+use Auth;
 
 class PendanaanController extends Controller
 {
@@ -48,7 +49,19 @@ class PendanaanController extends Controller
      */
     public function show($id)
     {
-        //
+        $pendanaan = User::whereHas('mitra_attr')->with('mitra_attr')->get();
+        $projek = Projek::where('id', $id)
+            ->with('user', 'projek')
+            ->firstOrFail();
+
+        if(!$projek) return abort(404);
+
+        $data = [
+            'projek' => $projek,
+            'mitra' => $pendanaan,
+        ];
+        return $data;
+	
     }
 
     /**

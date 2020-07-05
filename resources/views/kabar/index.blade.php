@@ -38,14 +38,14 @@ Kabar
 
     .image-upload-wrap {
         margin-top: 20px;
-        border: 2px dashed #949494;
+        bolrder: 2px dashed #949494;
         position: relative;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
         background-color: transparent;
         min-height: 18em;
-        border-radius: 50%;
+        border-radilus: 50%;
     }
 
     .image-dropping,
@@ -108,7 +108,7 @@ Kabar
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">12222</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -203,6 +203,7 @@ Kabar
                             <tr>
                                 <th>ID</th>
                                 <th>Gambar</th>
+                                <th>Projek</th>
                                 <th>judul</th>
                                 <th>Konten</th>
                                 <th>Aksi</th>
@@ -240,8 +241,8 @@ Kabar
                                             <button type="button" onclick="removeUpload()"
                                                 class="btn btn-danger btn-sm">Remove</button>
                                         </div>
-                                        <input name="image" class="file-upload-input" type="file"
-                                            onchange="readURL(this);" accept="image/*" />
+                                        <input name="gambar" class="file-upload-input" type="file"
+                                            onchange="readURL(this);" accept="gambar/*" />
                                         <div class="drag-text">
                                             <h5>Click or drag an image.
                                             </h5>
@@ -249,6 +250,12 @@ Kabar
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="projek_id">Projek</label>
+                            <select class="form-control" id="projek_id" placeholder="Pilih projek" name="projek_id">
+                                <option value="" disabled>-- Pilih projek --</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Judul</label>
@@ -298,6 +305,8 @@ Kabar
         //         }
         //     }
         // })
+
+
         $('#btn-refresh').on('click', function(){
             $('#kabar-table').DataTable().draw(true)
         })
@@ -310,6 +319,7 @@ Kabar
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'show_image', name: 'show_image'},
+                {data: 'projek.nama', name: 'projek.nama'},
                 {data: 'judul', name: 'judul'},
                 {data: 'konten', name: 'konten'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
@@ -365,6 +375,24 @@ Kabar
         removeUpload()
         save_method = "add";
         $('input[nama=_method]').val('POST');
+
+        $.ajax({
+            url : "{{ route('project.getAll') }}" ,
+            type : "GET",
+            success: function(res){
+                console.log(res)
+
+                $("#projek_id").empty();
+                $("#projek_id").append(`<option value="" selected disabled>-- Pilih Projek --</option>`);
+                $.each(res, function(key, item) {
+                    $("#projek_id").append(`<option value="` + item.id + `">` + item.nama +` </option>`);
+                });
+
+            }, error: function(error){
+                console.log(error);
+            }
+        });
+
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
         $('.modal-title').text('Add kabar');
@@ -375,6 +403,24 @@ Kabar
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
+
+        $.ajax({
+            url : "{{ route('project.getAll') }}" ,
+            type : "GET",
+            success: function(res){
+                console.log(res)
+
+                $("#projek_id").empty();
+                $("#projek_id").append(`<option value="" selected disabled>-- Pilih Projek --</option>`);
+                $.each(res, function(key, item) {
+                    $("#projek_id").append(`<option value="` + item.id + `">` + item.nama +` </option>`);
+                });
+
+            }, error: function(error){
+                console.log(error);
+            }
+        });
+        
         $.ajax({
             url: "{{ url('dashboard/kabar') }}" + '/' + id + "/edit",
             type: "GET",
@@ -387,17 +433,18 @@ Kabar
                 $('#id').val(data.id);
                 $('#judul').val(data.judul);
                 $('#konten').val(data.konten);
-                if(data.image){
+                if(data.gambar){
                     $(".image-upload-wrap").css({
-                        "background-image": `url(${data.image})`,
+                        "background-image": `url(${data.gambar})`,
                         border: "0px solid #fff"
                     });
                     $('#image_available').val(true)
                     $(".image-upload-wrap h5").hide();
                     $(".box-remove").css("display", "absolute");
                     $(".box-remove").show();
-                    $(".image-title").html(data.image);
+                    $(".image-title").html(data.gambar);
                 }
+                $("#projek_id").val(data.projek_id);
             },
             error : function(err) {
                 console.log(err)

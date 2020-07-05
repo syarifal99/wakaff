@@ -191,7 +191,6 @@ Pendanaan
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group btn-group-md">
-                            <button onclick="addForm()" class="btn btn-success">Tambahkan Pendanaan</button>
                         </div>
                         <div class="btn-group btn-group-md">
                             <button type="button" class="btn btn-outline-success btn-sm" id="btn-refresh"
@@ -202,11 +201,12 @@ Pendanaan
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nama</th>
+                                <th>Nama Pendaftar</th>
                                 <th>Nominal</th>
                                 <th>Metode</th>
                                 <th>Bukti</th>
                                 <th>Keterangan</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -220,69 +220,6 @@ Pendanaan
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <form id="form-role" method="post" class="form-horizontal" data-toggle="validator"
-                    enctype="multipart/form-data" autocomplete="off">
-                    {{ csrf_field() }} {{ method_field('POST') }}
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modal-formLabel">Scrolling Long Content Modal</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="root">
-                        <input type="hidden" id="id" name="id">
-                        <div class="form-group row justify-content-center">
-                            <label>Image</label>
-                            <div class="col-md-6 col-12">
-                                <div class="file-upload mb-3">
-                                    <input type="hidden" name="image_available" value="false" id="image_available">
-                                    <div class="image-upload-wrap"
-                                        style="background-image: url({{asset('assets/img/attachment-3.jpg')}});">
-                                        <div class="box-remove">
-                                            <button type="button" onclick="removeUpload()"
-                                                class="btn btn-danger btn-sm">Remove</button>
-                                        </div>
-                                        <input name="image" class="file-upload-input" type="file"
-                                            onchange="readURL(this);" accept="image/*" />
-                                        <div class="drag-text">
-                                            <h5>Click or drag an image.
-                                            </h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Nominal</label>
-                            <input type="text" class="form-control" id="nominal" name="nominal" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Metode</label>
-                            <input type="text" class="form-control" id="metode" name="metode" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Bukti</label>
-                            <input type="text" class="form-control" id="bukti" name="bukti" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Keterangan</label>
-                            <input type="text" class="form-control" id="keterangan" name="keterangan">
-                            <span class="help-block with-errors"></span>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -315,41 +252,22 @@ Pendanaan
         //     }
         // })
         $('#btn-refresh').on('click', function(){
-            $('#mitra-table').DataTable().draw(true)
+            $('#pendanaan-table').DataTable().draw(true)
         })
-        var table = $('#mitra-table').DataTable({
+        var table = $('#pendanaan-table').DataTable({
             processing: true,
             serverSide: true,
             responsive: true,
             scrollX: true,
-            ajax: "{{ route('api.mitra') }}",
+            ajax: "{{ route('api.pendanaan') }}",
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'show_image', name: 'show_image'},
-                {data: 'name', name: 'name'},
-                {data: 'username', name: 'username'},
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.mitra_attr) return '-'
-                        return data.mitra_attr.pj
-                    }
-                },
-                {data: 'email', name: 'email'},
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.no_hp) return '-'
-                        return data.no_hp
-                    }
-                },
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.no_rek) return '-'
-                        return data.no_rek
-                    }
-                },
+                {data: 'user.name', name: 'user.name'},
+                {data: 'nominal', name: 'nominal'},
+                {data: 'metode', name: 'metode'},
+                {data: 'bukti', name: 'bukti'},
+                {data: 'keterangan', name: 'keterangan'},
+                {data: 'status', name: 'status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
@@ -357,8 +275,8 @@ Pendanaan
         $('#modal-form form').validator().on('submit', function (e) {
             if (!e.isDefaultPrevented()){
                 var id = $('#id').val();
-                if (save_method == 'add') url = "{{ url('dashboard/mitra') }}";
-                else url = "{{ url('dashboard/mitra') . '/' }}" + id;
+                if (save_method == 'add') url = "{{ url('dashboard/pendanaan') }}";
+                else url = "{{ url('dashboard/pendanaan') . '/' }}" + id;
 
                 $.ajax({
                     url : url,
@@ -398,15 +316,6 @@ Pendanaan
             }
         });
     } );
-    
-    function addForm() {
-        removeUpload()
-        save_method = "add";
-        $('input[name=_method]').val('POST');
-        $('#modal-form').modal('show');
-        $('#modal-form form')[0].reset();
-        $('.modal-title').text('Add mitra');
-    }
 
     function editForm(id) {
         removeUpload()
@@ -414,13 +323,13 @@ Pendanaan
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $.ajax({
-            url: "{{ url('dashboard/mitra') }}" + '/' + id + "/edit",
+            url: "{{ url('dashboard/pendanaan') }}" + '/' + id + "/edit",
             type: "GET",
             dataType: "JSON",
             success: function(data) {
                 console.log(data)
                 $('#modal-form').modal('show');
-                $('.modal-title').text('Edit mitra');
+                $('.modal-title').text('Edit pendanaan');
 
                 $('#id').val(data.id);
                 $('#name').val(data.name);
@@ -460,11 +369,11 @@ Pendanaan
             confirmButtonText: 'Yes, delete it!'
         }).then(function () {
             $.ajax({
-                url : "{{ url('dashboard/mitra') }}" + '/' + id,
+                url : "{{ url('dashboard/pendanaan') }}" + '/' + id,
                 type : "POST",
                 data : {'_method' : 'DELETE', '_token' : csrf_token},
                 success : function(data) {
-                    $('#mitra-table').DataTable().draw(true);
+                    $('#pendanaan-table').DataTable().draw(true);
                     swal({
                         title: 'Success!',
                         text: data.message,
