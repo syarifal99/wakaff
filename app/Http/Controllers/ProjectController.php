@@ -6,6 +6,7 @@ use App\Provinsi;
 use DataTables;
 use App\User;
 use App\Kota;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -63,6 +64,7 @@ class ProjectController extends Controller
             $input['gambar'] = '/upload/projek/' . str_slug($input['nama'], '-') . '.' . $request->gambar->getClientOriginalExtension();
             $request->gambar->move(public_path('/upload/projek/'), $input['gambar']);
         }            
+        
         $projek = Projek::create([
             'nama'          => $request->nama,
             'slug'          => $request->nama,
@@ -72,12 +74,18 @@ class ProjectController extends Controller
             'gambar'         => $input['gambar'],
             'kategori_id'   => $request->kategori_id,
             'label_id'      => $request->label_id,
-            'user_id'       => Auth::user()->id,
+            'user_id'       => $user->id,
             'kota_id'       => $request->kota_id,
-            'status'        => $request->status,
+            'status'        => $request->status?$request->status:'MENUNGGU',
         ]);
+        
+        $_user = Auth::user();
+        if( $_user->hasRole(['mitra']) ){
+            $user = User::with('mitra_attr')->findOrFail($_user->id);
+            $projek->update(['mitra_id' => $user->mitra_attr->id,]);
+        }
 
-        if($request->ajax()) return response()->json(['success' =>false, 'message' => 'Projek berhasil dibuat.']);
+        if($request->ajax()) return response()->json(['success' =>true, 'message' => 'Projek berhasil dibuat.']);
         return redirect(route('project.show', $projek->slug));
     }
 
@@ -190,8 +198,10 @@ class ProjectController extends Controller
 
 		return Datatables::of($projek)
             ->addColumn('action', function ($u) {
-                return '<a  onclick="editForm('. $u->id .')" class="btn btn-info btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-edit"></i></span><span class="text text-white"> Edit</span></a>' .
-                ' <a onclick="deleteData('. $u->id .')" class="btn btn-danger btn-icon-split btn-sm"><span class="icon text-white-50"><i class="fas fa-trash"></i></span><span class="text text-white"> Delete</span></a>';
+                return 
+                '<button onclick="editForm(' . $u->id . ')" class="btn btn-primary btn-circle btn-sm"><i class="fas fa-edit"></i></button>' .
+                '<button onclick="deleteData(' . $u->id . ')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></button>'.
+                ' <a target="_blank" href="'. route('project.export.pdf', $u->id) .'" class="btn btn-success btn-circle btn-sm"><i class="fas fa-download"></i></a>';
             })
 			->addColumn('show_image', function($u){
                 if ($u->gambar == NULL){
@@ -200,5 +210,15 @@ class ProjectController extends Controller
                 return '<img class="rounded-square" width="50" height="50" src="'. url($u->gambar) .'" alt="">';
             })
 			->rawColumns(['show_image','action'])->make(true);
+    }
+
+    public function exportPDF($id){
+        $projek = Projek::with('kategori', 'label', 'kota.provinsi')->findOrFail($id);
+        $data = [
+            'projek'    => $projek,
+        ];
+
+        $pdf = PDF::loadView('project.exportPDF', $data)->setPaper('a4', 'lanscape');
+        return $pdf->download('Projek-'.$projek->nama.'.pdf');
     }
 }

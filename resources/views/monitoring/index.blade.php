@@ -1,15 +1,15 @@
 @extends('layouts.master')
 @section('title')
-Mitra
+Monitoring Mitra
 @endsection
 
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Management Mitra</h1>
-    <div class="btn-group btn-group-md">
+    <h1 class="h3 mb-0 text-gray-800">Management Monitoring</h1>
+    {{-- <div class="btn-group btn-group-md">
         <button onclick="addForm()" class="btn btn-primary">Tambahkan mitra</button>
-    </div>
+    </div> --}}
 </div>
 
 <!-- Content Row -->
@@ -33,11 +33,6 @@ Mitra
                                 <th>No.</th>
                                 <th>Logo</th>
                                 <th>Nama</th>
-                                <th>Username</th>
-                                <th>Nama PJ</th>
-                                <th>Email</th>
-                                <th>No. HP</th>
-                                <th>No. Rek</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -51,7 +46,7 @@ Mitra
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <form id="form-role" method="post" class="form-horizontal" data-toggle="validator"
+                {{-- <form id="form-role" method="post" class="form-horizontal" data-toggle="validator"
                     enctype="multipart/form-data" autocomplete="off">
                     {{ csrf_field() }} {{ method_field('POST') }}
                     <div class="modal-header">
@@ -130,7 +125,7 @@ Mitra
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
-                </form>
+                </form> --}}
             </div>
         </div>
     </div>
@@ -170,34 +165,11 @@ Mitra
             serverSide: true,
             responsive: true,
             scrollX: true,
-            ajax: "{{ route('api.mitra') }}",
+            ajax: "{{ route('api.monitoring') }}",
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'show_image', name: 'show_image'},
                 {data: 'name', name: 'name'},
-                {data: 'username', name: 'username'},
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.mitra_attr) return '-'
-                        return data.mitra_attr.pj
-                    }
-                },
-                {data: 'email', name: 'email'},
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.no_hp) return '-'
-                        return data.no_hp
-                    }
-                },
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.no_rek) return '-'
-                        return data.no_rek
-                    }
-                },
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
@@ -214,8 +186,8 @@ Mitra
         $('#modal-form form').validator().on('submit', function (e) {
             if (!e.isDefaultPrevented()){
                 var id = $('#id').val();
-                if (save_method == 'add') url = "{{ url('dashboard/mitra') }}";
-                else url = "{{ url('dashboard/mitra') . '/' }}" + id;
+                if (save_method == 'add') url = "{{ url('dashboard/monitoring') }}";
+                else url = "{{ url('dashboard/monitoring') . '/' }}" + id;
 
                 $.ajax({
                     url : url,
@@ -262,7 +234,7 @@ Mitra
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Add mitra');
+        $('.modal-title').text('Add monitoring');
     }
 
     function editForm(id) {
@@ -271,21 +243,16 @@ Mitra
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $.ajax({
-            url: "{{ url('dashboard/mitra') }}" + '/' + id + "/edit",
+            url: "{{ url('dashboard/monitoring') }}" + '/' + id + "/edit",
             type: "GET",
             dataType: "JSON",
             success: function(data) {
                 console.log(data)
                 $('#modal-form').modal('show');
-                $('.modal-title').text('Edit mitra');
+                $('.modal-title').text('Edit monitoring');
 
                 $('#id').val(data.id);
                 $('#name').val(data.name);
-                $('#username').val(data.username);
-                $('#pj').val(data.mitra_attr.pj);
-                $('#no_hp').val(data.no_hp);
-                $('#no_rek').val(data.no_rek);
-                $('#email').val(data.email);
                 if(data.image){
                     $(".image-upload-wrap").css({
                         "background-image": `url(${data.image})`,
@@ -317,7 +284,7 @@ Mitra
             confirmButtonText: 'Yes, delete it!'
         }).then(function () {
             $.ajax({
-                url : "{{ url('dashboard/mitra') }}" + '/' + id,
+                url : "{{ url('dashboard/monitoring') }}" + '/' + id,
                 type : "POST",
                 data : {'_method' : 'DELETE', '_token' : csrf_token},
                 success : function(data) {

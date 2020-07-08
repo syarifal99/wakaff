@@ -186,7 +186,7 @@ Kabar
         <div class="col-lg-12">
             <div class="card">
                 {{-- <div class="card-header">
-                    <h4>Mitras Management</h4>
+                    <h4>Kabar Management</h4>
                 </div> --}}
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">

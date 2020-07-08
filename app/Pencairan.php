@@ -18,4 +18,9 @@ class Pencairan extends Model
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
+
+    public function projek()
+    {
+        return $this->belongsTo(Projek::class, 'projek_id');
+    }
 }

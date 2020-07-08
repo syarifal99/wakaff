@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Kabar;
+use App\User;
 use Yajra\DataTables\DataTables;
 use Auth;
 
 class KabarController extends Controller {
-
+	public function getAll(){
+        $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
+		$kabar = Kabar::where('mitra_id', $user->mitra_attr->id)->get();
+		return  $kabar;
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -70,14 +75,14 @@ class KabarController extends Controller {
 	public function show($id) {
 		$kabar = User::whereHas('mitra_attr')->with('mitra_attr')->get();
         $projek = Projek::where('id', $id)
-            ->with('user', 'projek')
+            ->with('user', 'projek','mitra')
             ->firstOrFail();
 
         if(!$projek) return abort(404);
 
         $data = [
             'projek' => $projek,
-            'mitra' => $kabar,
+            'kabar' => $kabar,
         ];
         return $data;
 	}
@@ -157,8 +162,17 @@ class KabarController extends Controller {
 	}
 
 	public function apiKabar() {
-		$kabars = Kabar::with('projek')->get();
+		// $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
+        // $query = Projek::query();
 
+        // if( !$user->hasRole(['superadmin', 'admin']) ){
+        //     $query->where('mitra_id', $user->mitra_attr->id);
+        // }
+        // $query->with(['projek','user','mitra']);
+		// $kabars = $query->get();
+		
+		$kabars = Kabar::with('projek')->get();
+		
 		return Datatables::of($kabars)
 			->addColumn('action', function ($s) {
                 return '<a  onclick="editForm('. $s->id .')" class="btn btn-info btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-edit"></i></span><span class="text text-white"> Edit</span></a>' .

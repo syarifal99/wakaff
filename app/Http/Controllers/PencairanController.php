@@ -87,7 +87,8 @@ class PencairanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pencairan = Pencairan::find($id);
+		return $pencairan;
     }
 
     /**
@@ -99,7 +100,21 @@ class PencairanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+			'nominal' 	=> 'required|max:191',
+			'deskripsi' 	=> 'required',
+
+		]);
+		$pencairan = Pencairan::findOrFail($id);
+		$input = $request->all();
+		$pencairan->update([
+			'nominal'         => $request->nominal,
+            'deskripsi'     	=> $request->deskripsi,
+            'status'        => $request->status,
+		]);
+
+		if($request->ajax()) return response()->json(['success' =>false, 'message' => 'pencairan berhasil diubah.']);
+        return redirect(route('pencairan.show', $pencairan->id));
     }
 
     /**
@@ -110,10 +125,17 @@ class PencairanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pencairan = Pencairan::findOrFail($id);
+		$pencairan->delete();
+
+		return response()->json([
+			'success' => true,
+			'message' => 'pencairan delete.',
+		]);
     }
     public function apiPencairan() {
-		$pencairans = Pencairan::with('projek')->get();
+        
+		$pencairans = Pencairan::with('projek.mitra','user')->get();
 
 		return Datatables::of($pencairans)
 			->addColumn('action', function ($s) {

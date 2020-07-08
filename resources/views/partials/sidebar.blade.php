@@ -18,7 +18,7 @@
 
     @hasanyrole('mitra')
 
-    <div class="sidebar-heading">
+    {{-- <div class="sidebar-heading">
         Grafik
     </div>
 
@@ -31,15 +31,22 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{Request::is('dashboard/project')? 'active':''}}">
              <a class="nav-link" href="{{route('project.index')}}">
-                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                 <span>Data Project</span></a>
-    </li>
+                 <i class="fas fa-fw fa-clipboard"></i>
+                 <span>Project</span></a>
+    </li> --}}
 
     <!-- Heading -->
     <div class="sidebar-heading">
-        Master
+        Master Data
     </div>
-    
+
+        <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item {{Request::is('dashboard/project')? 'active':''}}">
+             <a class="nav-link" href="{{route('project.index')}}">
+                 <i class="fas fa-fw fa-clipboard"></i>
+                 <span>Project</span></a>
+    </li>
+
     <li class="nav-item {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? 'active':''}}">
         <a class="nav-link {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? '':'collapsed'}}" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
             aria-controls="collapsePages">
@@ -64,7 +71,7 @@
      <!-- Nav Item - Pages Collapse Menu -->
      <li class="nav-item {{Request::is('dashboard/kabar')? 'active':''}}">
          <a class="nav-link" href="{{route('kabar.index')}}">
-             <i class="fas fa-fw fa-tachometer-alt"></i>
+             <i class="fas fa-fw fa-info"></i>
              <span>Kabar</span></a>
      </li>
 
@@ -81,16 +88,26 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{Request::is('dashboard/mitra')? 'active':''}}">
         <a class="nav-link" href="{{route('mitra.index')}}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Data Mitra</span></a>
+            <i class="fas fa-fw fa-users"></i>
+            <span>Mitra</span></a>
     </li>
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{Request::is('dashboard/project')? 'active':''}}">
              <a class="nav-link" href="{{route('project.index')}}">
-                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                 <span>Data Project</span></a>
-         </li>
-        
+                 <i class="fas fa-fw fa-clipboard"></i>
+                 <span>Project</span></a>
+    </li>
+    
+    <li class="nav-item {{Request::is('dashboard/pencairan')? 'active':''}}">
+             <a class="nav-link" href="{{route('pencairan.index')}}">
+                 <i class="fas fa-fw fa-dollar-sign"></i>
+                 <span>Pencairan</span></a>
+    </li>
+    <li class="nav-item {{Request::is('dashboard/monitoring')? 'active':''}}">
+             <a class="nav-link" href="{{route('monitoring.index')}}">
+                 <i class="fas fa-fw fa-user"></i>
+                 <span>Monitoring Mitra</span></a>
+    </li>
     @endhasanyrole
     
     @hasanyrole('superadmin')
@@ -104,7 +121,7 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{Request::is('dashboard/mitra')? 'active':''}}">
         <a class="nav-link" href="{{route('mitra.index')}}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-fw fa-users"></i>
             <span>Mitra</span></a>
     </li>
 

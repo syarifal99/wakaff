@@ -248,7 +248,22 @@ Pencairan
                             <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
                             <span class="help-block with-errors"></span>
                         </div>
+                        @hasanyrole('admin|superadmin')
+                        <div class="form-mitra"></div>
+                        <div class="form-validasi">
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="form-control" id="status" placeholder="Pilih status" name="status">
+                                    <option value="" disabled>-- Pilih status --</option>
+                                    <option value="MENUNGGU">MENUNGGU</option>
+                                    <option value="DISETUJUI">DISETUJUI</option>
+                                    <option value="DITOLAK">DITOLAK</option>
+                                </select>
+                            </div>
+                        </div>
+                        @endhasanyrole
                     </div>
+                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -398,6 +413,25 @@ Pencairan
 
             }, error: function(error){
                 console.log(error);
+            }
+        });
+        $.ajax({
+            url: "{{ url('dashboard/pencairan') }}" + '/' + id + "/edit",
+            type: "GET",
+            dataType: "JSON",
+            success: function(data) {
+                console.log(data)
+                $('#modal-form').modal('show');
+                $('.modal-title').text('Edit pencairan');
+
+                $('#id').val(data.id);
+                $('#nominal').val(data.nominal);
+                $('#deskripsi').val(data.deskripsi);
+                $("#projek_id").val(data.projek_id);
+            },
+            error : function(err) {
+                console.log(err)
+                alert("Data not found!");
             }
         });
     }

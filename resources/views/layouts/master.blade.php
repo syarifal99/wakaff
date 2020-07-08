@@ -23,6 +23,73 @@
     <script src="{{ asset('assets/vendor/sweetalert2/sweetalert2.min.js') }}"></script>
     <link href="{{ asset('assets/vendor/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
     @yield('css')
+    <link rel="stylesheet" href="{{asset('assets/vendor/datatables/dataTables.bootstrap4.min.css')}}">
+<style>
+    .file-upload {
+        background-color: #ffffff;
+        width: 18em;
+        position: relative;
+    }
+
+    .box-remove {
+        position: absolute;
+        display: none;
+        bottom: 0;
+        right: 0;
+        margin: 10px;
+        z-index: 1;
+    }
+
+    .file-upload-content {
+        display: none;
+        text-align: center;
+    }
+
+    .file-upload-input {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .image-upload-wrap {
+        margin-top: 20px;
+        border: 2px dashed #949494;
+        position: relative;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: transparent;
+        min-height: 18em;
+        border-radius: 50%;
+    }
+
+    .image-dropping,
+    .image-upload-wrap:hover {
+        box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.15) !important;
+        background-color: #f8f6ff;
+    }
+
+    .image-title-wrap {
+        padding: 0 15px 15px 15px;
+        color: #222;
+    }
+
+    .drag-text {
+        text-align: center;
+    }
+
+    .drag-text h5 {
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
+        margin-top: 4em;
+        font-weight: 100;
+        color: #828081;
+    }
+</style>
 </head>
 
 <body id="page-top">

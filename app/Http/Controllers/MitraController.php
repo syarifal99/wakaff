@@ -199,14 +199,15 @@ class MitraController extends Controller
             ->get();
         return Datatables::of($users)
             ->addColumn('action', function ($u) {
-                return '<a  onclick="editForm('. $u->id .')" class="btn btn-info btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-edit"></i></span><span class="text text-white"> Edit</span></a>' .
-                ' <a onclick="deleteData('. $u->id .')" class="btn btn-danger btn-icon-split btn-sm"><span class="icon text-white-50"><i class="fas fa-trash"></i></span><span class="text text-white"> Delete</span></a>';
+                return 
+                '<button onclick="editForm(' . $u->id . ')" class="btn btn-success btn-circle btn-sm"><i class="fas fa-edit"></i></button>' .
+                '<button onclick="deleteData(' . $u->id . ')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></button>';
             })
             ->addColumn('show_image', function ($u) {
                 if ($u->image == NULL) {
                     return 'No Image';
                 }
-                return '<img class="rounded-square" width="50" height="50" src="' . url($u->image) . '" alt="">';
+                return '<img class="img-profile rounded-circle" width="50" height="50" src="' . url($u->image) . '" alt="">';
             })
             ->rawColumns(['show_image', 'action'])->make(true);
     }

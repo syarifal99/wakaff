@@ -60,6 +60,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('project/get-all', 'ProjectController@getAll')->name('project.getAll');
     Route::resource('project', 'ProjectController');
     Route::get('api-project', 'ProjectController@apiProject')->name('api.project');
+    Route::get('project/{id}/export-pdf', 'ProjectController@exportPDF')->name('project.export.pdf');
 
     Route::get('project/validasi/{id}', 'ValidasiController@validasi');
     
@@ -68,10 +69,14 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     
     Route::resource('pencairan', 'PencairanController');
     Route::get('api-pencairan', 'PencairanController@apipencairan')->name('api.pencairan');
+
+    Route::resource('monitoring', 'MonitoringController');
+    Route::get('api-monitoring', 'MonitoringController@apiMonitoring')->name('api.monitoring');
     
     Route::resource('users', 'UserController');
     Route::get('api-users', 'UserController@apiUsers')->name('api.users');
 
+    Route::get('kabar/get-all', 'KabarController@getAll')->name('kabar.getAll');
     Route::resource('kabar', 'KabarController');
     Route::get('api-kabar', 'KabarController@apiKabar')->name('api.kabar');
     

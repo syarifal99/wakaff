@@ -14,15 +14,6 @@ Dashboard
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li><a href="{{route('dashboard')}}">Dashboard</a></li>
-                        </ol>
-                    </div>
-                </div>
-            </div> --}}
         </div>
     </div>
 </div>

@@ -201,10 +201,10 @@ Pendanaan
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Nama Projek</th>
                                 <th>Nama Pendaftar</th>
                                 <th>Nominal</th>
                                 <th>Metode</th>
-                                <th>Bukti</th>
                                 <th>Keterangan</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
@@ -220,6 +220,63 @@ Pendanaan
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
+                <form id="form-role" method="post" class="form-horizontal" data-toggle="validator"
+                    enctype="multipart/form-data" autocomplete="off">
+                    {{ csrf_field() }} {{ method_field('POST') }}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-formLabel">Scrolling Long Content Modal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="root">
+                        <input type="hidden" id="id" name="id">
+                        <div class="form-group row justify-content-center">
+                        </div>
+                        <div class="form-group">
+                            <label for="projek_id">Projek</label>
+                            <select class="form-control" id="projek_id" placeholder="Pilih projek" name="projek_id"  readonly>
+                                <option value="" disabled>-- Pilih projek --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" id="name" name="name" readonly>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Nominal</label>
+                            <input type="text" class="form-control" id="nominal" name="nominal" readonly>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                                <label for="metode">Metode</label>
+                                <input type="text" class="form-control" id="metode" name="metode" readonly>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan" name="keterangan" readonly>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-mitra"></div>
+                        <div class="form-validasi">
+                        <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="form-control" id="status" placeholder="Pilih status" name="status">
+                                    <option value="" disabled>-- Pilih status --</option>
+                                    <option value="MENUNGGU">MENUNGGU</option>
+                                    <option value="DISETUJUI">DISETUJUI</option>
+                                    <option value="DITOLAK">DITOLAK</option>
+                                </select>
+                            </div>
+                            </div>
+                            </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -262,10 +319,10 @@ Pendanaan
             ajax: "{{ route('api.pendanaan') }}",
             columns: [
                 {data: 'id', name: 'id'},
+                {data: 'projek.nama', name: 'projek.nama'},
                 {data: 'user.name', name: 'user.name'},
                 {data: 'nominal', name: 'nominal'},
                 {data: 'metode', name: 'metode'},
-                {data: 'bukti', name: 'bukti'},
                 {data: 'keterangan', name: 'keterangan'},
                 {data: 'status', name: 'status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
@@ -323,6 +380,22 @@ Pendanaan
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $.ajax({
+            url : "{{ route('project.getAll') }}" ,
+            type : "GET",
+            success: function(res){
+                console.log(res)
+                $("#projek_id").empty();
+                $("#projek_id").append(`<option value="" selected disabled>-- Pilih Projek --</option>`);
+                $.each(res, function(key, item) {
+                    $("#projek_id").append(`<option value="` + item.id + `">` + item.nama +` </option>`);
+                });
+
+            }, error: function(error){
+                console.log(error);
+            }
+        });
+        
+        $.ajax({
             url: "{{ url('dashboard/pendanaan') }}" + '/' + id + "/edit",
             type: "GET",
             dataType: "JSON",
@@ -332,23 +405,11 @@ Pendanaan
                 $('.modal-title').text('Edit pendanaan');
 
                 $('#id').val(data.id);
-                $('#name').val(data.name);
-                $('#username').val(data.username);
-                $('#pj').val(data.mitra_attr.pj);
-                $('#no_hp').val(data.no_hp);
-                $('#no_rek').val(data.no_rek);
-                $('#email').val(data.email);
-                if(data.image){
-                    $(".image-upload-wrap").css({
-                        "background-image": `url(${data.image})`,
-                        border: "0px solid #fff"
-                    });
-                    $('#image_available').val(true)
-                    $(".image-upload-wrap h5").hide();
-                    $(".box-remove").css("display", "absolute");
-                    $(".box-remove").show();
-                    $(".image-title").html(data.image);
-                }
+                $('#user_id').val(data.name);
+                $('#nominal').val(data.nominal);
+                $('#metode').val(data.metode);
+                $('#keterangan').val(data.keterangan);
+                $("#projek_id").val(data.projek_id);
             },
             error : function(err) {
                 console.log(err)
