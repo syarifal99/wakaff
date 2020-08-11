@@ -31,6 +31,36 @@ Register
 
                 </div>
                 <div class="form-group">
+                    <input id="no_hp" type="text" class="form-control form-control-user @error('no_hp') is-invalid @enderror" name="no_hp" value="{{ old('no_hp') }}" required autocomplete="no_hp" placeholder="No HP">
+                
+                @error('no_hp')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
+                </div>
+                <div class="form-group">
+                    <input id="no_rek" type="text" class="form-control form-control-user @error('no_rek') is-invalid @enderror" name="no_rek" value="{{ old('no_rek') }}" required autocomplete="no_rek" placeholder="No Rek">
+                
+                @error('no_rek')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
+                </div>
+                <div class="form-group">
+                    <input id="username" type="text" class="form-control form-control-user @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" placeholder="Usename">
+                
+                @error('username')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
+                </div>
+                <div class="form-group">
                   <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email Address">
                 
                 @error('email')
@@ -42,22 +72,21 @@ Register
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                    <input type="password" class="form-control form-control-user" name="password" id="exampleInputPassword" placeholder="Password">
                   </div>
                   <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
+                    <input type="password" class="form-control form-control-user" name="password_confirmation" id="exampleRepeatPassword" placeholder="Repeat Password">
                   </div>
+                  @error('password')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
                 </div>
-                <a href="{{ route('login') }}" class="btn btn-primary btn-user btn-block">
+                <button type="submit" class="btn btn-primary btn-user btn-block">
                   Register Account
-                </a>
+                </button>
                 <hr>
-                <a href="index.html" class="btn btn-google btn-user btn-block">
-                  <i class="fab fa-google fa-fw"></i> Register with Google
-                </a>
-                <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                  <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                </a>
               </form>
               <hr>
               <div class="text-center">

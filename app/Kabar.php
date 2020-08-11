@@ -16,6 +16,6 @@ class Kabar extends Model
 
     public function projek()
     {
-        return $this->belongsTo(Projek::class, 'projek_id',);
+        return $this->belongsTo(Projek::class, 'projek_id');
     }
 }

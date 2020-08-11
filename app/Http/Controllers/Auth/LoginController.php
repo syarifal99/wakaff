@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Auth;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -36,5 +39,24 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function login(Request $request){
+
+        $this->validate($request, [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        // attempting to login
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+
+            $user = User::where('email', $request->email)->first();
+            if($user->hasRole(['user'])) return redirect()->intended(route('landing')); 
+            else return redirect()->intended(route('dashboard'));
+        }
+
+        return redirect()->back()->withInput($request->only(['email', 'remember_token']))
+                                        ->withErrors(['credentials' => 'Gagal Login, mohon periksa email atau password.']);
     }
 }

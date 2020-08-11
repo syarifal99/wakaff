@@ -6,10 +6,7 @@ Monitoring Mitra
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Management Monitoring</h1>
-    {{-- <div class="btn-group btn-group-md">
-        <button onclick="addForm()" class="btn btn-primary">Tambahkan mitra</button>
-    </div> --}}
+    <h1 class="h4 mb-0 text-gray-800">Management Monitoring Mitra</h1>
 </div>
 
 <!-- Content Row -->
@@ -20,14 +17,14 @@ Monitoring Mitra
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group btn-group-md">
-                            <h6 class="m-0 font-weight-bold text-primary">Daftar Mitra</h6>
+                            <h6 class="m-0 font-weight-bold text-success">Daftar Mitra</h6>
                         </div>
                         <div class="btn-group btn-group-md">
                             <button type="button" class="btn btn-outline-success btn-sm" id="btn-refresh"
                                 title="Refresh data"><i class="fas fa-sync-alt"></i></button>
                         </div>
                     </div>
-                    <table id="mitra-table" class="table table-striped table-bordered">
+                    <table id="mitra-table" class="table table-striped table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -42,90 +39,89 @@ Monitoring Mitra
         </div>
     </div>
 
-    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-formLabel"
+    <div class="modal fade" id="monitoringModal" tabindex="-1" role="dialog" aria-labelledby="modal-formLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                {{-- <form id="form-role" method="post" class="form-horizontal" data-toggle="validator"
-                    enctype="multipart/form-data" autocomplete="off">
-                    {{ csrf_field() }} {{ method_field('POST') }}
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modal-formLabel">Scrolling Long Content Modal</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="root">
-                        <input type="hidden" id="id" name="id">
-                        <div class="form-group row justify-content-center">
-                            <label>Image</label>
-                            <div class="col-md-6 col-12">
-                                <div class="file-upload mb-3">
-                                    <input type="hidden" name="image_available" value="false" id="image_available">
-                                    <div class="image-upload-wrap"
-                                        style="background-image: url({{asset('assets/img/attachment-3.jpg')}});">
-                                        <div class="box-remove">
-                                            <button type="button" onclick="removeUpload()"
-                                                class="btn btn-danger btn-sm">Remove</button>
-                                        </div>
-                                        <input name="image" class="file-upload-input" type="file"
-                                            onchange="readURL(this);" accept="image/*" />
-                                        <div class="drag-text">
-                                            <h5>Click or drag an image.
-                                            </h5>
-                                        </div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-formLabel">Monitoring mitra</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card shadow mb-4">
+                <div class="row">
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Projek Disetujui</div>
+                                        <div id="jumlah_disetujui" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>PJ</label>
-                            <input type="text" class="form-control" id="pj" name="pj" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>No HP.</label>
-                            <input type="text" class="form-control" id="no_hp" name="no_hp" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>No. Rek</label>
-                            <input type="text" class="form-control" id="no_rek" name="no_rek">
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" autocomplete="new-password" class="form-control" id="password"
-                                name="password">
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Password Confirmation</label>
-                            <input type="password" autocomplete="off" class="form-control" id="password_confirmation"
-                                name="password_confirmation">
-                            <span class="help-block with-errors"></span>
+                    </div>
+                
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Projek Menunggu</div>
+                                        <div id="jumlah_menunggu" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                        </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-4 col-md-6 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Projek Ditolak</div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <div id="jumlah_ditolak" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </form> --}}
+                </div>
+                </div>
+                <div class="modal-body">
+                    <h6 class="m-0 font-weight-bold" style="text-align: center">Grafik Dana Projek Mitra</h6>
+                    <div class="chart-pie pt-4">
+                        <canvas id="monitoringGrafik" width="500" height="250" style="width: 500px; height: 250px;"></canvas>
+                      </div>
+                      <ul type="circle">
+                        <li class="list-inline-item">
+                            <div class="text-xs font-weight-bold text-info mb-1">- Total Pencairan Dana</div>
+                           
+                        </li>
+                        <li class="list-inline-item">
+                            <div class="text-xs font-weight-bold text-success mb-1">- Total Dana Masuk</div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -136,6 +132,8 @@ Monitoring Mitra
 {{-- Datatable --}}
 <script src="{{asset('assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('assets/vendor/chart.js/Chart.min.js')}}"></script>
+{{-- <script src="{{asset('assets/js/chart-pie.js')}}"></script> --}}
 {{-- Validator --}}
 <script src="{{ asset('assets/vendor/validator/validator.min.js') }}"></script>
 <script type="text/javascript">
@@ -237,6 +235,174 @@ Monitoring Mitra
         $('.modal-title').text('Add monitoring');
     }
 
+    function detail(id){
+        $.ajax({
+            url: "{{ url('dashboard/monitoring') }}" + '/' + id ,
+            type: "GET",
+            dataType: "JSON",
+            success: function(data) {
+                console.log(data)
+                $('#jumlah_disetujui').text(data.project_disetujui.length)
+                $('#jumlah_menunggu').text(data.project_menunggu.length)
+                $('#jumlah_ditolak').text(data.project_ditolak.length)
+                // var ctx = document.getElementById("monitoringGrafik");
+                // var myPieChart = new Chart(ctx, {
+                // type: 'doughnut',
+                // data: {
+                //     labels: ["Total Pencairan Dana", "Total Dana Masuk"],
+                //     datasets: [{
+                //     data: [
+                //         data.total_pencairan.total_nominal,
+                //         data.total_pendanaan.total_nominaldana
+                //             ],
+                //     backgroundColor: ['#1cc88a', '#36b9cc'],
+                //     hoverBackgroundColor: ['#17a673', '#2c9faf'],
+                //     hoverBorderColor: "rgba(234, 236, 244, 1)",
+                //     }],
+                // },
+                // options: {
+                //     maintainAspectRatio: false,
+                //     tooltips: {
+                //     backgroundColor: "rgb(255,255,255)",
+                //     bodyFontColor: "#858796",
+                //     borderColor: '#dddfeb',
+                //     borderWidth: 1,
+                //     xPadding: 15,
+                //     yPadding: 15,
+                //     displayColors: false,
+                //     caretPadding: 10,
+                //     },
+                //     legend: {
+                //     display: false
+                //     },
+                //     cutoutPercentage: 80,
+                // },
+                // });
+
+                function number_format(number, decimals, dec_point, thousands_sep) {
+  // *     example: number_format(1234.56, 2, ',', ' ');
+  // *     return: '1 234,56'
+  number = (number + '').replace(',', '').replace(' ', '');
+  var n = !isFinite(+number) ? 0 : +number,
+    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+    s = '',
+    toFixedFix = function(n, prec) {
+      var k = Math.pow(10, prec);
+      return '' + Math.round(n * k) / k;
+    };
+  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+  if (s[0].length > 3) {
+    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+  }
+  if ((s[1] || '').length < prec) {
+    s[1] = s[1] || '';
+    s[1] += new Array(prec - s[1].length + 1).join('0');
+  }
+  return s.join(dec);
+}
+
+// Area Chart Example
+var ctx = document.getElementById("monitoringGrafik");
+var myLineChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [{
+      label: "Earnings",
+      lineTension: 0.3,
+      backgroundColor: "rgba(78, 115, 223, 0.05)",
+      borderColor: "rgba(78, 115, 223, 1)",
+      pointRadius: 3,
+      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointBorderColor: "rgba(78, 115, 223, 1)",
+      pointHoverRadius: 3,
+      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+      pointHitRadius: 10,
+      pointBorderWidth: 2,
+      data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 10,
+        right: 25,
+        top: 25,
+        bottom: 0
+      }
+    },
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'date'
+        },
+        gridLines: {
+          display: false,
+          drawBorder: false
+        },
+        ticks: {
+          maxTicksLimit: 7
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          maxTicksLimit: 5,
+          padding: 10,
+          // Include a dollar sign in the ticks
+          callback: function(value, index, values) {
+            return '$' + number_format(value);
+          }
+        },
+        gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+        }
+      }],
+    },
+    legend: {
+      display: false
+    },
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      titleMarginBottom: 10,
+      titleFontColor: '#6e707e',
+      titleFontSize: 14,
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      intersect: false,
+      mode: 'index',
+      caretPadding: 10,
+      callbacks: {
+        label: function(tooltipItem, chart) {
+          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+        }
+      }
+    }
+  }
+});
+                $('#monitoringModal').modal('show');
+                $('monitoringModal .modal-title').text('Detail Monitoring');
+            },
+            error : function(err) {
+                console.log(err)
+                alert("Data not found!");
+            }
+        });
+    }
+    
     function editForm(id) {
         removeUpload()
         save_method = 'edit';

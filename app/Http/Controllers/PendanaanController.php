@@ -7,6 +7,7 @@ use Auth;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
+use App\Projek;
 
 class PendanaanController extends Controller
 {
@@ -50,14 +51,14 @@ class PendanaanController extends Controller
     public function show($id)
     {
         $pendanaan = User::whereHas('mitra_attr')->with('mitra_attr')->get();
-        $projek = Projek::where('id', $id)
+        $pendanaan = Pendanaan::where('id', $id)
             ->with('user', 'projek')
             ->firstOrFail();
 
-        if(!$projek) return abort(404);
+        if(!$pendanaan) return abort(404);
 
         $data = [
-            'projek' => $projek,
+            'projek' => $pendanaan->projek,
             'mitra' => $pendanaan,
         ];
         return $data;
@@ -71,7 +72,9 @@ class PendanaanController extends Controller
      */
     public function edit($id)
     {
-        $pendanaan = Pendanaan::find($id);
+        $pendanaan = Pendanaan::where('id', $id)
+            ->with('user', 'projek')
+            ->firstOrFail();
 		return $pendanaan;
     }
 
@@ -115,18 +118,38 @@ class PendanaanController extends Controller
         //
     }
     public function apiPendanaan() {
-		$pendanaans = Pendanaan::with('projek.mitra','user')->get();
-
-		return Datatables::of($pendanaans)
+        $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
+		// $pendanaans = Pendanaan::whereHas('projek.mitra', function($q) use($user){
+        //     if($user->mitra_attr) $q->where('id', $user->mitra_attr->id);
+        // })->with('projek.mitra','user')->get();
+        // return $pendanaans;
+        $projeks = Projek::whereHas('mitra', function($q) use($user){
+            if($user->mitra_attr) $q->where('id', $user->mitra_attr->id);
+        })->with(['mitra', 'user', 'pendanaan.user'])->get();
+        $res = [];
+        foreach ($projeks as $key => $p) {
+            $totalDanaPendanaan = 0;
+            foreach ($p->pendanaan as $key => $pd) {
+                $totalDanaPendanaan += (float) $pd->nominal;
+            }
+            $res[] = [
+                'projek' => $p,
+                'total_user' => count($p->pendanaan),
+                'total_pendanaan' => $totalDanaPendanaan,
+            ];
+        }
+        // return $res;
+		return Datatables::of($res)
 			->addColumn('action', function ($p) {
-                return '<a  onclick="editForm('. $p->id .')" class="btn btn-info btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-edit"></i></span><span class="text text-white"> Edit</span></a>' .
-                ' <a onclick="deleteData('. $p->id .')" class="btn btn-danger btn-icon-split btn-sm"><span class="icon text-white-50"><i class="fas fa-trash"></i></span><span class="text text-white"> Delete</span></a>';
-            })
+                return 
+                '<button onclick="editForm(' . $p['projek']->id . ')" class="btn btn-success btn-circle btn-sm"><i class="fas fa-edit"></i></button>' .
+                '<button onclick="deleteData(' . $p['projek']->id . ')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></button>';
+              })
             ->addColumn('show_image', function($p){
-                if ($p->bukti == NULL){
+                if ($p['projek']->bukti == NULL){
                     return 'No Image';
                 }
-                return '<img class="rounded-square" width="50" height="50" src="'. url($p->bukti) .'" alt="">';
+                return '<img class="rounded-square" width="50" height="50" src="'. url($p['projek']->bukti) .'" alt="">';
             })
 			->rawColumns(['show_image','action'])->make(true);
 	}

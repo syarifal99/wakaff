@@ -8,7 +8,7 @@ use Auth;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
-
+use DB;
 class MonitoringController extends Controller
 {
     /**
@@ -66,6 +66,42 @@ class MonitoringController extends Controller
      */
     public function show($id)
     {
+        $total_pencairan = DB::table("pencairan")
+        ->where('user_id', $id)
+	    ->select(DB::raw("SUM(nominal) as total_nominal"))
+        ->first();
+
+        $total_pendanaan = DB::table("pendanaan as p")
+        ->leftjoin('projek as pr', 'p.projek_id', '=', 'pr.id')
+        ->leftjoin('users as u', 'pr.mitra_id', '=', 'u.id')
+	    ->select(DB::raw("SUM(p.nominal) as total_nominaldana"))
+        ->first();
+
+        $project_disetujui = User::whereHas('projek', function($q){
+            $q->where('status', 'DISETUJUI');
+        })->where('id', $id)->get();
+        $project_ditolak = User::whereHas('projek', function($q){
+            $q->where('status', 'DITOLAK');
+        })->where('id', $id)->get();
+        $project_menunggu = User::whereHas('projek', function($q){
+            $q->where('status', 'MENUNGGU');
+        })->where('id', $id)->get();
+
+        $data = [
+            'project_disetujui' => $project_disetujui,
+            'project_ditolak'   => $project_ditolak,
+            'project_menunggu'  => $project_menunggu,
+            'total_pencairan'   => $total_pencairan,
+            'total_pendanaan'   => $total_pendanaan,
+        ];
+        return $data;
+
+        $projek = Projek::where('id', $id)->withCount('projek.mitr')->firstOrFail();
+        $projek_count = Projek::count();
+        $data = [
+            'mitra_count'   => $role->users_count,
+            'projek_count'   => $projek_count,
+        ];
         $monitoring = User::whereHas('mitra_attr')->with('mitra_attr')->get();
         $mitra = Mitra::where('id', $id)
             ->with('user')
@@ -142,7 +178,7 @@ class MonitoringController extends Controller
             ->get();
         return Datatables::of($users)
             ->addColumn('action', function ($u) {
-                return '<a  onclick="editRole('. $u->id .')" class="btn btn-info btn-icon-split btn-sm"><span class="icon text-white-50"><i class="fas fa-eye"></i></span><span class="text text-white"> Monitoring</span></a>' ;
+                return '<a  onclick="detail('. $u->id .')" class="btn btn-info btn-icon-split btn-sm"><span class="icon text-white-50"><i class="fas fa-eye"></i></span><span class="text text-white"> Monitoring</span></a>' ;
             })
             ->addColumn('show_image', function ($u) {
                 if ($u->image == NULL) {

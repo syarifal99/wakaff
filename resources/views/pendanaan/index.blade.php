@@ -2,75 +2,6 @@
 @section('title')
 Pendanaan
 @endsection
-@section('css')
-<link rel="stylesheet" href="{{asset('assets/vendor/datatables/dataTables.bootstrap4.min.css')}}">
-<style>
-    .file-upload {
-        background-color: #ffffff;
-        width: 18em;
-        position: relative;
-    }
-
-    .box-remove {
-        position: absolute;
-        display: none;
-        bottom: 0;
-        right: 0;
-        margin: 10px;
-        z-index: 1;
-    }
-
-    .file-upload-content {
-        display: none;
-        text-align: center;
-    }
-
-    .file-upload-input {
-        position: absolute;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        outline: none;
-        opacity: 0;
-        cursor: pointer;
-    }
-
-    .image-upload-wrap {
-        margin-top: 20px;
-        border: 2px dashed #949494;
-        position: relative;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-color: transparent;
-        min-height: 18em;
-        border-radius: 50%;
-    }
-
-    .image-dropping,
-    .image-upload-wrap:hover {
-        box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.15) !important;
-        background-color: #f8f6ff;
-    }
-
-    .image-title-wrap {
-        padding: 0 15px 15px 15px;
-        color: #222;
-    }
-
-    .drag-text {
-        text-align: center;
-    }
-
-    .drag-text h5 {
-        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
-        margin-top: 4em;
-        font-weight: 100;
-        color: #828081;
-    }
-</style>
-@endsection
 
 @section('content')
 <!-- Page Heading -->
@@ -81,98 +12,6 @@ Pendanaan
                 <div class="page-header float-left">
                     <div class="page-title">
                         <h5>Pendanaan Management</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li><a href="{{route('dashboard')}}">Dashboard</a></li>
-                            <li> / </li>
-                            <li class="active"> Pendanaan</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Content Row -->
-<div class="row">
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
-                        <div class="row no-gutters align-items-center">
-                            <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                            </div>
-                            <div class="col">
-                                <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
-                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -191,22 +30,20 @@ Pendanaan
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group btn-group-md">
+                            <h6 class="m-0 font-weight-bold text-success">Data Dana Masuk</h6>
                         </div>
                         <div class="btn-group btn-group-md">
                             <button type="button" class="btn btn-outline-success btn-sm" id="btn-refresh"
                                 title="Refresh data"><i class="fas fa-sync-alt"></i></button>
                         </div>
                     </div>
-                    <table id="pendanaan-table" class="table table-striped table-bordered">
+                    <table id="pendanaan-table" class="table table-striped table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No.</th>
                                 <th>Nama Projek</th>
-                                <th>Nama Pendaftar</th>
-                                <th>Nominal</th>
-                                <th>Metode</th>
-                                <th>Keterangan</th>
-                                <th>Status</th>
+                                <th>Total User</th>
+                                <th>Total Nominal</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -318,16 +155,24 @@ Pendanaan
             scrollX: true,
             ajax: "{{ route('api.pendanaan') }}",
             columns: [
-                {data: 'id', name: 'id'},
+                {data: 'projek.id', name: 'projek.id'},
                 {data: 'projek.nama', name: 'projek.nama'},
-                {data: 'user.name', name: 'user.name'},
-                {data: 'nominal', name: 'nominal'},
-                {data: 'metode', name: 'metode'},
-                {data: 'keterangan', name: 'keterangan'},
-                {data: 'status', name: 'status'},
+                {data: 'total_user', name: 'total_user'},
+                {data: 'projek.nominal', name: 'projek.nominal'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
+
+
+
+        table.on('order.dt search.dt', function () {
+            table.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
 
         $('#modal-form form').validator().on('submit', function (e) {
             if (!e.isDefaultPrevented()){
@@ -400,12 +245,14 @@ Pendanaan
             type: "GET",
             dataType: "JSON",
             success: function(data) {
+                console.log("sa")
                 console.log(data)
                 $('#modal-form').modal('show');
                 $('.modal-title').text('Edit pendanaan');
 
                 $('#id').val(data.id);
                 $('#user_id').val(data.name);
+                $('#name').val(data.user.name);
                 $('#nominal').val(data.nominal);
                 $('#metode').val(data.metode);
                 $('#keterangan').val(data.keterangan);

@@ -14,8 +14,13 @@ class ProjectController extends Controller
 {
     public function getAll(){
         $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
-		$projek = Projek::where('mitra_id', $user->mitra_attr->id)->get();
-		return  $projek;
+
+        $query = Projek::query();
+        if( $user->hasRole(['mitra']) ){
+            $query->where('mitra_id', $user->mitra_attr->id);
+        }
+        $projek = $query->get();
+        return  $projek;
 	}
     /**
      * Display a listing of the resource.
@@ -71,12 +76,12 @@ class ProjectController extends Controller
             'deskripsi'     => $request->deskripsi,
             'tenggat_waktu' => $request->tenggat_waktu,
             'nominal'       => $request->nominal,
-            'gambar'         => $input['gambar'],
+            'gambar'        => $input['gambar'],
             'kategori_id'   => $request->kategori_id,
             'label_id'      => $request->label_id,
-            'user_id'       => $user->id,
+            'user_id'       => Auth::user()->id,
             'kota_id'       => $request->kota_id,
-            'status'        => $request->status?$request->status:'MENUNGGU',
+            'status'        => isset($request->status)?$request->status:'MENUNGGU',
         ]);
         
         $_user = Auth::user();
@@ -162,10 +167,12 @@ class ProjectController extends Controller
             'kategori_id'   => $request->kategori_id,
             'label_id'      => $request->label_id,
             'kota_id'       => $request->kota_id,
-            'mitra_id'      => $request->mitra_id,
-            'status'        => $request->status,
+            'mitra_id'      => isset($request->mitra_id)?$request->mitra_id:$projek->mitra_id,
         ]);
-
+        $_user = Auth::user();
+        if( $_user->hasRole(['admin']) ){
+            $projek->update(['status' => isset($request->status)?$request->status: $projek->status]);
+        }
         if($request->ajax()) return response()->json(['success' =>false, 'message' => 'Projek berhasil diubah.']);
         return redirect(route('project.show', $projek->slug));
     }

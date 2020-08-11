@@ -25,7 +25,7 @@ class CreateKabarTable extends Migration
             $table->increments('id');
             $table->string('judul', 191)->nullable();
             $table->string('gambar', 191)->nullable();
-            $table->string('konten', 191)->nullable();
+            $table->text('konten')->nullable();
             $table->unsignedInteger('projek_id');
             $table->unsignedInteger('user_id');
 

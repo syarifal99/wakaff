@@ -8,6 +8,9 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Auth;
+use Session;
 
 class RegisterController extends Controller
 {
@@ -41,33 +44,35 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+    public function register(Request $request){
+        
+        $this->validate($request, [
+            'name'      => 'required|string|max:191',
+            'username'  => 'required|string|max:191|unique:users',
+            'email'     => 'required|string|email|max:191|unique:users',
+            'password'  => 'required|string|confirmed',
+            'no_rek'    => 'nullable|min:10',
+            'no_hp'     => 'required||min:10',
+            'image' 	=> 'nullable|image|max:1999',
         ]);
-    }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+        $user = User::create([
+            'name' => $request->name,
+            'no_hp' => $request->no_hp,
+            'no_rek' => $request->no_rek,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
+        
+        $user->syncRoles('user');
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            Session::flash('pesan', 'Selamat Anda telah terdaftar!');
+            $user = User::where('email', $request->email)->first();
+            if($user->hasRole(['user'])) return redirect()->intended(route('landing')); 
+            else return redirect()->intended(route('dashboard'));
+        }
+
+        return $request->wantsJson()? new Response('', 201): redirect(route('landing'));
     }
 }

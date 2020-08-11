@@ -21,20 +21,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'PagesController@home')->name('landing');
 
+Route::group(['prefix' => 'filemanager'], function() {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+
+    // Route::get('/', '\UniSharp\LaravelFilemanager\Controllers\LfmController@show');
+    // Route::post('/upload', '\UniSharp\LaravelFilemanager\Controllers\UploadController@upload');
+});
+
 Route::group(['middleware' => 'auth'], function () {
     
     Route::resource('projek', 'ProjekController');
     
     Route::get('donasi/{id}', 'DonasiController@create')->name('donasi.create');
     Route::post('donasi', 'DonasiController@store')->name('donasi.store');
-    // SAMA DENGAN (menghemat baris kode)
-    // Route::get('projek', 'ProjekController@index')->name('projek.index');
-    // Route::get('projek/create', 'ProjekController@create')->name('projek.create');
-    // Route::post('projek', 'ProjekController@store')->name('projek.store');
-    // Route::get('projek/{$id}', 'ProjekController@show')->name('projek.index');
-    // Route::get('projek/{$id}/edit', 'ProjekController@edit')->name('projek.edit');
-    // Route::patch('projek/{$id}', 'ProjekController@update')->name('projek.update');
-    // Route::delete('projek/{$id}', 'ProjekController@delete')->name('projek.delete');
 
     Route::resource('provinsi', 'ProvinsiController');
     
@@ -50,43 +49,55 @@ Route::group(['middleware' => 'auth'], function () {
 
 // Route::group(['prefix' => 'dashboard', 'middleware' => ['role:admin']], function () {
 // Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'role:admin']], function () {
-Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     
     Route::get('/', 'DashboardController@dashboard')->name('dashboard');
-    
-    Route::resource('mitra', 'MitraController');
-    Route::get('api-mitra', 'MitraController@apiMitra')->name('api.mitra');
-    
-    Route::get('project/get-all', 'ProjectController@getAll')->name('project.getAll');
-    Route::resource('project', 'ProjectController');
-    Route::get('api-project', 'ProjectController@apiProject')->name('api.project');
-    Route::get('project/{id}/export-pdf', 'ProjectController@exportPDF')->name('project.export.pdf');
 
-    Route::get('project/validasi/{id}', 'ValidasiController@validasi');
-    
-    Route::resource('pendanaan', 'PendanaanController');
-    Route::get('api-pendanaan', 'PendanaanController@apiPendanaan')->name('api.pendanaan');
-    
-    Route::resource('pencairan', 'PencairanController');
-    Route::get('api-pencairan', 'PencairanController@apipencairan')->name('api.pencairan');
+    Route::group(['middleware' => 'role:admin|superadmin|mitra'], function () {
 
-    Route::resource('monitoring', 'MonitoringController');
-    Route::get('api-monitoring', 'MonitoringController@apiMonitoring')->name('api.monitoring');
+        
+        Route::resource('mitra', 'MitraController');
+        Route::get('api-mitra', 'MitraController@apiMitra')->name('api.mitra');
+        
+        Route::get('project/get-all', 'ProjectController@getAll')->name('project.getAll');
+        Route::resource('project', 'ProjectController');
+        Route::get('api-project', 'ProjectController@apiProject')->name('api.project');
+        Route::get('project/{id}/export-pdf', 'ProjectController@exportPDF')->name('project.export.pdf');
     
-    Route::resource('users', 'UserController');
-    Route::get('api-users', 'UserController@apiUsers')->name('api.users');
+        Route::get('project/validasi/{id}', 'ValidasiController@validasi');
+        
+        Route::resource('pendanaan', 'PendanaanController');
+        Route::get('api-pendanaan', 'PendanaanController@apiPendanaan')->name('api.pendanaan');
+        
+        Route::post('api-pencairan/{id}/update-status', 'PencairanController@updateStatus')->name('api.pencairan.updateStatus');
+        Route::resource('pencairan', 'PencairanController');
+        Route::get('api-pencairan', 'PencairanController@apipencairan')->name('api.pencairan');
+        Route::get('api-mitra-pencairan/{id}', 'PencairanController@apiMitraPencairan')->name('api.mitrapencairan');
+        route::get('pencairan/mitra/{id}','PencairanController@mitra');
 
-    Route::get('kabar/get-all', 'KabarController@getAll')->name('kabar.getAll');
-    Route::resource('kabar', 'KabarController');
-    Route::get('api-kabar', 'KabarController@apiKabar')->name('api.kabar');
+        Route::resource('progres', 'ProgresController');
+        Route::get('api-progres', 'ProgresController@apipencairan')->name('api.progres');
     
-    Route::resource('roles', 'RoleController');
-    Route::get('api-roles', 'RoleController@apiRoles')->name('api.roles');
-
-    Route::resource('permissions', 'PermissionController');
-    Route::get('api-permissions', 'PermissionController@apiPermissions')->name('api.permissions');
+        Route::resource('monitoring', 'MonitoringController');
+        Route::get('api-monitoring', 'MonitoringController@apiMonitoring')->name('api.monitoring');
+        
+        Route::resource('users', 'UserController');
+        Route::get('api-users', 'UserController@apiUsers')->name('api.users');
     
-    Route::get('roles-permissions', 'RolePermissionController@index')->name('roles-permissions.index');
+        Route::get('kabar/get-all', 'KabarController@getAll')->name('kabar.getAll');
+        Route::post('kabar/image/upload', 'KabarController@uploadImage')->name('kabar.image');
+        Route::get('kabar/{id}','KabarController@index');
+        Route::resource('kabar', 'KabarController');
+        Route::get('api-kabar', 'KabarController@apiKabar')->name('api.kabar');
+        
+        Route::resource('roles', 'RoleController');
+        Route::get('api-roles', 'RoleController@apiRoles')->name('api.roles');
+    
+        Route::resource('permissions', 'PermissionController');
+        Route::get('api-permissions', 'PermissionController@apiPermissions')->name('api.permissions');
+        
+        Route::get('roles-permissions', 'RolePermissionController@index')->name('roles-permissions.index'); 
+    });
 });
 
 Route::get('/pendaftaran', 'PendaftaranController@index');

@@ -39,7 +39,7 @@ class CreateProjekTable extends Migration
             $table->index(["kota_id"], 'fk_projek_kota1_idx');
 
             $table->index(["user_id"], 'fk_projek_users1_idx');
-	        $table->index(["mitra"], 'fk_projek_users2_idx');
+	        $table->index(["mitra_id"], 'fk_projek_users2_idx');
 
             $table->index(["kategori_id"], 'fk_projek_kategori1_idx');
 

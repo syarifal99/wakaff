@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Kabar;
-use App\User;
 use Yajra\DataTables\DataTables;
+use App\User;
 use Auth;
 
 class KabarController extends Controller {
@@ -20,8 +20,10 @@ class KabarController extends Controller {
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index() {
-		return view('kabar.index');
+	public function index($id) {
+		$kabars = Kabar::all()->where('projek_id',$id);
+
+		return view('kabar.index',['kabar'=>$kabars,'id'=>$id]);
 	}
 
 	/**
@@ -48,24 +50,47 @@ class KabarController extends Controller {
 			'konten' 	=> 'required',
 		]);
 		$input = $request->all();
-        $input['gambar'] = null;
+		$input['gambar'] = null;
         if ($request->hasFile('gambar')){
-            $input['gambar'] = '/upload/kabar/' . str_slug($input['judul'], '-') . '.' . $request->gambar->getClientOriginalExtension();
+            $input['gambar'] = '/upload/kabar/'.str_slug($input['judul'], '-').'.'.$request->gambar->getClientOriginalExtension();
             $request->gambar->move(public_path('/upload/kabar/'), $input['gambar']);
         }
 		$projek = Kabar::create([
-            'judul'          => $request->judul,
+            'judul'          => $input['judul'],
             'gambar'         => $input['gambar'],
-            'konten'    	 => $request->konten,
-            'projek_id'       => $request->projek_id,
-            'user_id'       => Auth::user()->id,
+            'konten'    	 => $input['konten'],
+            'projek_id'      => $input['projek_id'],
+            'user_id'        => Auth::user()->id,
         ]);
 
         if($request->ajax()) return response()->json(['success' =>false, 'message' => 'Projek berhasil dibuat.']);
-        return redirect(route('kabar.show', $kabar->id));
+        return redirect(route('kabar.show', $input['projek_id']));
 
 	}
 
+	public function uploadImage(Request $request){
+		//JIKA ADA DATA YANG DIKIRIMKAN
+		if ($request->hasFile('upload')) {
+			$file = $request->file('upload'); //SIMPAN SEMENTARA FILENYA KE VARIABLE
+			$fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); //KITA GET ORIGINAL NAME-NYA
+			//KEMUDIAN GENERATE NAMA YANG BARU KOMBINASI NAMA FILE + TIME
+			$fileName = $fileName . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+			$file->move(public_path('uploads/kabar/progres/'), $fileName); //SIMPAN KE DALAM FOLDER PUBLIC/UPLOADS
+
+			//KEMUDIAN KITA BUAT RESPONSE KE CKEDITOR
+			$ckeditor = $request->input('CKEditorFuncNum');
+			$url = asset('uploads/kabar/progres/' . $fileName); 
+			$msg = 'Image uploaded successfully'; 
+			//DENGNA MENGIRIMKAN INFORMASI URL FILE DAN MESSAGE
+			$response = "<script>window.parent.CKEDITOR.tools.callFunction($ckeditor, '$url', '$msg')</script>";
+
+			//SET HEADERNYA
+			@header('Content-type: text/html; charset=utf-8'); 
+			return $response;
+		}
+	}
+	
 	/**
 	 * Display the specified resource.
 	 *
@@ -162,21 +187,16 @@ class KabarController extends Controller {
 	}
 
 	public function apiKabar() {
-		// $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
-        // $query = Projek::query();
-
-        // if( !$user->hasRole(['superadmin', 'admin']) ){
-        //     $query->where('mitra_id', $user->mitra_attr->id);
-        // }
-        // $query->with(['projek','user','mitra']);
-		// $kabars = $query->get();
-		
-		$kabars = Kabar::with('projek')->get();
+		$user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
+		$kabars = Kabar::with('projek.mitra')->whereHas('projek.mitra', function($q) use($user) {
+			$q->where('id', $user->mitra_attr->id);
+		})->get();
 		
 		return Datatables::of($kabars)
 			->addColumn('action', function ($s) {
-                return '<a  onclick="editForm('. $s->id .')" class="btn btn-info btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-edit"></i></span><span class="text text-white"> Edit</span></a>' .
-                ' <a onclick="deleteData('. $s->id .')" class="btn btn-danger btn-icon-split btn-sm"><span class="icon text-white-50"><i class="fas fa-trash"></i></span><span class="text text-white"> Delete</span></a>';
+				return 
+				'<a  onclick="editForm('. $s->id .')" class="btn btn-info btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-edit"></i></span><span class="text text-white"> Edit</span></a>' .
+                '<a onclick="deleteData('. $s->id .')" class="btn btn-danger btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-trash"></i></span><span class="text text-white"> Delete</span></a>';
 			})
 			->addColumn('show_image', function($s){
                 if ($s->gambar == NULL){

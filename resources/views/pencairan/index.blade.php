@@ -1,183 +1,12 @@
 @extends('layouts.master')
 @section('title')
-Pencairan
-@endsection
-@section('css')
-<link rel="stylesheet" href="{{asset('assets/vendor/datatables/dataTables.bootstrap4.min.css')}}">
-<style>
-    .file-upload {
-        background-color: #ffffff;
-        width: 18em;
-        position: relative;
-    }
-
-    .box-remove {
-        position: absolute;
-        display: none;
-        bottom: 0;
-        right: 0;
-        margin: 10px;
-        z-index: 1;
-    }
-
-    .file-upload-content {
-        display: none;
-        text-align: center;
-    }
-
-    .file-upload-input {
-        position: absolute;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        outline: none;
-        opacity: 0;
-        cursor: pointer;
-    }
-
-    .image-upload-wrap {
-        margin-top: 20px;
-        bolrder: 2px dashed #949494;
-        position: relative;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-color: transparent;
-        min-height: 18em;
-        border-radilus: 50%;
-    }
-
-    .image-dropping,
-    .image-upload-wrap:hover {
-        box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.15) !important;
-        background-color: #f8f6ff;
-    }
-
-    .image-title-wrap {
-        padding: 0 15px 15px 15px;
-        color: #222;
-    }
-
-    .drag-text {
-        text-align: center;
-    }
-
-    .drag-text h5 {
-        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
-        margin-top: 4em;
-        font-weight: 100;
-        color: #828081;
-    }
-</style>
+Pencairan Dana
 @endsection
 
 @section('content')
 <!-- Page Heading -->
-<div class="breadcrumbs">
-    <div class="breadcrumbs-inner">
-        <div class="row m-0">
-            <div class="col-sm-4">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <h5>Pencairan Terbaru</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li><a href="{{route('dashboard')}}">Dashboard</a></li>
-                            <li> / </li>
-                            <li class="active"> Pencairan</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Content Row -->
-<div class="row">
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
-                        <div class="row no-gutters align-items-center">
-                            <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                            </div>
-                            <div class="col">
-                                <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
-                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h5 class="h4 mb-0 text-gray-800">Management Update Progress Project</h5>
 </div>
 
 <!-- Content Row -->
@@ -185,24 +14,21 @@ Pencairan
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                {{-- <div class="card-header">
-                    <h4>Pencairan Management</h4>
-                </div> --}}
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group btn-group-md">
-                            <button onclick="addForm()" class="btn btn-success">Tambahkan Pencairan</button>
+                            <h6 class="m-0 font-weight-bold text-success">Data Pencairan Dana</h6>
                         </div>
                         <div class="btn-group btn-group-md">
                             <button type="button" class="btn btn-outline-success btn-sm" id="btn-refresh"
                                 title="Refresh data"><i class="fas fa-sync-alt"></i></button>
                         </div>
                     </div>
-                    <table id="pencairan-table" class="table table-striped table-bordered">
+                    <table id="pencairan-table" class="table table-striped table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Nama Perojek</th>
+                                <th>No.</th>
+                                <th>Nama Projek</th>
                                 <th>Nominal</th>
                                 <th>Deskripsi</th>
                                 <th>Status</th>
@@ -301,6 +127,31 @@ Pencairan
         //     }
         // })
 
+        $(document).on('click', '.btn_status', function(){
+            let id = $(this).data('id')
+            let status = $(this).data('status')
+            let url = "{{url('dashboard/api-pencairan'). '/'}}" + id + "/update-status"
+            let csrf_token = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url : url,
+                type : "POST",
+                data: {
+                    _token: csrf_token,
+                    status: status
+                },
+                success : function(data) {
+                    console.log(data)
+                    table.ajax.reload();
+                    swal({
+                        title: 'Success!',
+                        text: data.message,
+                        type: 'success',
+                        timer: '1500'
+                    })
+                },
+                error : function(err){ console.log(err) }
+            });
+        })
 
         $('#btn-refresh').on('click', function(){
             $('#pencairan-table').DataTable().draw(true)
@@ -416,10 +267,28 @@ Pencairan
             }
         });
         $.ajax({
+            url : "{{ route('project.getAll') }}" ,
+            type : "GET",
+            async: false,
+            success: function(res){
+                console.log(res)
+
+                $("#projek_id").empty();
+                $("#projek_id").append(`<option value="" selected disabled>-- Pilih Projek --</option>`);
+                $.each(res, function(key, item) {
+                    $("#projek_id").append(`<option value="` + item.id + `">` + item.nama +` </option>`);
+                });
+
+            }, error: function(error){
+                console.log(error);
+            }
+        });
+        $.ajax({
             url: "{{ url('dashboard/pencairan') }}" + '/' + id + "/edit",
             type: "GET",
             dataType: "JSON",
             success: function(data) {
+                pencairan = data
                 console.log(data)
                 $('#modal-form').modal('show');
                 $('.modal-title').text('Edit pencairan');

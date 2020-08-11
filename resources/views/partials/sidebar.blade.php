@@ -1,4 +1,4 @@
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon rotate-n-15">
@@ -35,11 +35,17 @@
                  <span>Project</span></a>
     </li> --}}
 
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item {{Request::is('dashboard/pendanaan')? 'active':''}}">
+        <a class="nav-link" href="{{route('pendanaan.index')}}">
+            <i class="fas fa-fw fa-clipboard"></i>
+            <span>Donasi</span></a>
+    </li>
     <!-- Heading -->
     <div class="sidebar-heading">
         Master Data
     </div>
-
+    
         <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{Request::is('dashboard/project')? 'active':''}}">
              <a class="nav-link" href="{{route('project.index')}}">
@@ -47,7 +53,14 @@
                  <span>Project</span></a>
     </li>
 
-    <li class="nav-item {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? 'active':''}}">
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item {{Request::is('dashboard/progres')? 'active':''}}">
+        <a class="nav-link" href="{{route('progres.index')}}">
+            <i class="fas fa-fw fa-info"></i>
+            <span>Progres Project</span></a>
+    </li>
+
+    {{-- <li class="nav-item {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? 'active':''}}">
         <a class="nav-link {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? '':'collapsed'}}" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
             aria-controls="collapsePages">
             <i class="fas fa-fw fa-folder"></i>
@@ -59,21 +72,11 @@
                 <a class="collapse-item {{Request::is('dashboard/pencairan')? 'active':''}}" href="{{route('pencairan.index')}}">Pencairan</a>
             </div>
         </div>
-    </li>
+    </li> --}}
 
      <!-- Divider -->
-     <hr class="sidebar-divider">
-     <!-- Heading -->
-     <div class="sidebar-heading">
-         Artikel
-     </div>
- 
-     <!-- Nav Item - Pages Collapse Menu -->
-     <li class="nav-item {{Request::is('dashboard/kabar')? 'active':''}}">
-         <a class="nav-link" href="{{route('kabar.index')}}">
-             <i class="fas fa-fw fa-info"></i>
-             <span>Kabar</span></a>
-     </li>
+
+     
 
     @endhasanyrole
     
@@ -84,6 +87,12 @@
     <div class="sidebar-heading">
         Master Data
     </div>
+
+    <li class="nav-item {{Request::is('dashboard/pendanaan')? 'active':''}}">
+        <a class="nav-link" href="{{route('pendanaan.index')}}">
+            <i class="fas fa-fw fa-clipboard"></i>
+            <span>Donasi</span></a>
+    </li>
     
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item {{Request::is('dashboard/mitra')? 'active':''}}">

@@ -15,9 +15,16 @@ class PencairanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
-        return view('pencairan.index');
+        $progress = Pencairan::all();
+        return view('pencairan.index',['pencairan'=>$progress]);
+    }
+    public function mitra($id)
+    {
+        $progress = Pencairan::all()->where('projek_id',$id);
+        return view('pencairan.datapencairan',['pencairan'=>$progress,'id'=>$id]);
     }
 
     /**
@@ -66,7 +73,7 @@ class PencairanController extends Controller
     public function show($id)
     {
         $pencairan = User::whereHas('mitra_attr')->with('mitra_attr')->get();
-        $projek = Projek::where('id', $id)
+        $projek = Pencairan::where('id', $id)
             ->with('user', 'projek')
             ->firstOrFail();
 
@@ -108,10 +115,14 @@ class PencairanController extends Controller
 		$pencairan = Pencairan::findOrFail($id);
 		$input = $request->all();
 		$pencairan->update([
-			'nominal'         => $request->nominal,
+			'nominal'           => $request->nominal,
             'deskripsi'     	=> $request->deskripsi,
-            'status'        => $request->status,
-		]);
+        ]);
+        
+        $_user = Auth::user();
+        if( $_user->hasRole(['admin']) ){
+            $pencairan->update(['status' => isset($request->status)?$request->status: $pencairan->status]);
+        }
 
 		if($request->ajax()) return response()->json(['success' =>false, 'message' => 'pencairan berhasil diubah.']);
         return redirect(route('pencairan.show', $pencairan->id));
@@ -134,14 +145,61 @@ class PencairanController extends Controller
 		]);
     }
     public function apiPencairan() {
-        
-		$pencairans = Pencairan::with('projek.mitra','user')->get();
+        $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
+
+        $query = Pencairan::query();
+        if( $user->hasRole(['mitra']) ){
+            $pencairans = $query->whereHas('projek.mitra', function($q) use($user){
+                $q->where('id', $user->mitra_attr->id);
+            })->with('projek.mitra','user')->get();
+        }else{
+            $pencairans = $query->with('projek.mitra','user')->get();
+        }
 
 		return Datatables::of($pencairans)
 			->addColumn('action', function ($s) {
-                return '<a  onclick="editForm('. $s->id .')" class="btn btn-info btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-edit"></i></span><span class="text text-white"> Edit</span></a>' .
-                ' <a onclick="deleteData('. $s->id .')" class="btn btn-danger btn-icon-split btn-sm"><span class="icon text-white-50"><i class="fas fa-trash"></i></span><span class="text text-white"> Delete</span></a>';
+                return '<div class="btn-group d-flex" role="group">
+                    <button onclick="editForm('. $s->id .')" type="button" class="btn btn-info btn-small" data-id="9448"><i class="fa fa-edit"></i></button>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Status</button>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;"> 
+                                <a type="button" class="dropdown-item btn_status text-success" data-id="'. $s->id .'" data-status="DISETUJUI"><i class="fas fa-check"></i> DISETUJUI</a>
+                                <a type="button" class="dropdown-item btn_status text-danger" data-id="'. $s->id .'" data-status="DITOLAK"><i class="fa fa-fire"></i> DITOLAK</a>
+                                <a type="button" class="dropdown-item btn_status text-primary" data-id="'. $s->id .'" data-status="MENUNGGU"><i class="fa fa-fire"></i> MENUNGGU</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+                // return 
+                // '<a onclick="editForm('. $s->id .')" class="btn btn-success btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-check"></i></span><span class="text text-white"> Approval</span></a>' .
+                // '<a onclick="deleteData('. $s->id .')" class="btn btn-danger btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-trash"></i></span><span class="text text-white"> Delete</span></a>';
 			})
 			->rawColumns(['show_image','action'])->make(true);
-	}
+    }
+    public function apiMitraPencairan($id) {
+        $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
+        $query = Pencairan::query();
+        if( $user->hasRole(['mitra']) ){
+            $pencairans = $query->where('projek_id',$id)->whereHas('projek.mitra', function($q) use($user){
+                $q->where('id', $user->mitra_attr->id);
+            })->with('projek.mitra','user')->get();
+        }else{
+            $pencairans = $query->with('projek.mitra','user')->get();
+        }
+
+		return Datatables::of($pencairans)
+			->addColumn('action', function ($s) {
+                return 
+                '<a onclick="editForm('. $s->id .')" class="btn btn-success btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-check"></i></span><span class="text text-white"> Approval</span></a>' .
+                '<a onclick="deleteData('. $s->id .')" class="btn btn-danger btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-trash"></i></span><span class="text text-white"> Delete</span></a>';
+			})
+			->rawColumns(['show_image','action'])->make(true);
+    }
+    
+    public function updateStatus(Request $request, $id){
+        Pencairan::where('id', $id)->update([
+            'status'    => $request->status,
+        ]);
+        return response()->json(['success' =>false, 'message' => 'Status pencairan berhasil diperbarui.']);
+    }
 }
