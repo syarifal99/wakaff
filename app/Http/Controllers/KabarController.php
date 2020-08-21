@@ -21,7 +21,7 @@ class KabarController extends Controller {
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index($id) {
-		$kabars = Kabar::all()->where('projek_id',$id);
+		$kabars = Kabar::where('projek_id',$id)->paginate(5);
 
 		return view('kabar.index',['kabar'=>$kabars,'id'=>$id]);
 	}
@@ -80,17 +80,17 @@ class KabarController extends Controller {
 
 			//KEMUDIAN KITA BUAT RESPONSE KE CKEDITOR
 			$ckeditor = $request->input('CKEditorFuncNum');
-			$url = asset('uploads/kabar/progres/' . $fileName); 
-			$msg = 'Image uploaded successfully'; 
+			$url = asset('uploads/kabar/progres/' . $fileName);
+			$msg = 'Image uploaded successfully';
 			//DENGNA MENGIRIMKAN INFORMASI URL FILE DAN MESSAGE
 			$response = "<script>window.parent.CKEDITOR.tools.callFunction($ckeditor, '$url', '$msg')</script>";
 
 			//SET HEADERNYA
-			@header('Content-type: text/html; charset=utf-8'); 
+			@header('Content-type: text/html; charset=utf-8');
 			return $response;
 		}
 	}
-	
+
 	/**
 	 * Display the specified resource.
 	 *
@@ -191,10 +191,10 @@ class KabarController extends Controller {
 		$kabars = Kabar::with('projek.mitra')->whereHas('projek.mitra', function($q) use($user) {
 			$q->where('id', $user->mitra_attr->id);
 		})->get();
-		
+
 		return Datatables::of($kabars)
 			->addColumn('action', function ($s) {
-				return 
+				return
 				'<a  onclick="editForm('. $s->id .')" class="btn btn-info btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-edit"></i></span><span class="text text-white"> Edit</span></a>' .
                 '<a onclick="deleteData('. $s->id .')" class="btn btn-danger btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-trash"></i></span><span class="text text-white"> Delete</span></a>';
 			})

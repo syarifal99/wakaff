@@ -21,6 +21,10 @@ class PendanaanController extends Controller
         return view('pendanaan.index');
     }
 
+    public function indexx()
+    {
+        return view('pendanaan.admin');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -141,7 +145,7 @@ class PendanaanController extends Controller
         // return $res;
 		return Datatables::of($res)
 			->addColumn('action', function ($p) {
-                return 
+                return
                 '<button onclick="editForm(' . $p['projek']->id . ')" class="btn btn-success btn-circle btn-sm"><i class="fas fa-edit"></i></button>' .
                 '<button onclick="deleteData(' . $p['projek']->id . ')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></button>';
               })
@@ -152,5 +156,24 @@ class PendanaanController extends Controller
                 return '<img class="rounded-square" width="50" height="50" src="'. url($p['projek']->bukti) .'" alt="">';
             })
 			->rawColumns(['show_image','action'])->make(true);
-	}
+    }
+
+    function admintai(){
+        $res = Pendanaan::with(['projek', 'user'])->get();
+
+        return Datatables::of($res)
+			->addColumn('action', function ($p) {
+                return
+                '<button onclick="editForm(' . $p->id . ')" class="btn btn-success btn-circle btn-sm"><i class="fas fa-edit"></i></button>' .
+                '<button onclick="deleteData(' . $p->id . ')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></button>';
+              })
+            ->addColumn('show_image', function($p){
+                if ($p->bukti == NULL){
+                    return 'No Image';
+                }
+                return '<img class="rounded-square" width="50" height="50" src="'. url($p->bukti) .'" alt="">';
+            })
+			->rawColumns(['show_image','action'])->make(true);
+        }
+
 }

@@ -8,6 +8,7 @@ class Projek extends Model
 {
     protected $table = 'projek';
     protected $fillable = ['nama','slug','deskripsi','tenggat_waktu','nominal','gambar','status','kategori_id','label_id','user_id','kota_id','mitra_id'];
+    protected $appends = ['dana_terkumpul','nominal_uang'];
 
     public function artikel()
     {
@@ -23,12 +24,12 @@ class Projek extends Model
     {
         return $this->hasMany(Pencairan::class, 'projek_id', 'id');
     }
-    
+
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');
     }
-    
+
     public function label()
     {
         return $this->belongsTo(Label::class, 'label_id');
@@ -47,5 +48,13 @@ class Projek extends Model
     public function mitra()
     {
         return $this->belongsTo(User::class, 'mitra_id');
+    }
+    public function getDanaTerkumpulAttribute()
+    {
+        return $this->pendanaan()->sum('nominal');
+    }
+    public function getNominalUangAttribute()
+    {
+        return 'Rp. '.number_format($this->nominal);
     }
 }

@@ -27,6 +27,7 @@ class ProgresController extends Controller
                 $totalDanaPencairan += (float) $pc->nominal;
             }
             $res[] = [
+                'dana_terkumpul' => $p->dana_terkumpul,
                 'progres' => $p,
                 'dana_pencairan' => $totalDanaPencairan,
             ];
@@ -125,7 +126,7 @@ class ProgresController extends Controller
 			'nominal'           => $request->nominal,
             'deskripsi'     	=> $request->deskripsi,
         ]);
-        
+
         $_user = Auth::user();
         if( $_user->hasRole(['admin']) ){
             $pencairan->update(['status' => isset($request->status)?$request->status: $pencairan->status]);
@@ -165,7 +166,7 @@ class ProgresController extends Controller
 
 		return Datatables::of($pencairans)
 			->addColumn('action', function ($s) {
-                return 
+                return
                 '<a onclick="editForm('. $s->id .')" class="btn btn-info btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-edit"></i></span><span class="text text-white"> Edit</span></a>' .
                 '<a onclick="deleteData('. $s->id .')" class="btn btn-danger btn-icon-split btn-sm mr-2 mb-2"><span class="icon text-white-50"><i class="fas fa-trash"></i></span><span class="text text-white"> Delete</span></a>';
 			})

@@ -40,22 +40,32 @@ Progres Project
                             </div>
                           </div>
                         </div>
-      
+
                         <!-- Card Body -->
                         <div class="card-body">
                           <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="float:left; width: 12rem;"
-                            src="https://fkik.uin-malang.ac.id/wp-content/uploads/2016/08/UIN-Malang.jpg" alt="">
-                          <strong>Target dana project : </br></strong>
-                          <p>Rp.{{$p['progres']->nominal}}</p>
-                          <strong>Dana yang telah dicairkan : </br></strong>
-                          <p>Rp. {{number_format($p['dana_pencairan'])}}</p>
+                            src="{{asset($p['progres']->gambar)}}" alt="">
+                          <div class="row">
+                              <div class="col-md-6">
+                                    <strong>Dana yang masuk: </br></strong>
+                                    <p>Rp. {{number_format($p['dana_terkumpul'])}}</p>
+                                    <strong>Dana yang telah dicairkan : </br></strong>
+                                    <p>Rp. {{number_format($p['dana_pencairan'])}}</p>
+                              </div>
+                              <div class="col-md-6">
+                                    <strong>Target Dana: </br></strong>
+                                    <p>Rp. {{number_format($p['progres']->nominal)}}</p>
+                                    <strong>Dana Sisa: </br></strong>
+                                    <p>Rp. {{number_format($p['dana_terkumpul'] - $p['dana_pencairan'])}}</p>
+                              </div>
+                          </div>
                           <a href="kabar/{{$p['progres']->id}}" class="btn d-sm-inline-block btn-info btn-user btn-block">
                             Kabar Project
                           </a>
                         </div>
-                    </div>             
+                    </div>
                     @endforeach
-                    
+
                 </div>
             </div>
         </div>
@@ -104,7 +114,7 @@ Progres Project
                         </div>
                         @endhasanyrole
                     </div>
-                    
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -134,7 +144,7 @@ Progres Project
         //         title: title,
         //         slug: slug
         //     },
-            
+
         //     watch: {
         //         title: function(val) {
         //             this.slug = Slugify(val)
@@ -207,7 +217,7 @@ Progres Project
             }
         });
     } );
-    
+
     function addForm() {
         removeUpload()
         save_method = "add";

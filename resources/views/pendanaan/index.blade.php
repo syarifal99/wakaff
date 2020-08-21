@@ -40,11 +40,22 @@ Pendanaan
                     <table id="pendanaan-table" class="table table-striped table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Nama Projek</th>
-                                <th>Total User</th>
-                                <th>Total Nominal</th>
-                                <th>Aksi</th>
+                                @if(Auth::user()->getRoleNames()->first() == 'admin')
+                                    <th>No.</th>
+                                    <th>Nama Projek</th>
+                                    <th>Nama Pendaftar</th>
+                                    <th>Nominal</th>
+                                    <th>Metode</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                @else
+                                    <th>No.</th>
+                                    <th>Nama Projek</th>
+                                    <th>Total Jumlah Pendaftar</th>
+                                    <th>Total Dana Masuk</th>
+                                    <th>Target Nominal</th>
+                                    <th>Aksi</th>
+                                @endif
                             </tr>
                         </thead>
                     </table>
@@ -69,6 +80,7 @@ Pendanaan
                     <div class="modal-body" id="root">
                         <input type="hidden" id="id" name="id">
                         <div class="form-group row justify-content-center">
+                            <img src="" alt="" id='bukti' class='img-fluid img-thumbnail' width="400">
                         </div>
                         <div class="form-group">
                             <label for="projek_id">Projek</label>
@@ -138,7 +150,7 @@ Pendanaan
         //         title: title,
         //         slug: slug
         //     },
-            
+
         //     watch: {
         //         title: function(val) {
         //             this.slug = Slugify(val)
@@ -153,13 +165,28 @@ Pendanaan
             serverSide: true,
             responsive: true,
             scrollX: true,
+            @if(Auth::user()->getRoleNames()->first() == 'admin')
+            ajax: "{{ route('api.pendanaan.admin') }}",
+            @else
             ajax: "{{ route('api.pendanaan') }}",
+            @endif
             columns: [
-                {data: 'projek.id', name: 'projek.id'},
-                {data: 'projek.nama', name: 'projek.nama'},
-                {data: 'total_user', name: 'total_user'},
-                {data: 'projek.nominal', name: 'projek.nominal'},
-                {data: 'action', name: 'action', orderable: false, searchable: false}
+                @if(Auth::user()->getRoleNames()->first() == 'admin')
+                    {data: 'projek.id', name: 'projek.id'},
+                    {data: 'projek.nama', name: 'projek.nama'},
+                    {data: 'user.name', name: 'user.name'},
+                    {data: 'nominal_uang', name: 'nominal_uang'},
+                    {data: 'metode', name: 'metode'},
+                    {data: 'status', name: 'status'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                @else
+                    {data: 'projek.id', name: 'projek.id'},
+                    {data: 'projek.nama', name: 'projek.nama'},
+                    {data: 'total_user', name: 'total_user'},
+                    {data: 'total_pendanaan', name: 'total_pendanaan'},
+                    {data: 'projek.nominal_uang', name: 'projek.nominal_uang'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                @endif
             ]
         });
 
@@ -239,7 +266,7 @@ Pendanaan
                 console.log(error);
             }
         });
-        
+
         $.ajax({
             url: "{{ url('dashboard/pendanaan') }}" + '/' + id + "/edit",
             type: "GET",
@@ -249,13 +276,15 @@ Pendanaan
                 console.log(data)
                 $('#modal-form').modal('show');
                 $('.modal-title').text('Edit pendanaan');
-
+                let url = '{{ url('/') }}'
                 $('#id').val(data.id);
+                $('#bukti').attr("src",`${url}${data.bukti}`);
                 $('#user_id').val(data.name);
                 $('#name').val(data.user.name);
                 $('#nominal').val(data.nominal);
                 $('#metode').val(data.metode);
                 $('#keterangan').val(data.keterangan);
+                $('#status').val(data.status);
                 $("#projek_id").val(data.projek_id);
             },
             error : function(err) {

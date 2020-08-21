@@ -8,6 +8,7 @@ class Pencairan extends Model
 {
     protected $table = 'pencairan';
     protected $fillable = ['nominal', 'deskripsi', 'status', 'projek_id', 'user_id', 'admin_id'];
+    protected $appends = ['nominal_uang'];
 
     public function user() //mitra yang mengajukan pencairan
     {
@@ -22,5 +23,9 @@ class Pencairan extends Model
     public function projek()
     {
         return $this->belongsTo(Projek::class, 'projek_id');
+    }
+    public function getNominalUangAttribute()
+    {
+        return 'Rp. '.number_format($this->nominal);
     }
 }

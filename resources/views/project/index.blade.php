@@ -224,7 +224,7 @@ Project
                 {data: 'nama', name: 'nama'},
                 {data: 'kategori.kategori', name: 'kategori.kategori'},
                 {data: 'label.label', name: 'label.label'},
-                {data: 'nominal', name: 'nominal'},
+                {data: 'nominal_uang', name: 'nominal_uang'},
                 {data: 'tenggat_waktu', name: 'tenggat waktu'},
                 {data: 'status', name: 'status'},
                 // {data: 'kota.provinsi.provinsi', name: 'kota.provinsi.provinsi'},

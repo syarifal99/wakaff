@@ -40,10 +40,10 @@ class ProjekController extends Controller
         $input = $request->all();
         $input['gambar'] = null;
         if ($request->hasFile('gambar')) {
-            $input['gambar'] = '/upload/projek/' . str_slug($input['nama'], '-') . '.' . $request->gambar->getClientOriginalExtension();
-            $request->gambar->move(public_path('/upload/projek/'), $input['gambar']);
+            $input['gambar'] = '/upload/donasi/' . str_slug($input['nama'], '-') . '.' . $request->gambar->getClientOriginalExtension();
+            $request->gambar->move(public_path('/upload/donasi/'), $input['gambar']);
         }
-        
+
         $projek = Projek::create([
             'nama'          => $request->nama,
             'slug'          => $request->nama,
@@ -78,5 +78,5 @@ class ProjekController extends Controller
         ]);
     }
 
-    
+
 }

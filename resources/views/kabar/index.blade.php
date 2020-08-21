@@ -29,7 +29,7 @@ Mitra
         </div>
     </div>
     @empty
-        
+
     @endforelse
 </div> --}}
 
@@ -41,7 +41,7 @@ Mitra
                <div class="collapse show" id="collapseCardExample">
                 <div class="card-body">
                   <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="float:left; width: 10rem;"
-                    src="{{$k->gambar}}" alt="">
+                    src="{{$k->gambar}}" alt="" width="500">
                   <h4 class="m-0 font-weight-bold text-primary">{{$k->judul}}</h4>
                   {{$k->created_at}} <br><br>
                   {!!$k->konten!!}
@@ -52,8 +52,12 @@ Mitra
               </div>
     </div>
     @empty
-        
+        Tidak ada data cuy
     @endforelse
+    <div class="text-content-center">
+
+    {!! $kabar->links() !!}
+    </div>
 </div>
 
 <!-- Content Row -->
@@ -156,8 +160,10 @@ Mitra
 <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
 <script>
     CKEDITOR.replace('konten', {
-        filebrowserUploadUrl: "{{route('kabar.image', ['_token' => csrf_token() ])}}",
-        filebrowserUploadMethod: 'form'
+        filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+        filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{csrf_token()}}',
+        filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+        filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{csrf_token()}}'
     });
 </script>
 <script src="{{asset('assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>
@@ -176,7 +182,7 @@ Mitra
         //         title: title,
         //         slug: slug
         //     },
-            
+
         //     watch: {
         //         title: function(val) {
         //             this.slug = Slugify(val)
@@ -248,7 +254,7 @@ Mitra
             }
         });
     } );
-    
+
     function addForm() {
         removeUpload()
         save_method = "add";
@@ -298,7 +304,7 @@ Mitra
                 console.log(error);
             }
         });
-        
+
         $.ajax({
             url: "{{ url('dashboard/kabar') }}" + '/' + id + "/edit",
             type: "GET",

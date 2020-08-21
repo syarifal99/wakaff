@@ -165,7 +165,7 @@ Pencairan Dana
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'projek.nama', name: 'projek.nama'},
-                {data: 'nominal', name: 'nominal'},
+                {data: 'nominal_uang', name: 'nominal_uang'},
                 {data: 'deskripsi', name: 'deskripsi'},
                 {data: 'status', name: 'status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
