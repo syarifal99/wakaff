@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Projek extends Model
 {
     protected $table = 'projek';
-    protected $fillable = ['nama','slug','deskripsi','tenggat_waktu','nominal','gambar','status','kategori_id','label_id','user_id','kota_id','mitra_id'];
-    protected $appends = ['dana_terkumpul','nominal_uang'];
+    protected $fillable = ['nama','slug','deskripsi','tenggat_waktu','nominal','gambar','status','kategori_id','label_id','user_id','kota_id','mitra_id','unit'];
+    protected $appends = ['dana_terkumpul','nominal_uang','total_pendanaan','total_aset'];
 
     public function artikel()
     {
@@ -56,5 +56,18 @@ class Projek extends Model
     public function getNominalUangAttribute()
     {
         return 'Rp. '.number_format($this->nominal);
+    }
+    public function getTotalPendanaanAttribute()
+    {
+        return 'Rp. '.number_format($this->pendanaan()->sum('nominal'));
+    }
+
+    public function getTotalAsetAttribute()
+    {
+        return number_format($this->nominal).' unit';;
+    }
+    public function jenis()
+    {
+        return $this->belongsToMany('App\Jenis');
     }
 }

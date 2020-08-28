@@ -25,11 +25,15 @@ class DonasiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create($id, $jenis)
     {
-        $projek = Projek::findOrFail($id);
+        $projek = Projek::where('id', $id)->where('kategori_id',$jenis)->first();
+        // dd($projek);
         $pendanaan = Pendanaan::all();
-        return view('front.projek.donasi', ['projek' => $projek, 'pendanaan' => $pendanaan]);
+        if($jenis==1){
+            return view('front.projek.aset', ['projek' => $projek, 'pendanaan' => $pendanaan]);
+        }else return view('front.projek.donasi', ['projek' => $projek, 'pendanaan' => $pendanaan]);
+        
     }
 
     /**
@@ -42,7 +46,6 @@ class DonasiController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nominal'       => 'required',
-            'metode'        => 'required',
             'keterangan'    => 'required',
             'bukti'         => 'image|nullable',
         ]);
@@ -59,7 +62,9 @@ class DonasiController extends Controller
         
         $pendanaan = Pendanaan::create([
             'nominal'       => $request->nominal,
-            'metode'       => $request->metode,
+            'metode'       => $request->metode ?? 'Penyerahan Aset',
+            'unit'          => $request->unit, //id_jenis
+            'tanggal'          => $request->tanggal,
             'bukti'         => $input['bukti' ],
             'keterangan'    => $request->keterangan,
             'user_id'       => Auth::user()->id,

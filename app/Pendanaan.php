@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pendanaan extends Model
 {
     protected $table = 'pendanaan';
-    protected $fillable = ['nominal','metode','bukti','keterangan','status','user_id','projek_id'];
+    protected $fillable = ['nominal','metode','bukti','keterangan','status','user_id','projek_id','unit','tanggal'];
     protected $appends = ['nominal_uang','total_pendanaan'];
 
     public function user()
@@ -15,9 +15,12 @@ class Pendanaan extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function projek()
-    {
+    public function projek() {
         return $this->belongsTo(Projek::class, 'projek_id');
+    }
+
+    public function jenis() {
+        return $this->belongsToMany('App\Jenis');
     }
 
     public function getNominalUangAttribute()
@@ -26,6 +29,6 @@ class Pendanaan extends Model
     }
     public function getTotalPendanaanAttribute()
     {
-        return 'Rp. '.number_format($this->totalDanaPendanaan);
+        return $this->sum('nominal');
     }
 }

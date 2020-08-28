@@ -25,6 +25,11 @@ class PendanaanController extends Controller
     {
         return view('pendanaan.admin');
     }
+
+    public function pendanaanaset()
+    {
+        return view('pendanaan.aset');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -129,7 +134,44 @@ class PendanaanController extends Controller
         // return $pendanaans;
         $projeks = Projek::whereHas('mitra', function($q) use($user){
             if($user->mitra_attr) $q->where('id', $user->mitra_attr->id);
-        })->with(['mitra', 'user', 'pendanaan.user'])->get();
+        })->where('kategori_id',2)->with(['mitra', 'user', 'pendanaan.user'])->get();
+        $res = [];
+        foreach ($projeks as $key => $p) {
+            $totalDanaPendanaan = 0;
+            foreach ($p->pendanaan as $key => $pd) {
+                $totalDanaPendanaan += (float) $pd->nominal;
+            }
+            $res[] = [
+                'projek' => $p,
+                'total_user' => count($p->pendanaan),
+                'total_pendanaan' => $totalDanaPendanaan,
+            ];
+        }
+        // return $res;
+		return Datatables::of($res)
+			->addColumn('action', function ($p) {
+                return
+                '<button onclick="editForm(' . $p['projek']->id . ')" class="btn btn-success btn-circle btn-sm"><i class="fas fa-edit"></i></button>' .
+                '<button onclick="deleteData(' . $p['projek']->id . ')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></button>';
+              })
+            ->addColumn('show_image', function($p){
+                if ($p['projek']->bukti == NULL){
+                    return 'No Image';
+                }
+                return '<img class="rounded-square" width="50" height="50" src="'. url($p['projek']->bukti) .'" alt="">';
+            })
+			->rawColumns(['show_image','action'])->make(true);
+    }
+
+    public function apiPendanaanaset() {
+        $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
+		// $pendanaans = Pendanaan::whereHas('projek.mitra', function($q) use($user){
+        //     if($user->mitra_attr) $q->where('id', $user->mitra_attr->id);
+        // })->with('projek.mitra','user')->get();
+        // return $pendanaans;
+        $projeks = Projek::whereHas('mitra', function($q) use($user){
+            if($user->mitra_attr) $q->where('id', $user->mitra_attr->id);
+        })->where('kategori_id',1)->with(['mitra', 'user', 'pendanaan.user'])->get();
         $res = [];
         foreach ($projeks as $key => $p) {
             $totalDanaPendanaan = 0;
@@ -159,7 +201,9 @@ class PendanaanController extends Controller
     }
 
     function admintai(){
-        $res = Pendanaan::with(['projek', 'user'])->get();
+        $res = Pendanaan::with(['user', 'projek'])->whereHas('projek', function($asu) {
+            return $asu->where('kategori_id', 2);
+        })->get();
 
         return Datatables::of($res)
 			->addColumn('action', function ($p) {
@@ -174,6 +218,26 @@ class PendanaanController extends Controller
                 return '<img class="rounded-square" width="50" height="50" src="'. url($p->bukti) .'" alt="">';
             })
 			->rawColumns(['show_image','action'])->make(true);
-        }
+    }
+
+    function adminsupertai(){
+        $res = Pendanaan::with(['user', 'projek'])->whereHas('projek', function($asu) {
+            return $asu->where('kategori_id', 1);
+        })->get();
+
+        return Datatables::of($res)
+			->addColumn('action', function ($p) {
+                return
+                '<button onclick="editForm(' . $p->id . ')" class="btn btn-success btn-circle btn-sm"><i class="fas fa-edit"></i></button>' .
+                '<button onclick="deleteData(' . $p->id . ')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></button>';
+              })
+            ->addColumn('show_image', function($p){
+                if ($p->bukti == NULL){
+                    return 'No Image';
+                }
+                return '<img class="rounded-square" width="50" height="50" src="'. url($p->bukti) .'" alt="">';
+            })
+			->rawColumns(['show_image','action'])->make(true);
+    }
 
 }

@@ -36,11 +36,20 @@
     </li> --}}
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item {{Request::is('dashboard/pendanaan')? 'active':''}}">
-        <a class="nav-link" href="{{route('pendanaan.index')}}">
-            <i class="fas fa-fw fa-clipboard"></i>
-            <span>Donasi</span></a>
+    <li class="nav-item {{Request::is('dashboard/pendanaan') || Request::is('dashboard/aset')? 'active':''}}">
+        <a class="nav-link {{Request::is('dashboard/pendanaan') || Request::is('dashboard/aset')? '':'collapsed'}}" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+            aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Donasi</span>
+        </a>
+        <div id="collapsePages" class="collapse {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pendanaan/aset/yoii')? 'show':''}}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item {{Request::is('dashboard/pendanaan')? 'active':''}}" href="{{route('pendanaan.index')}}">Wakaf Tunai</a>
+                <a class="collapse-item {{Request::is('dashboard/pendanaan/aset/yoii')? 'active':''}}" href="{{route('pendanaan.aset')}}">Wakaf Aset</a>
+            </div>
+        </div>
     </li>
+
     <!-- Heading -->
     <div class="sidebar-heading">
         Master Data
@@ -54,29 +63,19 @@
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item {{Request::is('dashboard/progres')? 'active':''}}">
-        <a class="nav-link" href="{{route('progres.index')}}">
+    <li class="nav-item {{Request::is('dashboard/progres') || Request::is('dashboard/paset')? 'active':''}}">
+        <a class="nav-link {{Request::is('dashboard/progres') || Request::is('dashboard/paset')? '':'collapsed'}}" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true"
+            aria-controls="collapsePages2">
             <i class="fas fa-fw fa-info"></i>
-            <span>Progres Project</span></a>
-    </li>
-
-    {{-- <li class="nav-item {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? 'active':''}}">
-        <a class="nav-link {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? '':'collapsed'}}" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-            aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Menu</span>
+            <span>Progres Project</span>
         </a>
-        <div id="collapsePages" class="collapse {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pencairan')? 'show':''}}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapsePages2" class="collapse {{Request::is('dashboard/progres') || Request::is('dashboard/progres/aset/yoii')? 'show':''}}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item {{Request::is('dashboard/pendanaan')? 'active':''}}" href="{{route('pendanaan.index')}}">Pendanaan</a>
-                <a class="collapse-item {{Request::is('dashboard/pencairan')? 'active':''}}" href="{{route('pencairan.index')}}">Pencairan</a>
+                <a class="collapse-item {{Request::is('dashboard/progres')? 'active':''}}" href="{{route('progres.index')}}">Progres Tunai</a>
+                <a class="collapse-item {{Request::is('dashboard/progres/aset/yoii')? 'active':''}}" href="{{route('progres.aset')}}">Progres Aset</a>
             </div>
         </div>
-    </li> --}}
-
-     <!-- Divider -->
-
-     
+    </li>
 
     @endhasanyrole
     
@@ -87,11 +86,20 @@
     <div class="sidebar-heading">
         Master Data
     </div>
-
-    <li class="nav-item {{Request::is('dashboard/pendanaan')? 'active':''}}">
-        <a class="nav-link" href="{{route('pendanaan.index')}}">
-            <i class="fas fa-fw fa-clipboard"></i>
-            <span>Donasi</span></a>
+    
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item {{Request::is('dashboard/pendanaan') || Request::is('dashboard/aset')? 'active':''}}">
+        <a class="nav-link {{Request::is('dashboard/pendanaan') || Request::is('dashboard/aset')? '':'collapsed'}}" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+            aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Donasi</span>
+        </a>
+        <div id="collapsePages" class="collapse {{Request::is('dashboard/pendanaan') || Request::is('dashboard/pendanaan/aset/yoii')? 'show':''}}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item {{Request::is('dashboard/pendanaan')? 'active':''}}" href="{{route('pendanaan.index')}}">Wakaf Tunai</a>
+                <a class="collapse-item {{Request::is('dashboard/pendanaan/aset/yoii')? 'active':''}}" href="{{route('pendanaan.aset')}}">Wakaf Aset</a>
+            </div>
+        </div>
     </li>
     
     <!-- Nav Item - Pages Collapse Menu -->

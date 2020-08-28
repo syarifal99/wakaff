@@ -143,7 +143,7 @@
     <div class="row">
         @foreach ($projek as $p)
         <div class="col-12">
-            <a href="{{route('donasi.create', $p->id)}}">
+            <a href="{{route('donasi.create', [$p->id, $p->kategori_id])}}">
                 <div class="box">
                     <figure class="box-img"><img alt="{{$p->nama}}"
                             src="{{$p->gambar}}"class="cTDNTQ">

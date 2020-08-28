@@ -54,7 +54,6 @@ Pendanaan
                                     <th>Total Jumlah Pendaftar</th>
                                     <th>Total Dana Masuk</th>
                                     <th>Target Nominal</th>
-                                    <th>Aksi</th>
                                 @endif
                             </tr>
                         </thead>
@@ -183,9 +182,8 @@ Pendanaan
                     {data: 'projek.id', name: 'projek.id'},
                     {data: 'projek.nama', name: 'projek.nama'},
                     {data: 'total_user', name: 'total_user'},
-                    {data: 'total_pendanaan', name: 'total_pendanaan'},
+                    {data: 'projek.total_pendanaan', name: 'projek.total_pendanaan'},
                     {data: 'projek.nominal_uang', name: 'projek.nominal_uang'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
                 @endif
             ]
         });

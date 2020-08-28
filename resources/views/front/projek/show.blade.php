@@ -169,7 +169,7 @@
                     </li>
                 </ul>
                 <div class="card-body">
-                    <a href="{{route('donasi.create', $projek->id)}}" class="btn btn-secondary">Donasi sekarang</a>
+                    <a href="{{route('donasi.create', [$projek->id, $projek->kategori_id])}}" class="btn btn-secondary">Donasi sekarang</a>
                 </div>
             </div>
         </div>

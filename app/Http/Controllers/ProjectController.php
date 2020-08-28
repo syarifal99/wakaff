@@ -9,6 +9,7 @@ use App\Kota;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Jenis;
 
 class ProjectController extends Controller
 {
@@ -60,6 +61,7 @@ class ProjectController extends Controller
             'gambar'        => 'image|nullable',
             'kategori_id'   => 'required',
             'label_id'      => 'required',
+            'jenis'         => 'required',
             'kota_id'       => 'required',
         ]);
 
@@ -69,10 +71,22 @@ class ProjectController extends Controller
             $input['gambar'] = '/upload/projek/' . str_slug($input['nama'], '-') . '.' . $request->gambar->getClientOriginalExtension();
             $request->gambar->move(public_path('/upload/projek/'), $input['gambar']);
         }            
+        foreach ($request->jenis as $value) {
+            Jenis::firstOrCreate([
+                'jenis' => $value
+            ], [
+                'jenis' => $value
+            ]);
+        }
+
+        $id_jenis = [];
+        foreach ($request->jenis as $value) {
+            $id_jenis[] = Jenis::where('jenis', $value)->first()->id;
+        }
         
         $projek = Projek::create([
             'nama'          => $request->nama,
-            'slug'          => $request->nama,
+            'slug'          => \Str::slug($request->nama),
             'deskripsi'     => $request->deskripsi,
             'tenggat_waktu' => $request->tenggat_waktu,
             'nominal'       => $request->nominal,
@@ -83,6 +97,8 @@ class ProjectController extends Controller
             'kota_id'       => $request->kota_id,
             'status'        => isset($request->status)?$request->status:'MENUNGGU',
         ]);
+
+        $projek->jenis()->attach($id_jenis);
         
         $_user = Auth::user();
         if( $_user->hasRole(['mitra']) ){
@@ -193,7 +209,7 @@ class ProjectController extends Controller
             'message' => 'Projek deleted.',
         ]);
     }
-    public function apiProject(){
+    public function apiProject(Request $request){
         $user = User::with('mitra_attr')->findOrFail(Auth::user()->id);
         $query = Projek::query();
 
@@ -201,6 +217,9 @@ class ProjectController extends Controller
             $query->where('mitra_id', $user->mitra_attr->id);
         }
         $query->with(['kategori','label','kota.provinsi','user', 'mitra']);
+        $query->when($request->q, function($query) use($request) {
+            $query->where('kategori_id', $request->q);
+        });
         $projek = $query->get();
 
 		return Datatables::of($projek)

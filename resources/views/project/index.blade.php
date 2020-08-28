@@ -22,6 +22,13 @@ Project
                         <div class="btn-group btn-group-md">
                             <h6 class="m-0 font-weight-bold text-primary">Daftar Project</h6>
                         </div>
+                        <div class="form-group">
+                            <select name="" id="kategori_wakaf" class="form-control">
+                                <option value="">Semua</option>
+                                <option value="2">Wakaf Tunai</option>
+                                <option value="1">Wakaf Aset</option>
+                            </select>
+                        </div>
                         <div class="btn-group btn-group-md">
                             <button type="button" class="btn btn-outline-success btn-sm" id="btn-refresh"
                                 title="Refresh data"><i class="fas fa-sync-alt"></i></button>
@@ -35,7 +42,6 @@ Project
                                 <th>Nama Project</th>
                                 <th>Kategori</th>
                                 <th>Label</th>
-                                <th>Nominal</th>
                                 <th>Tenggat Waktu</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
@@ -125,6 +131,11 @@ Project
                             </select>
                         </div>
                         @hasanyrole('admin|superadmin')
+                        <div class="form-group select2-container">
+                            <label for="jenis">Jenis</label>
+                            <select class="form-control search-select-multiple" id="jenis" placeholder="Pilih jenis" name="jenis[]" multiple="multiple">
+                            </select>
+                        </div>
                         <div class="form-mitra"></div>
                         <div class="form-validasi">
                             <div class="form-group">
@@ -155,8 +166,23 @@ Project
     </div>
 </div>
 @endsection
-
+@section('css')
+<link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
+<link rel="stylesheet" href="https://select2.github.io/select2-bootstrap-theme/css/select2-bootstrap.css" />
+@endsection
 @section('js')
+<script src="{{asset('js/select2.min.js')}}"></script>
+<script>
+$(() => {
+    $('#jenis').select2({
+        tags:true,
+        minimumInputLength: 3, 
+        width: 'auto',
+		dropdownAutoWidth: true,
+    })
+})
+
+</script>
 {{-- Datatable --}}
 <script src="{{asset('assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
@@ -167,6 +193,7 @@ Project
     let _permissions = {}
     
     $(document).ready(function() {
+        var table = showData()
         // let title = ''
         // let slug = ''
         // const app = new Vue({
@@ -212,50 +239,24 @@ Project
         $('#btn-refresh').on('click', function(){
             $('#projek-table').DataTable().draw(true)
         })
-        var table = $('#projek-table').DataTable({
-            processing: true,
-            serverSide: true,
-            responsive: true,
-            scrollX: true,
-            ajax: "{{ route('api.project') }}",
-            columns: [
-                {data: 'id', name: 'id'},
-                {data: 'show_image', name: 'show_image'},
-                {data: 'nama', name: 'nama'},
-                {data: 'kategori.kategori', name: 'kategori.kategori'},
-                {data: 'label.label', name: 'label.label'},
-                {data: 'nominal_uang', name: 'nominal_uang'},
-                {data: 'tenggat_waktu', name: 'tenggat waktu'},
-                {data: 'status', name: 'status'},
-                // {data: 'kota.provinsi.provinsi', name: 'kota.provinsi.provinsi'},
-                // {data: 'kota.kota', name: 'kota.kota'},
-                // {data: 'email', name: 'email'},
-                // {
-                //     data: null, orderable: false, width: '100px',
-                //     render: function (data) {
-                //         if(!data.no_hp) return '-'
-                //         return data.no_hp
-                //     }
-                // },
-                // {
-                //     data: null, orderable: false, width: '100px',
-                //     render: function (data) {
-                //         if(!data.no_rek) return '-'
-                //         return data.no_rek
-                //     }
-                // },
-                {data: 'action', name: 'action', orderable: false, searchable: false}
-            ]
-        });
+        // showData()
 
-        table.on('order.dt search.dt', function () {
-            table.column(0, {
-                search: 'applied',
-                order: 'applied'
-            }).nodes().each(function (cell, i) {
-                cell.innerHTML = i + 1;
-            });
-        }).draw();
+        $(document).on('change', '#kategori_wakaf', () => {
+            id = $('#kategori_wakaf').val()
+            // $('#projek-table').DataTable().fnDestroy()
+            $('#projek-table').dataTable().fnClearTable();
+            $('#projek-table').dataTable().fnDestroy();
+            showData(id)
+        })
+
+        // table.on('order.dt search.dt', function () {
+        //     table.column(0, {
+        //         search: 'applied',
+        //         order: 'applied'
+        //     }).nodes().each(function (cell, i) {
+        //         cell.innerHTML = i + 1;
+        //     });
+        // }).draw();
 
         $('#modal-form form').validator().on('submit', function (e) {
             if (!e.isDefaultPrevented()){
@@ -300,6 +301,32 @@ Project
             }
         });
     } );
+
+    async function showData(kategori_id = ''){
+        table = await $('#projek-table').DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            scrollX: true,
+            ajax: {
+                url: "{{ route('api.project') }}",
+                method: "GET",
+                data: {
+                    q: kategori_id
+                }
+            },
+            columns: [
+                {data: 'id', name: 'id'},
+                {data: 'show_image', name: 'show_image'},
+                {data: 'nama', name: 'nama'},
+                {data: 'kategori.kategori', name: 'kategori.kategori'},
+                {data: 'label.label', name: 'label.label'},
+                {data: 'tenggat_waktu', name: 'tenggat waktu'},
+                {data: 'status', name: 'status'},
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        });
+    }
     
     function validasi(id){
         let url =  "{{ url('dashboard/project/validasi') }}/" + id 

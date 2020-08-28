@@ -26,10 +26,10 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
 });
 
 Route::group(['middleware' => 'auth'], function () {
-
+    
     Route::resource('projek', 'ProjekController');
-
-    Route::get('donasi/{id}', 'DonasiController@create')->name('donasi.create');
+    
+    Route::get('donasi/{id}/{jenis}', 'DonasiController@create')->name('donasi.create');
     Route::post('donasi', 'DonasiController@store')->name('donasi.store');
 
     Route::resource('provinsi', 'ProvinsiController');
@@ -64,8 +64,14 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
         Route::get('project/validasi/{id}', 'ValidasiController@validasi');
 
         Route::resource('pendanaan', 'PendanaanController');
+        Route::get('pendanaan/aset/yoii','PendanaanController@pendanaanaset')->name('pendanaan.aset');
+        Route::get('api-pendanaan-aset', 'PendanaanController@apiPendanaanaset')->name('api.pendanaanaset');
+
         Route::get('api-pendanaan', 'PendanaanController@apiPendanaan')->name('api.pendanaan');
         Route::get('api-pendanaan-admin', 'PendanaanController@admintai')->name('api.pendanaan.admin');
+
+        Route::get('api-pendanaan-tai', 'PendanaanController@apiPendanaanaset')->name('api.pendanaan-tai');
+        Route::get('api-pendanaan-admin-tai', 'PendanaanController@adminsupertai')->name('api.pendanaan.admin-tai');
 
         Route::post('api-pencairan/{id}/update-status', 'PencairanController@updateStatus')->name('api.pencairan.updateStatus');
         Route::resource('pencairan', 'PencairanController');
@@ -75,6 +81,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
         Route::resource('progres', 'ProgresController');
         Route::get('api-progres', 'ProgresController@apipencairan')->name('api.progres');
+
+        Route::get('progres/aset/yoii','ProgresController@progresaset')->name('progres.aset');
+        Route::get('api-progres-aset', 'ProgresController@apiProgresaset')->name('api.progresaset');
 
         Route::resource('monitoring', 'MonitoringController');
         Route::get('api-monitoring', 'MonitoringController@apiMonitoring')->name('api.monitoring');
