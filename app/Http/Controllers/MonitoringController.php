@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Pencairan;
 use App\User;
+use App\Projek;
 use App\Mitra;
 use Auth;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +19,15 @@ class MonitoringController extends Controller
      */
     public function index()
     {
-        return view('monitoring.index');
+        $menunggu = Projek::where('status', 'MENUNGGU')->count();
+        $disetujui = Projek::where('status', 'DISETUJUI')->count();
+        $ditolak = Projek::where('status', 'DITOLAK')->count();
+        $data = [
+            'menunggu'   => $menunggu,
+            'disetujui'   => $disetujui,
+            'ditolak'   => $ditolak,
+        ];
+        return view('monitoring.index',$data);
     }
 
     /**
@@ -64,28 +73,69 @@ class MonitoringController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+     
     public function show($id)
     {
-        $total_pencairan = DB::table("pencairan")
-        ->where('user_id', $id)
-	    ->select(DB::raw("SUM(nominal) as total_nominal"))
-        ->first();
+        $user = User::with('mitra_attr')->findOrFail($id);
 
-        $total_pendanaan = DB::table("pendanaan as p")
+        $pencairan = DB::table("pencairan as p")
         ->leftjoin('projek as pr', 'p.projek_id', '=', 'pr.id')
         ->leftjoin('users as u', 'pr.mitra_id', '=', 'u.id')
-	    ->select(DB::raw("SUM(p.nominal) as total_nominaldana"))
-        ->first();
+        ->where('u.id', $user->mitra_attr->id)
+        ->select(DB::raw("SUM(p.nominal) as total_nominaldana"), DB::raw('MONTH(p.created_at) as date'))->orderBy('date')->get();
 
-        $project_disetujui = User::whereHas('projek', function($q){
-            $q->where('status', 'DISETUJUI');
-        })->where('id', $id)->get();
-        $project_ditolak = User::whereHas('projek', function($q){
-            $q->where('status', 'DITOLAK');
-        })->where('id', $id)->get();
-        $project_menunggu = User::whereHas('projek', function($q){
-            $q->where('status', 'MENUNGGU');
-        })->where('id', $id)->get();
+        $total_pencairan = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $total_pencairan[] = [
+                'date' => $i,
+                'total' => 0,
+            ];
+        }
+        for ($i = 0; $i < count($total_pencairan); $i++) {
+            foreach ($pencairan as $key => $c) {
+                if ($c->date == $total_pencairan[$i]['date']) {
+                    $total_pencairan[$i] = [
+                        'date' => $c->date,
+                        'total' => $c->total_nominaldana,
+                    ];
+                }
+            }
+        }
+
+        $pendanaan = DB::table("pendanaan as p")
+        ->leftjoin('projek as pr', 'p.projek_id', '=', 'pr.id')
+        ->leftjoin('users as u', 'pr.mitra_id', '=', 'u.id')
+        ->where('u.id', $user->mitra_attr->id)
+        ->select(DB::raw("SUM(p.nominal) as total_nominaldana"), DB::raw('MONTH(p.created_at) as date'))->orderBy('date')->get();
+
+        $total_pendanaan = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $total_pendanaan[] = [
+                'date' => $i,
+                'total' => 0,
+            ];
+        }
+        for ($i = 0; $i < count($total_pendanaan); $i++) {
+            foreach ($pendanaan as $key => $c) {
+                if ($c->date == $total_pendanaan[$i]['date']) {
+                    $total_pendanaan[$i] = [
+                        'date' => $c->date,
+                        'total' => $c->total_nominaldana,
+                    ];
+                }
+            }
+        }
+        // $pendanaans = Pendanaan::with(['projek' => function($q) use($id){
+        //     $q->where('mitra_id', $id)->get();
+        // }])->get();
+
+        // return $pendanaan;
+
+        $project_disetujui = Projek::where('mitra_id', $user->mitra_attr->id)->where('status', 'DISETUJUI')->get();
+        $project_ditolak = Projek::where('mitra_id', $user->mitra_attr->id)->where('status', 'DITOLAK')->get();
+        $project_menunggu = Projek::where('mitra_id', $user->mitra_attr->id)->where('status', 'MENUNGGU')->get();
+        // dd($project_disetujui);
 
         $data = [
             'project_disetujui' => $project_disetujui,
@@ -93,26 +143,10 @@ class MonitoringController extends Controller
             'project_menunggu'  => $project_menunggu,
             'total_pencairan'   => $total_pencairan,
             'total_pendanaan'   => $total_pendanaan,
+            'id'   => $id,
         ];
         return $data;
-
-        $projek = Projek::where('id', $id)->withCount('projek.mitr')->firstOrFail();
-        $projek_count = Projek::count();
-        $data = [
-            'mitra_count'   => $role->users_count,
-            'projek_count'   => $projek_count,
-        ];
-        $monitoring = User::whereHas('mitra_attr')->with('mitra_attr')->get();
-        $mitra = Mitra::where('id', $id)
-            ->with('user')
-            ->firstOrFail();
-
-        if(!$mitra) return abort(404);
-
-        $data = [
-            'mitra' => $monitoring,
-        ];
-        return $data;
+ 
     }
 
     /**

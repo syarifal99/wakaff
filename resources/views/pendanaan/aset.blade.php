@@ -166,9 +166,9 @@ Pendanaan
             responsive: true,
             scrollX: true,
             @if(Auth::user()->getRoleNames()->first() == 'admin')
-            ajax: "{{ route('api.pendanaan.admin-tai') }}",
+            ajax: "{{ route('api.pendanaan.admin-aset') }}",
             @else
-            ajax: "{{ route('api.pendanaan-tai') }}",
+            ajax: "{{ route('api.pendanaan-aset') }}",
             @endif
             columns: [
                 @if(Auth::user()->getRoleNames()->first() == 'admin')

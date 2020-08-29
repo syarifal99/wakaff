@@ -27,7 +27,7 @@ Mitra
                                 title="Refresh data"><i class="fas fa-sync-alt"></i></button>
                         </div>
                     </div>
-                    <table id="mitra-table" class="table table-striped table-bordered">
+                    <table id="mitra-table" class="table table-striped table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No.</th>

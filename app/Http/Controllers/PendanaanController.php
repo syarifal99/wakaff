@@ -200,9 +200,9 @@ class PendanaanController extends Controller
 			->rawColumns(['show_image','action'])->make(true);
     }
 
-    function admintai(){
-        $res = Pendanaan::with(['user', 'projek'])->whereHas('projek', function($asu) {
-            return $asu->where('kategori_id', 2);
+    function admintunai(){
+        $res = Pendanaan::with(['user', 'projek'])->whereHas('projek', function($qq) {
+            return $qq->where('kategori_id', 2);
         })->get();
 
         return Datatables::of($res)
@@ -220,9 +220,9 @@ class PendanaanController extends Controller
 			->rawColumns(['show_image','action'])->make(true);
     }
 
-    function adminsupertai(){
-        $res = Pendanaan::with(['user', 'projek'])->whereHas('projek', function($asu) {
-            return $asu->where('kategori_id', 1);
+    function adminsuperaset(){
+        $res = Pendanaan::with(['user', 'projek'])->whereHas('projek', function($qq) {
+            return $qq->where('kategori_id', 1);
         })->get();
 
         return Datatables::of($res)

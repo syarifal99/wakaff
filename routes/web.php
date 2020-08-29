@@ -68,10 +68,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
         Route::get('api-pendanaan-aset', 'PendanaanController@apiPendanaanaset')->name('api.pendanaanaset');
 
         Route::get('api-pendanaan', 'PendanaanController@apiPendanaan')->name('api.pendanaan');
-        Route::get('api-pendanaan-admin', 'PendanaanController@admintai')->name('api.pendanaan.admin');
+        Route::get('api-pendanaan-admin', 'PendanaanController@admintunai')->name('api.pendanaan.admin');
 
-        Route::get('api-pendanaan-tai', 'PendanaanController@apiPendanaanaset')->name('api.pendanaan-tai');
-        Route::get('api-pendanaan-admin-tai', 'PendanaanController@adminsupertai')->name('api.pendanaan.admin-tai');
+        Route::get('api-pendanaan-aset', 'PendanaanController@apiPendanaanaset')->name('api.pendanaan-aset');
+        Route::get('api-pendanaan-admin-aset', 'PendanaanController@adminsuperaset')->name('api.pendanaan.admin-aset');
 
         Route::post('api-pencairan/{id}/update-status', 'PencairanController@updateStatus')->name('api.pencairan.updateStatus');
         Route::resource('pencairan', 'PencairanController');

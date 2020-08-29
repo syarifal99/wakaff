@@ -33,7 +33,7 @@ Progres Project
                             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                               aria-labelledby="dropdownMenuLink">
                               <div class="dropdown-header">Request:</div>
-                              <a class="dropdown-item" onclick="addForm()">Pencairan Dana</a>
+                              <a class="dropdown-item" onclick="addForm({{$p['progres']->id}})">Pencairan Dana</a>
                               <div class="dropdown-divider"></div>
                               <div class="dropdown-header">Master Data:</div>
                               <a class="dropdown-item" href="pencairan/mitra/{{$p['progres']->id}}">Daftar Pencairan Dana</a>
@@ -88,7 +88,7 @@ Progres Project
                         <input type="hidden" id="id" name="id">
                         <div class="form-group row justify-content-center">
                         </div>
-                        <input type="hidden" name="projek_id" value="">
+                        <input type="hidden" id="projek_id" name="projek_id" value="">
                         <div class="form-group">
                             <label>Nominal</label>
                             <input type="text" class="form-control" id="nominal" name="nominal" required>
@@ -218,7 +218,7 @@ Progres Project
         });
     } );
 
-    function addForm() {
+    function addForm(id = null) {
         removeUpload()
         save_method = "add";
         $('input[nama=_method]').val('POST');
@@ -242,6 +242,7 @@ Progres Project
 
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
+        $("#projek_id").val(id)
         $('.modal-title').text('Add pencairan');
     }
 

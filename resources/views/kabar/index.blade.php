@@ -12,7 +12,7 @@ Mitra
     </div>
 </div>
 
-<!-- Content Row -->
+<!-- Content Row
 {{-- <div class="content">
     @forelse ($kabar as $k)
     <!-- Collapsable Card Example -->
@@ -31,14 +31,13 @@ Mitra
     @empty
 
     @endforelse
-</div> --}}
+ --}}
 
-<div class="content">
+<!-- <div class="content">
     @forelse ($kabar as $k)
-    <!-- Collapsable Card Example -->
     <div class="card shadow mb-4">
-        <!-- Card Header - Accordion -->
                <div class="collapse show" id="collapseCardExample">
+
                 <div class="card-body">
                   <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="float:left; width: 10rem;"
                     src="{{$k->gambar}}" alt="" width="500">
@@ -48,6 +47,8 @@ Mitra
                   <p style="text-align:right;">
                     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Selengkapnya</a>
                   </p>
+                  <div class="btn-group btn-group-md">
+                
                 </div>
               </div>
     </div>
@@ -58,27 +59,24 @@ Mitra
 
     {!! $kabar->links() !!}
     </div>
-</div>
+</div> -->
 
 <!-- Content Row -->
 <div class="content">
     <div class="row">
         <div class="col-lg-12">
-            {{-- <div class="card">
+            <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group btn-group-md">
-                            <h6 class="m-0 font-weight-bold text-success">Data Kabar</h6>
-                        </div>
-                        <div class="btn-group btn-group-md">
-                            <button onclick="addForm()" class="btn btn-success">Tambahkan Kabar</button>
+                            <h6 class="m-0 font-weight-bold text-success">Tabel Data Kabar</h6>
                         </div>
                         <div class="btn-group btn-group-md">
                             <button type="button" class="btn btn-outline-success btn-sm" id="btn-refresh"
                                 title="Refresh data"><i class="fas fa-sync-alt"></i></button>
                         </div>
                     </div>
-                    <table id="kabar-table" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                    <table id="kabar-table" class="table table-striped table-bordered" width="100%" cellspacing="1">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -91,7 +89,7 @@ Mitra
                         </thead>
                     </table>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
 
@@ -114,7 +112,7 @@ Mitra
                             <label>Image</label>
                             <div class="col-md-6 col-12">
                                 <div class="file-upload mb-3">
-                                    <input type="hidden" name="image_available" value="false" id="image_available">
+                                    <input type="hidden" name="image_available" value="false" id="image_available" multiple>
                                     <div class="image-upload-wrap"
                                         style="background-image: url({{asset('assets/img/attachment-3.jpg')}});">
                                         <div class="box-remove">
@@ -122,7 +120,7 @@ Mitra
                                                 class="btn btn-danger btn-sm">Remove</button>
                                         </div>
                                         <input name="gambar" class="file-upload-input" type="file"
-                                            onchange="readURL(this);" accept="gambar/*" />
+                                            onchange="readURL(this);" accept="gambar/*" multiple/>
                                         <div class="drag-text">
                                             <h5>Click or drag an image.
                                             </h5>
@@ -194,21 +192,31 @@ Mitra
         $('#btn-refresh').on('click', function(){
             $('#kabar-table').DataTable().draw(true)
         })
-        // var table = $('#kabar-table').DataTable({
-        //     processing: true,
-        //     serverSide: true,
-        //     responsive: true,
-        //     scrollX: true,
-        //     ajax: "{{ route('api.kabar') }}",
-        //     columns: [
-        //         {data: 'id', name: 'id'},
-        //         {data: 'show_image', name: 'show_image'},
-        //         {data: 'projek.nama', name: 'projek.nama'},
-        //         {data: 'judul', name: 'judul'},
-        //         {data: 'konten', name: 'konten'},
-        //         {data: 'action', name: 'action', orderable: false, searchable: false}
-        //     ]
-        // });
+        var table = $('#kabar-table').DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            autoWidth:false,
+            scrollX: true,
+            scrollY: true,
+            ajax: "{{ route('api.kabar') }}",
+            columns: [
+                {data: 'id', name: 'id'},
+                {data: 'show_image', name: 'show_image'},
+                {data: 'projek.nama', name: 'projek.nama'},
+                {data: 'judul', name: 'judul'},
+                {data: 'konten', name: 'konten'},
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        });
+        table.on('order.dt search.dt', function () {
+            table.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
 
         $('#modal-form form').validator().on('submit', function (e) {
             if (!e.isDefaultPrevented()){

@@ -29,7 +29,6 @@ class Projek extends Model
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');
     }
-
     public function label()
     {
         return $this->belongsTo(Label::class, 'label_id');

@@ -1,5 +1,7 @@
 @extends('front.layouts.master')
 @section('css')
+<link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
+<link rel="stylesheet" href="https://select2.github.io/select2-bootstrap-theme/css/select2-bootstrap.css" />
 <style>
     .box {
         max-height: 150px !important;
@@ -163,7 +165,7 @@
                 <div class="form-group">
                     <label for="kategori_id">Kategori</label>
                     <select class="form-control" id="kategori_id" placeholder="Pilih kategori" name="kategori_id">
-                        <option value="" disabled>-- Pilih kategori --</option>
+                        <option value="">-- Pilih kategori --</option>
                         <option value="1">Wakaf Aset</option>
                         <option value="2">Wakaf Tunai</option>
                     </select>
@@ -171,7 +173,7 @@
                 <div class="form-group">
                     <label for="label_id">Label</label>
                     <select class="form-control" id="label_id" placeholder="Pilih label" name="label_id">
-                        <option value="" disabled>-- Pilih label --</option>
+                        <option value="" >-- Pilih label --</option>
                         <option value="1">Produktif</option>
                         <option value="2">Non Produktif</option>
                     </select>
@@ -205,6 +207,11 @@
                         <option value="" disabled>-- Pilih Kota --</option>
                     </select>
                 </div>
+                <div class="form-group select2-container" id="form_jenis">
+                <label for="jenis">Jenis</label>
+                <select class="form-control search-select-multiple" id="jenis" placeholder="Pilih jenis" name="jenis[]" multiple="multiple">
+                </select>
+                </div>
                 <div class="form-group">
                     <label for="gambar">Gambar</label>
                     <input type="file" class="@error('gambar') is-invalid @enderror form-control-file" id="gambar" name="gambar">
@@ -221,8 +228,15 @@
 @endsection
 
 @section('js')
+<script src="{{asset('js/select2.min.js')}}"></script>
 <script>
     $(document).ready(function(){
+        $('#jenis').select2({
+            tags:true,
+            minimumInputLength: 3, 
+            width: 'auto',
+            dropdownAutoWidth: true,
+        })
         $(document).on("change", "#kategori_id", function() {
             if ($(this).val()==1){    
                 $('#nominal').attr('placeholder', 'Masukkan unit');
@@ -232,6 +246,16 @@
                 $('#labelNominal').text('Nominal');
             }        
         })
+        $(document).on('change', '#kategori_id', () => {
+            id = $('#kategori_id').val()
+            const form = $('#form_jenis')
+            if(id == 1) {
+                form.show()
+            } else {
+                form.hide()
+            }
+        })
+
         $(document).on("change", "#provinsi_id", function() {
             let id = $(this).val()
             if(!id) return false;

@@ -34,10 +34,10 @@ Project
                                 title="Refresh data"><i class="fas fa-sync-alt"></i></button>
                         </div>
                     </div>
-                    <table id="projek-table" class="table table-striped table-bordered">
+                    <table id="projek-table" class="table table-striped table-bordered"width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No.</th>
+                                <th>ID</th>
                                 <th>Gambar</th>
                                 <th>Nama Project</th>
                                 <th>Kategori</th>
@@ -130,12 +130,12 @@ Project
                                 <option value="" disabled>-- Pilih Kota --</option>
                             </select>
                         </div>
-                        @hasanyrole('admin|superadmin')
-                        <div class="form-group select2-container">
+                        <div class="form-group select2-container" id="form_jenis">
                             <label for="jenis">Jenis</label>
                             <select class="form-control search-select-multiple" id="jenis" placeholder="Pilih jenis" name="jenis[]" multiple="multiple">
                             </select>
                         </div>
+                        @hasanyrole('admin|superadmin')
                         <div class="form-mitra"></div>
                         <div class="form-validasi">
                             <div class="form-group">
@@ -249,14 +249,24 @@ $(() => {
             showData(id)
         })
 
-        // table.on('order.dt search.dt', function () {
-        //     table.column(0, {
-        //         search: 'applied',
-        //         order: 'applied'
-        //     }).nodes().each(function (cell, i) {
-        //         cell.innerHTML = i + 1;
-        //     });
-        // }).draw();
+        $(document).on('change', '#kategori_id', () => {
+            id = $('#kategori_id').val()
+            const form = $('#form_jenis')
+            if(id == 1) {
+                form.show()
+            } else {
+                form.hide()
+            }
+        })
+
+        table.on('order.dt search.dt', function () {
+            table.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
 
         $('#modal-form form').validator().on('submit', function (e) {
             if (!e.isDefaultPrevented()){
@@ -502,7 +512,7 @@ $(() => {
                 }
                 let str = ''
                 str += `<div class="form-group">
-                            <label for="mitra_id">mitra_id</label>
+                            <label for="mitra_id">Mitra</label>
                             <select class="form-control" id="mitra_id" placeholder="Pilih mitra_id" name="mitra_id">
                                 <option value="">-- Pilih mitra --</option>`
                 $.each(data.mitra, (key, val)=>{

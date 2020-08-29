@@ -71,11 +71,11 @@ class ProgresController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-			'nominal' 	=> 'required|max:191',
+        $yoii = $this->validate($request, [
+            'nominal' 	=> 'required|max:191',
 			'deskripsi' => 'required',
 			'projek_id' 	=> 'required',
-		]);
+        ]);
 		$input = $request->all();
 		$projek = Pencairan::create([
             'nominal'          => $request->nominal,
@@ -134,7 +134,7 @@ class ProgresController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-			'nominal' 	=> 'required|max:191',
+			'nominal' 	    => 'required|max:191',
 			'deskripsi' 	=> 'required',
 
 		]);
@@ -177,9 +177,7 @@ class ProgresController extends Controller
         if( $user->hasRole(['mitra']) ){
             $pencairans = $query->whereHas('projek.mitra', function($q) use($user){
                 $q->where('id', $user->mitra_attr->id);
-            })->with('projek', function($asu) {
-                return $asu->where('kategori_id',2);
-            }, 'mitra','user')->get();
+            })->with('projek.mitra','user')->get();
         }else{
             $pencairans = $query->with('projek.mitra','user')->get();
         }

@@ -124,7 +124,7 @@
             <thead>
                 <tr>
                     <th id="logo">
-                        <img src="{{ public_path('img/logo.png') }}">
+                        <img src="{{ public_path('assets/img/logo.png') }}">
                     </th>
                     <th id="company">
                         <h2 class="name">PT. Sentral Fintech Indonesia</h2>
@@ -142,7 +142,7 @@
                     <tr>
                         <th id="client">
                             <div class="to">Detail projek:</div>
-                            <h2 class="name">Nama: {{$projek->nama}}</h2>
+                            <h2 class="name">Nama Projek: {{$projek->nama}}</h2>
                             {{-- <div class="address">Gambar: <img src="{{url($projek->gambar)}}" alt="Image"></div> --}}
                             <div class="address">Kategori: {{$projek->kategori->kategori}}</div>
                             <div class="address">Label: {{$projek->label->label}}</div>

@@ -22,6 +22,7 @@ class UsersTableSeeder extends Seeder
             
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'mitra']);
+        Role::create(['name' => 'user']);
 
         $roleSuperadmin = Role::create(['name' => 'superadmin']);
 

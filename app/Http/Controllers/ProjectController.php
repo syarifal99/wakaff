@@ -61,7 +61,6 @@ class ProjectController extends Controller
             'gambar'        => 'image|nullable',
             'kategori_id'   => 'required',
             'label_id'      => 'required',
-            'jenis'         => 'required',
             'kota_id'       => 'required',
         ]);
 
@@ -71,18 +70,20 @@ class ProjectController extends Controller
             $input['gambar'] = '/upload/projek/' . str_slug($input['nama'], '-') . '.' . $request->gambar->getClientOriginalExtension();
             $request->gambar->move(public_path('/upload/projek/'), $input['gambar']);
         }            
-        foreach ($request->jenis as $value) {
-            Jenis::firstOrCreate([
-                'jenis' => $value
-            ], [
-                'jenis' => $value
-            ]);
+        if($request->jenis != '') {
+            foreach ($request->jenis as $value) {
+                Jenis::firstOrCreate([
+                    'jenis' => $value
+                ], [
+                    'jenis' => $value
+                ]);
+            }
+            $id_jenis = [];
+            foreach ($request->jenis as $value) {
+                $id_jenis[] = Jenis::where('jenis', $value)->first()->id;
+            }
         }
 
-        $id_jenis = [];
-        foreach ($request->jenis as $value) {
-            $id_jenis[] = Jenis::where('jenis', $value)->first()->id;
-        }
         
         $projek = Projek::create([
             'nama'          => $request->nama,
@@ -98,7 +99,7 @@ class ProjectController extends Controller
             'status'        => isset($request->status)?$request->status:'MENUNGGU',
         ]);
 
-        $projek->jenis()->attach($id_jenis);
+        if($request->jenis != '') $projek->jenis()->attach($id_jenis);
         
         $_user = Auth::user();
         if( $_user->hasRole(['mitra']) ){
