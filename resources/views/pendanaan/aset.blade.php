@@ -176,7 +176,7 @@ Pendanaan
                     {data: 'projek.nama', name: 'projek.nama'},
                     {data: 'user.name', name: 'user.name'},
                     {data: 'unit', name: 'unit'},
-                    {data: 'nominal', name: 'nominal'},
+                    {data: 'nominal_aset', name: 'nominal_aset'},
                     {data: 'metode', name: 'metode'},
                     {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}

@@ -82,21 +82,21 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
         Route::resource('progres', 'ProgresController');
         Route::get('api-progres', 'ProgresController@apipencairan')->name('api.progres');
 
-        Route::get('progres/aset/yoii','ProgresController@progresaset')->name('progres.aset');
+        Route::get('progresaset','ProgresController@progresaset')->name('progres.aset');
         Route::get('api-progres-aset', 'ProgresController@apiProgresaset')->name('api.progresaset');
-
+        
         Route::resource('monitoring', 'MonitoringController');
         Route::get('api-monitoring', 'MonitoringController@apiMonitoring')->name('api.monitoring');
-
+        
         Route::resource('users', 'UserController');
         Route::get('api-users', 'UserController@apiUsers')->name('api.users');
-
+        
         Route::get('kabar/get-all', 'KabarController@getAll')->name('kabar.getAll');
         Route::post('kabar/image/upload', 'KabarController@uploadImage')->name('kabar.image');
         Route::get('kabar/{id}','KabarController@index');
         Route::resource('kabar', 'KabarController');
         Route::get('api-kabar', 'KabarController@apiKabar')->name('api.kabar');
-
+        
         Route::resource('roles', 'RoleController');
         Route::get('api-roles', 'RoleController@apiRoles')->name('api.roles');
 
@@ -106,14 +106,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
         Route::get('roles-permissions', 'RolePermissionController@index')->name('roles-permissions.index');
     });
 });
-
-Route::get('/pendaftaran', 'PendaftaranController@index');
-Route::get('/pendaftaran/create', 'PendaftaranController@create')->name('frotn.projek.create');
-Route::get('/pendaftaran/{id}', 'PendaftaranController@show');
-Route::post('/pendaftaran', 'PendaftaranController@store');
-Route::delete('/pendaftaran/{pendaftaran}', 'PendaftaranController@destroy');
-Route::get('/pendaftaran/{pendaftaran}/edit', 'PendaftaranController@edit');
-Route::patch('/pendaftaran/{pendaftaran}', 'PendaftaranController@update');
 
 Route::get('/validasi', 'ValidasiController@index');
 Route::get('/validasi/create', 'ValidasiController@create');

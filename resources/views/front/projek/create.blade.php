@@ -165,7 +165,7 @@
                 <div class="form-group">
                     <label for="kategori_id">Kategori</label>
                     <select class="form-control" id="kategori_id" placeholder="Pilih kategori" name="kategori_id">
-                        <option value="">-- Pilih kategori --</option>
+                        <option value=""selected disabled>-- Pilih kategori --</option>
                         <option value="1">Wakaf Aset</option>
                         <option value="2">Wakaf Tunai</option>
                     </select>
@@ -173,7 +173,7 @@
                 <div class="form-group">
                     <label for="label_id">Label</label>
                     <select class="form-control" id="label_id" placeholder="Pilih label" name="label_id">
-                        <option value="" >-- Pilih label --</option>
+                        <option value="" selected disabled>-- Pilih label --</option>
                         <option value="1">Produktif</option>
                         <option value="2">Non Produktif</option>
                     </select>
@@ -195,7 +195,7 @@
                 <div class="form-group">
                     <label for="provinsi_id">Provinsi</label>
                     <select class="form-control" id="provinsi_id" name="provinsi_id">
-                        <option value="">-- Pilih provinsi --</option>
+                        <option value=""selected disabled>-- Pilih provinsi --</option>
                         @foreach ($provinsi as $p)
                         <option value="{{$p->id}}">{{$p->provinsi}}</option>
                         @endforeach
@@ -204,13 +204,12 @@
                 <div class="form-group">
                     <label for="kota">Kota</label>
                     <select class="form-control" id="kota_id" placeholder="Pilih kota" name="kota_id">
-                        <option value="" disabled>-- Pilih Kota --</option>
+                        <option value="" selected disabled>-- Pilih Kota --</option>
                     </select>
                 </div>
-                <div class="form-group select2-container" id="form_jenis">
-                <label for="jenis">Jenis</label>
-                <select class="form-control search-select-multiple" id="jenis" placeholder="Pilih jenis" name="jenis[]" multiple="multiple">
-                </select>
+                <div class="form-group" id="form_jenis">
+                    <label for="jenis">Jenis</label>
+                    <select class="js-example-placeholder-multiple js-states form-control" multiple="multiple" id="jenis" name="jenis[]"></select>
                 </div>
                 <div class="form-group">
                     <label for="gambar">Gambar</label>
@@ -230,13 +229,14 @@
 @section('js')
 <script src="{{asset('js/select2.min.js')}}"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
         $('#jenis').select2({
+            allowClear: true,
+            placeholder: "-- Masukkan Jenis --",
             tags:true,
-            minimumInputLength: 3, 
-            width: 'auto',
+            width: '100%',
             dropdownAutoWidth: true,
-        })
+        });
         $(document).on("change", "#kategori_id", function() {
             if ($(this).val()==1){    
                 $('#nominal').attr('placeholder', 'Masukkan unit');

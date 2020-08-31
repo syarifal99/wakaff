@@ -56,7 +56,7 @@ class DonasiController extends Controller
         $input = $request->all();
         $input['bukti'] = null;
         if ($request->hasFile('bukti')) {
-            $input['bukti'] = '/upload/projek/' . str_slug($input['nama'], '-') . '.' . $request->bukti->getClientOriginalExtension();
+            $input['bukti'] = '/upload/donasi/' . str_slug($input['nama'], '-') . '.' . $request->bukti->getClientOriginalExtension();
             $request->bukti->move(public_path('/upload/donasi/'), $input['bukti']);
         }
         

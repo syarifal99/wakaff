@@ -22033,7 +22033,7 @@ a:focus {
 }
 
 .bg-register-image {
-  background: url("https://scontent.fsub8-1.fna.fbcdn.net/v/t1.0-9/108033829_3030172657063860_1340830756193710213_o.jpg?_nc_cat=106&_nc_sid=730e14&_nc_eui2=AeH7agpOZHlsW3-W_dK5nFiFsFwhuvcp2eGwXCG69ynZ4b1TZ3AVRv1qYhjWmnWsVU4NuJ9xUBXVMzTjQhvYRHU0&_nc_oc=AQlqaiXbpi89i_XMt-5igfp-HtZMzcc3uPPitbFJvWTAQT_N_4vXScr3kQSiFiNr7rc&_nc_ht=scontent.fsub8-1.fna&oh=d4b87d42ef3800e4602f9138e6c303c8&oe=5F2C7BD6");
+  background-image: url("https://scontent.fsub8-1.fna.fbcdn.net/v/t1.0-9/108033829_3030172657063860_1340830756193710213_o.jpg?_nc_cat=106&_nc_sid=730e14&_nc_eui2=AeH7agpOZHlsW3-W_dK5nFiFsFwhuvcp2eGwXCG69ynZ4b1TZ3AVRv1qYhjWmnWsVU4NuJ9xUBXVMzTjQhvYRHU0&_nc_oc=AQlqaiXbpi89i_XMt-5igfp-HtZMzcc3uPPitbFJvWTAQT_N_4vXScr3kQSiFiNr7rc&_nc_ht=scontent.fsub8-1.fna&oh=d4b87d42ef3800e4602f9138e6c303c8&oe=5F2C7BD6");
   background-position: center;
   background-size: cover;
 }

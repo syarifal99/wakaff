@@ -19,9 +19,6 @@ class DashboardController extends Controller
         $projek_counte= Projek::whereHas('mitra', function($q) use($user){
             if($user->mitra_attr) $q->where('id', $user->mitra_attr->id);
         })->where('kategori_id','1')->count();
-        // $projek_countk = Projek::where('kategori_id','2')->where('mitra_id',$user->mitra_attr->id)->count();
-        // $projek_counte = Projek::where('kategori_id','1')->where('mitra_id',$user->mitra_attr->id)->count();
-        
         $data = [
             'mitra_count'   => $role->users_count,
             'projek_count'   => $projek_count,

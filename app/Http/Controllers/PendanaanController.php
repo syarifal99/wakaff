@@ -143,7 +143,7 @@ class PendanaanController extends Controller
             }
             $res[] = [
                 'projek' => $p,
-                'total_user' => count($p->pendanaan),
+                'total_user' => count($p->pendanaan).' user',
                 'total_pendanaan' => $totalDanaPendanaan,
             ];
         }
@@ -180,8 +180,8 @@ class PendanaanController extends Controller
             }
             $res[] = [
                 'projek' => $p,
-                'total_user' => count($p->pendanaan),
-                'total_pendanaan' => $totalDanaPendanaan,
+                'total_user' => count($p->pendanaan). ' user',
+                'total_pendanaan' => $totalDanaPendanaan. ' unit',
             ];
         }
         // return $res;

@@ -69,4 +69,5 @@ class Projek extends Model
     {
         return $this->belongsToMany('App\Jenis');
     }
+
 }

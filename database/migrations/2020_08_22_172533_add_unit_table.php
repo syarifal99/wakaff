@@ -14,7 +14,7 @@ class AddUnitTable extends Migration
     public function up()
     {
         Schema::table('pendanaan', function (Blueprint $table) {
-            $table->string('unit')->after('nominal');
+            $table->string('unit')->after('nominal')->nullable();
         });
     }
 

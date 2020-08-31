@@ -6,7 +6,7 @@ Project
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h4 mb-0 text-gray-800">Galang Dana Wakaf Zakat</h1>
+    <h1 class="h4 mb-0 text-gray-800">Daftar Projek</h1>
     <div class="btn-group btn-group-md">
         <button onclick="addForm()" class="btn btn-primary">Tambahkan project</button>
     </div>
@@ -37,7 +37,7 @@ Project
                     <table id="projek-table" class="table table-striped table-bordered"width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No</th>
                                 <th>Gambar</th>
                                 <th>Nama Project</th>
                                 <th>Kategori</th>
@@ -97,13 +97,13 @@ Project
                         <div class="form-group">
                             <label for="kategori_id">Kategori</label>
                             <select class="form-control" id="kategori_id" placeholder="Pilih kategori" name="kategori_id">
-                                <option value="" disabled>-- Pilih kategori --</option>
+                                <option value="" selected disabled>-- Pilih kategori --</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="label_id">Label</label>
                             <select class="form-control" id="label_id" placeholder="Pilih label" name="label_id">
-                                <option value="" disabled>-- Pilih label --</option>
+                                <option value="" selected disabled>-- Pilih label --</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -127,13 +127,12 @@ Project
                         <div class="form-group">
                             <label for="kota">Kota</label>
                             <select class="form-control" id="kota_id" placeholder="Pilih kota" name="kota_id">
-                                <option value="" disabled>-- Pilih Kota --</option>
+                                <option value="" seleced disabled>-- Pilih Kota --</option>
                             </select>
                         </div>
-                        <div class="form-group select2-container" id="form_jenis">
+                        <div class="form-group" id="form_jenis">
                             <label for="jenis">Jenis</label>
-                            <select class="form-control search-select-multiple" id="jenis" placeholder="Pilih jenis" name="jenis[]" multiple="multiple">
-                            </select>
+                            <select class="js-example-placeholder-multiple js-states form-control" multiple="multiple" id="jenis" name="jenis[]"></select>
                         </div>
                         @hasanyrole('admin|superadmin')
                         <div class="form-mitra"></div>
@@ -141,7 +140,7 @@ Project
                             <div class="form-group">
                                 <label for="status">Status</label>
                                 <select class="form-control" id="status" placeholder="Pilih status" name="status">
-                                    <option value="" disabled>-- Pilih status --</option>
+                                    <option value="" selected disabled>-- Pilih status --</option>
                                     <option value="MENUNGGU">MENUNGGU</option>
                                     <option value="DISETUJUI">DISETUJUI</option>
                                     <option value="DITOLAK">DITOLAK</option>
@@ -169,20 +168,13 @@ Project
 @section('css')
 <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
 <link rel="stylesheet" href="https://select2.github.io/select2-bootstrap-theme/css/select2-bootstrap.css" />
+<style>
+    .image-upload-wrap {
+  border-radius: 0 !important;}
+</style>
 @endsection
 @section('js')
 <script src="{{asset('js/select2.min.js')}}"></script>
-<script>
-$(() => {
-    $('#jenis').select2({
-        tags:true,
-        minimumInputLength: 3, 
-        width: 'auto',
-		dropdownAutoWidth: true,
-    })
-})
-
-</script>
 {{-- Datatable --}}
 <script src="{{asset('assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
@@ -193,6 +185,13 @@ $(() => {
     let _permissions = {}
     
     $(document).ready(function() {
+        $('#jenis').select2({
+            allowClear: true,
+            placeholder: "-- Masukkan Jenis --",
+            tags:true,
+            width: '100%',
+            dropdownAutoWidth: true,
+        });
         var table = showData()
         // let title = ''
         // let slug = ''
@@ -259,8 +258,8 @@ $(() => {
             }
         })
 
-        table.on('order.dt search.dt', function () {
-            table.column(0, {
+        $('#projek-table').DataTable().on('order.dt search.dt', function () {
+            $('#projek-table').DataTable().column(0, {
                 search: 'applied',
                 order: 'applied'
             }).nodes().each(function (cell, i) {
@@ -284,7 +283,7 @@ $(() => {
                     success : function(data) {
                         console.log(data)
                         $('#modal-form').modal('hide');
-                        table.ajax.reload();
+                        $('#projek-table').DataTable().ajax.reload();
                         swal({
                             title: 'Success!',
                             text: data.message,
@@ -387,6 +386,7 @@ $(() => {
         $.ajax({
             url : "{{ route('kategori.index') }}" ,
             type : "GET",
+            async: false,
             success: function(res){
                 console.log(res)
                 $("#kategori_id").empty();
@@ -401,6 +401,7 @@ $(() => {
         $.ajax({
             url : "{{ route('label.index') }}" ,
             type : "GET",
+            async: false,
             success: function(res){
                 console.log(res)
                 $("#label_id").empty();
@@ -415,6 +416,7 @@ $(() => {
         $.ajax({
             url : "{{ route('provinsi.index') }}" ,
             type : "GET",
+            async: false,
             success: function(res){
                 console.log(res)
                 $("#provinsi_id").empty();
@@ -438,6 +440,7 @@ $(() => {
         $.ajax({
             url : "{{ route('kategori.index') }}" ,
             type : "GET",
+            async: false,
             success: function(res){
                 console.log(res)
                 $("#kategori_id").empty();
@@ -452,6 +455,7 @@ $(() => {
         $.ajax({
             url : "{{ route('label.index') }}" ,
             type : "GET",
+            async: false,
             success: function(res){
                 console.log(res)
                 $("#label_id").empty();
@@ -466,6 +470,7 @@ $(() => {
         $.ajax({
             url : "{{ route('provinsi.index') }}" ,
             type : "GET",
+            async: false,
             success: function(res){
                 console.log(res)
                 $("#provinsi_id").empty();
@@ -486,6 +491,7 @@ $(() => {
             url: "{{ url('dashboard/project') }}" + '/' + id ,
             type: "GET",
             dataType: "JSON",
+            async: false,
             success: function(data) {
                 console.log(data)
                 $('#modal-form').modal('show');
@@ -493,7 +499,7 @@ $(() => {
                 
                 $('#id').val(data.projek.id);
                 $('#nama').val(data.projek.nama);
-                $('#kategori_id').val(data.projek.kategori.id);
+                $('#kategori_id').val(data.projek.kategori.id).trigger('change');
                 $('#label_id').val(data.projek.label.id);
                 $('#nominal').val(data.projek.nominal);
                 $('#tenggat_waktu').val(data.projek.tenggat_waktu);
@@ -632,7 +638,7 @@ $(() => {
             }
         });
     }
-    let base_url = "{{url('/')}}"
+    const base_url = "{{url('/')}}"
     function readURL(input) {
         if (input.files && input.files[0]) {
             let reader = new FileReader();

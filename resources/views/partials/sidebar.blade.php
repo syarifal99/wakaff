@@ -68,10 +68,10 @@
             <i class="fas fa-fw fa-info"></i>
             <span>Progres Project</span>
         </a>
-        <div id="collapsePages2" class="collapse {{Request::is('dashboard/progres') || Request::is('dashboard/progres/aset/yoii')? 'show':''}}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapsePages2" class="collapse {{Request::is('dashboard/progres') || Request::is('dashboard/progresaset')? 'show':''}}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item {{Request::is('dashboard/progres')? 'active':''}}" href="{{route('progres.index')}}">Progres Tunai</a>
-                <a class="collapse-item {{Request::is('dashboard/progres/aset/yoii')? 'active':''}}" href="{{route('progres.aset')}}">Progres Aset</a>
+                <a class="collapse-item {{Request::is('dashboard/progresaset')? 'active':''}}" href="{{route('progres.aset')}}">Progres Aset</a>
             </div>
         </div>
     </li>

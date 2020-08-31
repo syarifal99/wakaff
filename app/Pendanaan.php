@@ -8,7 +8,7 @@ class Pendanaan extends Model
 {
     protected $table = 'pendanaan';
     protected $fillable = ['nominal','metode','bukti','keterangan','status','user_id','projek_id','unit','tanggal'];
-    protected $appends = ['nominal_uang','total_pendanaan'];
+    protected $appends = ['nominal_uang','total_pendanaan','nominal_aset'];
 
     public function user()
     {
@@ -26,6 +26,10 @@ class Pendanaan extends Model
     public function getNominalUangAttribute()
     {
         return 'Rp. '.number_format($this->nominal);
+    }
+    public function getNominalAsetAttribute()
+    {
+        return number_format($this->nominal). ' unit';
     }
     public function getTotalPendanaanAttribute()
     {

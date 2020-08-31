@@ -12,7 +12,7 @@ Mitra
     </div>
 </div>
 
-<!-- Content Row
+<!-- Content Row -->
 {{-- <div class="content">
     @forelse ($kabar as $k)
     <!-- Collapsable Card Example -->
@@ -29,15 +29,15 @@ Mitra
         </div>
     </div>
     @empty
-
     @endforelse
- --}}
+</div> --}}
 
-<!-- <div class="content">
+<div class="content">
     @forelse ($kabar as $k)
+    <!-- Collapsable Card Example -->
     <div class="card shadow mb-4">
+        <!-- Card Header - Accordion -->
                <div class="collapse show" id="collapseCardExample">
-
                 <div class="card-body">
                   <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="float:left; width: 10rem;"
                     src="{{$k->gambar}}" alt="" width="500">
@@ -47,36 +47,37 @@ Mitra
                   <p style="text-align:right;">
                     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Selengkapnya</a>
                   </p>
-                  <div class="btn-group btn-group-md">
-                
                 </div>
               </div>
     </div>
     @empty
-        Tidak ada data cuy
+        Belum ada kabar
     @endforelse
     <div class="text-content-center">
 
     {!! $kabar->links() !!}
     </div>
-</div> -->
+</div>
 
 <!-- Content Row -->
 <div class="content">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group btn-group-md">
-                            <h6 class="m-0 font-weight-bold text-success">Tabel Data Kabar</h6>
+                            <h6 class="m-0 font-weight-bold text-success">Data Kabar</h6>
+                        </div>
+                        <div class="btn-group btn-group-md">
+                            <button onclick="addForm()" class="btn btn-success">Tambahkan Kabar</button>
                         </div>
                         <div class="btn-group btn-group-md">
                             <button type="button" class="btn btn-outline-success btn-sm" id="btn-refresh"
                                 title="Refresh data"><i class="fas fa-sync-alt"></i></button>
                         </div>
                     </div>
-                    <table id="kabar-table" class="table table-striped table-bordered" width="100%" cellspacing="1">
+                    <table id="kabar-table" class="table table-striped table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -89,7 +90,7 @@ Mitra
                         </thead>
                     </table>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 
@@ -112,7 +113,7 @@ Mitra
                             <label>Image</label>
                             <div class="col-md-6 col-12">
                                 <div class="file-upload mb-3">
-                                    <input type="hidden" name="image_available" value="false" id="image_available" multiple>
+                                    <input type="hidden" name="image_available" value="false" id="image_available">
                                     <div class="image-upload-wrap"
                                         style="background-image: url({{asset('assets/img/attachment-3.jpg')}});">
                                         <div class="box-remove">
@@ -120,7 +121,7 @@ Mitra
                                                 class="btn btn-danger btn-sm">Remove</button>
                                         </div>
                                         <input name="gambar" class="file-upload-input" type="file"
-                                            onchange="readURL(this);" accept="gambar/*" multiple/>
+                                            onchange="readURL(this);" accept="gambar/*" />
                                         <div class="drag-text">
                                             <h5>Click or drag an image.
                                             </h5>
@@ -164,6 +165,10 @@ Mitra
         filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{csrf_token()}}'
     });
 </script>
+<style>
+    .image-upload-wrap {
+  border-radius: 0 !important;}
+</style>
 <script src="{{asset('assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
 {{-- Validator --}}
@@ -180,50 +185,35 @@ Mitra
         //         title: title,
         //         slug: slug
         //     },
-
         //     watch: {
         //         title: function(val) {
         //             this.slug = Slugify(val)
         //         }
         //     }
         // })
-
-
         $('#btn-refresh').on('click', function(){
             $('#kabar-table').DataTable().draw(true)
         })
-        var table = $('#kabar-table').DataTable({
-            processing: true,
-            serverSide: true,
-            responsive: true,
-            autoWidth:false,
-            scrollX: true,
-            scrollY: true,
-            ajax: "{{ route('api.kabar') }}",
-            columns: [
-                {data: 'id', name: 'id'},
-                {data: 'show_image', name: 'show_image'},
-                {data: 'projek.nama', name: 'projek.nama'},
-                {data: 'judul', name: 'judul'},
-                {data: 'konten', name: 'konten'},
-                {data: 'action', name: 'action', orderable: false, searchable: false}
-            ]
-        });
-        table.on('order.dt search.dt', function () {
-            table.column(0, {
-                search: 'applied',
-                order: 'applied'
-            }).nodes().each(function (cell, i) {
-                cell.innerHTML = i + 1;
-            });
-        }).draw();
-
+        // var table = $('#kabar-table').DataTable({
+        //     processing: true,
+        //     serverSide: true,
+        //     responsive: true,
+        //     scrollX: true,
+        //     ajax: "{{ route('api.kabar') }}",
+        //     columns: [
+        //         {data: 'id', name: 'id'},
+        //         {data: 'show_image', name: 'show_image'},
+        //         {data: 'projek.nama', name: 'projek.nama'},
+        //         {data: 'judul', name: 'judul'},
+        //         {data: 'konten', name: 'konten'},
+        //         {data: 'action', name: 'action', orderable: false, searchable: false}
+        //     ]
+        // });
         $('#modal-form form').validator().on('submit', function (e) {
             if (!e.isDefaultPrevented()){
                 var id = $('#id').val();
                 if (save_method == 'add') url = "{{ url('dashboard/kabar') }}";
                 else url = "{{ url('dashboard/kabar') . '/' }}" + id;
-
                 $.ajax({
                     url : url,
                     type : "POST",
@@ -262,57 +252,47 @@ Mitra
             }
         });
     } );
-
     function addForm() {
         removeUpload()
         save_method = "add";
         $('input[nama=_method]').val('POST');
-
         $.ajax({
             url : "{{ route('project.getAll') }}" ,
             type : "GET",
             success: function(res){
                 console.log(res)
-
                 $("#projek_id").empty();
                 $("#projek_id").append(`<option value="" selected disabled>-- Pilih Projek --</option>`);
                 $.each(res, function(key, item) {
                     $("#projek_id").append(`<option value="` + item.id + `">` + item.nama +` </option>`);
                 });
-
             }, error: function(error){
                 console.log(error);
             }
         });
-
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
         $('.modal-title').text('Add kabar');
     }
-
     function editForm(id) {
         removeUpload()
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
-
         $.ajax({
             url : "{{ route('project.getAll') }}" ,
             type : "GET",
             success: function(res){
                 console.log(res)
-
                 $("#projek_id").empty();
                 $("#projek_id").append(`<option value="" selected disabled>-- Pilih Projek --</option>`);
                 $.each(res, function(key, item) {
                     $("#projek_id").append(`<option value="` + item.id + `">` + item.nama +` </option>`);
                 });
-
             }, error: function(error){
                 console.log(error);
             }
         });
-
         $.ajax({
             url: "{{ url('dashboard/kabar') }}" + '/' + id + "/edit",
             type: "GET",
@@ -321,7 +301,6 @@ Mitra
                 console.log(data)
                 $('#modal-form').modal('show');
                 $('.modal-title').text('Edit kabar');
-
                 $('#id').val(data.id);
                 $('#judul').val(data.judul);
                 $('#konten').val(data.konten);
@@ -344,7 +323,6 @@ Mitra
             }
         });
     }
-
     function deleteData(id){
         var csrf_token = $('meta[name="csrf-token"]').attr('content');
         swal({
@@ -440,7 +418,6 @@ Mitra
     function readURL(input) {
         if (input.files && input.files[0]) {
             let reader = new FileReader();
-
             reader.onload = function(e) {
                 // $('.image-upload-wrap').hide();
                 $(".image-upload-wrap").css({
@@ -448,11 +425,9 @@ Mitra
                     border: "0px solid #fff"
                 });
                 $(".image-upload-wrap h5").hide();
-
                 $('.file-upload-input').attr('src', e.target.result);
                 $(".box-remove").css("display", "absolute");
                 $(".box-remove").show();
-
                 $(".image-title").html(input.files[0].name);
             };
             $('#image_available').val(true)
@@ -467,7 +442,6 @@ Mitra
             $(".box-remove").hide();
         }
     }
-
     function removeUpload() {
         $(".file-upload-input").val(null);
         $(".box-remove").hide();

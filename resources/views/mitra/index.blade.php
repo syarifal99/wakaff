@@ -4,6 +4,10 @@ Mitra
 @endsection
 
 @section('content')
+<style>
+    .image-upload-wrap {
+  border-radius: 0 !important;}
+</style>
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h4 mb-0 text-gray-800">Management Mitra</h1>

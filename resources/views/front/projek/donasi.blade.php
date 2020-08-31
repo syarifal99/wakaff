@@ -169,6 +169,8 @@
                         <option value="">-- Pilih Metode --</option>
                         <option value="Tunai">Tunai</option>
                         <option value="Transfer">Transfer</option>
+                        <option value="Gopay">Gopay</option>
+                        <option value="Linkaja">Linkaja</option>
                     </select>
                     @error('metode')
                         <div class="alert alert-danger">{{ $message }}</div>

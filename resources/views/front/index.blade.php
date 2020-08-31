@@ -142,8 +142,8 @@
 <div class="position-relative overflow-hidden p-3 text-center bg-light">
     <div class="col-md-5 mx-auto my-5">
         <h1 class="font-weight-normal">Sistem Wakaf</h1>
-        <p class="lead">And an even wittier subheading to boot. Jumpstart your marketing efforts
-            with this example based on Apple’s marketing pages.</p>
+        <p class="lead">Wakaf adalah sedekah jariyah, yakni menyedekahkan harta kita untuk kepentingan ummat. Harta Wakaf tidak boleh berkurang
+        nilainya, tidak boleh dijual dan tidak boleh diwariskan</p>
         <a class="btn btn-outline-secondary" href="{{route('projek.create')}}">Galang Dana</a>
     </div>
     <div class="product-device shadow-sm d-none d-md-block"></div>

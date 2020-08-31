@@ -96,6 +96,7 @@ class ProjectController extends Controller
             'label_id'      => $request->label_id,
             'user_id'       => Auth::user()->id,
             'kota_id'       => $request->kota_id,
+            'jenis'         => $request->jenis,
             'status'        => isset($request->status)?$request->status:'MENUNGGU',
         ]);
 
@@ -108,7 +109,7 @@ class ProjectController extends Controller
         }
 
         if($request->ajax()) return response()->json(['success' =>true, 'message' => 'Projek berhasil dibuat.']);
-        return redirect(route('project.show', $projek->slug));
+        return redirect(route('project.index', $projek));
     }
 
     /**
@@ -121,7 +122,7 @@ class ProjectController extends Controller
     {
         $mitra = User::whereHas('mitra_attr')->with('mitra_attr')->get();
         $projek = Projek::where('id', $id)
-            ->with('user', 'mitra', 'kategori', 'label', 'kota.provinsi')
+            ->with('user', 'jenis', 'mitra', 'kategori', 'label', 'kota.provinsi')
             ->firstOrFail();
         if(!$projek) return abort(404);
 
@@ -171,9 +172,23 @@ class ProjectController extends Controller
             $input['gambar'] = '/upload/projek/' . str_slug($input['nama'], '-') . '.' . $request->gambar->getClientOriginalExtension();
             $request->gambar->move(public_path('/upload/projek/'), $input['gambar']);
         } else if($input['image_available']== false) {
-			$input['gambar'] = NULL;
+            $input['gambar'] = NULL;
 			try {unlink(public_path($projek->gambar));} catch (\Throwable $th) {}
-		}
+        }
+        if($request->jenis != '') {
+            foreach ($request->jenis as $value) {
+                Jenis::firstOrCreate([
+                    'jenis' => $value
+                ], [
+                    'jenis' => $value
+                ]);
+            }
+            $id_jenis = [];
+            foreach ($request->jenis as $value) {
+                $id_jenis[] = Jenis::where('jenis', $value)->first()->id;
+            }
+        }
+
         $projek->update([
             'nama'          => $request->nama,
             'slug'          => $request->nama,
@@ -186,6 +201,9 @@ class ProjectController extends Controller
             'kota_id'       => $request->kota_id,
             'mitra_id'      => isset($request->mitra_id)?$request->mitra_id:$projek->mitra_id,
         ]);
+
+        if($request->jenis != '') $projek->jenis()->attach($id_jenis);
+
         $_user = Auth::user();
         if( $_user->hasRole(['admin']) ){
             $projek->update(['status' => isset($request->status)?$request->status: $projek->status]);
