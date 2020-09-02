@@ -114,11 +114,11 @@ Monitoring Mitra
                       </div>
                       <ul type="circle">
                         <li class="list-inline-item">
-                            <div class="text-xs font-weight-bold text-info mb-1">- Total Pencairan Dana</div>
+                            <div class="text-xs font-weight-bold text-info mb-1">- Total Dana Masuk</div>
                            
                         </li>
                         <li class="list-inline-item">
-                            <div class="text-xs font-weight-bold text-success mb-1">- Total Dana Masuk</div>
+                            <div class="text-xs font-weight-bold text-success mb-1">- Total Pencairan Dana</div>
                         </li>
                     </ul>
                 </div>

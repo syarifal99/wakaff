@@ -24,7 +24,7 @@ Mitra
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group btn-group-md">
-                            <h6 class="m-0 font-weight-bold text-primary">Daftar Mitra</h6>
+                            <h6 class="m-0 font-weight-bold text-success">Daftar Mitra</h6>
                         </div>
                         <div class="btn-group btn-group-md">
                             <button type="button" class="btn btn-outline-success btn-sm" id="btn-refresh"

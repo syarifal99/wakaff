@@ -82,6 +82,7 @@ class MonitoringController extends Controller
         $pencairan = DB::table("pencairan as p")
         ->leftjoin('projek as pr', 'p.projek_id', '=', 'pr.id')
         ->leftjoin('users as u', 'pr.mitra_id', '=', 'u.id')
+        ->where('pr.kategori_id', '=', '2')
         ->where('u.id', $user->mitra_attr->id)
         ->select(DB::raw("SUM(p.nominal) as total_nominaldana"), DB::raw('MONTH(p.created_at) as date'))->orderBy('date')->get();
 
@@ -106,6 +107,7 @@ class MonitoringController extends Controller
         $pendanaan = DB::table("pendanaan as p")
         ->leftjoin('projek as pr', 'p.projek_id', '=', 'pr.id')
         ->leftjoin('users as u', 'pr.mitra_id', '=', 'u.id')
+        ->where('pr.kategori_id', '=', '2')
         ->where('u.id', $user->mitra_attr->id)
         ->select(DB::raw("SUM(p.nominal) as total_nominaldana"), DB::raw('MONTH(p.created_at) as date'))->orderBy('date')->get();
 

@@ -96,7 +96,6 @@ class ProjectController extends Controller
             'label_id'      => $request->label_id,
             'user_id'       => Auth::user()->id,
             'kota_id'       => $request->kota_id,
-            'jenis'         => $request->jenis,
             'status'        => isset($request->status)?$request->status:'MENUNGGU',
         ]);
 

@@ -20,7 +20,7 @@ Project
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <div class="btn-group btn-group-md">
-                            <h6 class="m-0 font-weight-bold text-primary">Daftar Project</h6>
+                            <h6 class="m-0 font-weight-bold text-success">Daftar Project</h6>
                         </div>
                         <div class="form-group">
                             <select name="" id="kategori_wakaf" class="form-control">
@@ -224,7 +224,6 @@ Project
                 url : "{{ url('provinsi') . '/' }}" + id,
                 type : "GET",
                 success: function(res){
-                    console.log(res)
                     $("#kota_id").empty();
                     $("#kota_id").append(`<option value="" selected disabled>-- Pilih kota --</option>`);
                     $.each(res.kota, function(key, item) {
@@ -281,7 +280,6 @@ Project
                     contentType: false,
                     processData: false,
                     success : function(data) {
-                        console.log(data)
                         $('#modal-form').modal('hide');
                         $('#projek-table').DataTable().ajax.reload();
                         swal({
@@ -344,7 +342,6 @@ Project
             type: "GET",
             dataType: "JSON",
             success: function(data) {
-                console.log(data)
                 $('#modal-form').modal('show');
                 $('.modal-title').text('Edit Projek');
                 // $('#projek_id').val(data.user.projek_attr.id);
@@ -359,7 +356,6 @@ Project
             url : url,
             type : "GET",
             success: function(res){
-                console.log(res)
                 $('#projek-table').DataTable().draw(true)
                 swal({
                     title: 'Success!',
@@ -505,6 +501,16 @@ Project
                 $('#tenggat_waktu').val(data.projek.tenggat_waktu);
                 $('#provinsi_id').val(data.projek.kota.provinsi.id);
                 $('#kota_id').val(data.projek.kota.id);
+
+                let jenis = []
+                let strJenis = "";
+                data.projek.jenis.forEach(el => {
+                    strJenis += `<option value="${el.jenis}">${el.jenis}</option>`
+                    jenis.push(el.jenis)
+                });
+                $('#jenis').html(strJenis)
+                $('#jenis').val(jenis).trigger('change');
+                
                 if(data.projek.gambar){
                     $(".image-upload-wrap").css({
                         "background-image": `url(${data.projek.gambar})`,
