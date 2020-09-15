@@ -183,6 +183,7 @@ Project
 <script type="text/javascript">
     let _roles = {}
     let _permissions = {}
+    const URL = `{{ asset('/') }}`
     
     $(document).ready(function() {
         $('#jenis').select2({
@@ -513,7 +514,7 @@ Project
                 
                 if(data.projek.gambar){
                     $(".image-upload-wrap").css({
-                        "background-image": `url(${data.projek.gambar})`,
+                        "background-image": `url(${URL}${data.projek.gambar})`,
                         border: "0px solid #fff"
                     });
                     $('#image_available').val(true)

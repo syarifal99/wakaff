@@ -150,6 +150,8 @@ Mitra
 <script type="text/javascript">
     let _roles = {}
     let _permissions = {}
+    const URL = `{{ asset('/') }}`
+
     $(document).ready(function() {
         // let title = ''
         // let slug = ''
@@ -292,7 +294,7 @@ Mitra
                 $('#email').val(data.email);
                 if(data.image){
                     $(".image-upload-wrap").css({
-                        "background-image": `url(${data.image})`,
+                        "background-image": `url(${URL}${data.image})`,
                         border: "0px solid #fff"
                     });
                     $('#image_available').val(true)
