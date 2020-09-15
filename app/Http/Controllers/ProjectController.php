@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Projek;
-use App\Provinsi;
-use DataTables;
-use App\User;
-use App\Kota;
 use PDF;
+use App\Kota;
+use App\User;
+use App\Jenis;
+use App\Projek;
+use DataTables;
+use App\Provinsi;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Jenis;
 
 class ProjectController extends Controller
 {
@@ -190,7 +191,7 @@ class ProjectController extends Controller
 
         $projek->update([
             'nama'          => $request->nama,
-            'slug'          => $request->nama,
+            'slug'          => Str::slug($request->nama),
             'deskripsi'     => $request->deskripsi,
             'tenggat_waktu' => $request->tenggat_waktu,
             'nominal'       => $request->nominal,
