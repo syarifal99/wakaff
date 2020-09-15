@@ -21,7 +21,7 @@ Register
               <form class ="user" method="POST" action="{{ route('register') }}">
                 @csrf
                 <div class="form-group">
-                    <input id="name" type="text" class="form-control form-control-user @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" placeholder="Name">
+                    <input id="name" type="text" class="form-control form-control-user @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" placeholder="Nama">
                 
                 @error('name')
                     <span class="invalid-feedback" role="alert">
@@ -61,7 +61,7 @@ Register
 
                 </div>
                 <div class="form-group">
-                  <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email Address">
+                  <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Alamat Email">
                 
                 @error('email')
                   <span class="invalid-feedback" role="alert">
@@ -75,7 +75,7 @@ Register
                     <input type="password" class="form-control form-control-user" name="password" id="exampleInputPassword" placeholder="Password">
                   </div>
                   <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" name="password_confirmation" id="exampleRepeatPassword" placeholder="Repeat Password">
+                    <input type="password" class="form-control form-control-user" name="password_confirmation" id="exampleRepeatPassword" placeholder="Ulangi Password">
                   </div>
                   @error('password')
                   <span class="invalid-feedback" role="alert">
@@ -84,16 +84,12 @@ Register
                 @enderror
                 </div>
                 <button type="submit" class="btn btn-primary btn-user btn-block">
-                  Register Account
+                  Daftar
                 </button>
                 <hr>
               </form>
-              <hr>
               <div class="text-center">
-                <a class="small" href="{{ route('password.request') }}">Forgot Password?</a>
-              </div>
-              <div class="text-center">
-                <a class="small" href="{{ route('login') }}">Already have an account? Login!</a>
+                <a class="small" href="{{ route('login') }}">Apakah sudah memiliki aku? Login!</a>
               </div>
             </div>
           </div>

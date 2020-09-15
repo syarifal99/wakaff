@@ -26,7 +26,7 @@ Login
                   <form class ="user" method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus aria-describedby="emailHelp" placeholder="Masukkan Alamat Email...">
                     
                       @error('email')
                       <span class="invalid-feedback" role="alert">
@@ -56,20 +56,10 @@ Login
                     <button type="submit" class="btn btn-primary btn-user btn-block">
                         {{ __('Login') }}
                     </button>
-                    <hr>
-                    <a href="index.html" class="btn btn-google btn-user btn-block">
-                      <i class="fab fa-google fa-fw"></i> Login with Google
-                    </a>
-                    <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                      <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                    </a>
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="{{ route('password.request') }}">Forgot Password?</a>
-                  </div>
-                  <div class="text-center">
-                    <a class="small" href="{{ route('register') }}">Create an Account!</a>
+                    <a class="small" href="{{ route('register') }}">Buat akun!</a>
                   </div>
                 </div>
               </div>

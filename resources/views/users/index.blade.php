@@ -409,7 +409,7 @@ Users
         $('.modal-title').text('Add user');
     }
 
-    function editForm(id) {
+    function editProfil(id) {
         removeUpload()
         initRoles()
         initPermissions()
