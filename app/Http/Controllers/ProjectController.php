@@ -201,7 +201,7 @@ class ProjectController extends Controller
             'mitra_id'      => isset($request->mitra_id)?$request->mitra_id:$projek->mitra_id,
         ]);
 
-        if($request->jenis != '') $projek->jenis()->attach($id_jenis);
+        if($request->jenis != '') $projek->jenis()->sync($id_jenis);
 
         $_user = Auth::user();
         if( $_user->hasRole(['admin']) ){
