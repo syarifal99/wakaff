@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-Project
+Projek
 @endsection
 
 @section('content')
@@ -8,7 +8,7 @@ Project
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h4 mb-0 text-gray-800">Daftar Projek</h1>
     <div class="btn-group btn-group-md">
-        <button onclick="addForm()" class="btn btn-primary">Tambahkan project</button>
+        <button onclick="addForm()" class="btn btn-primary">Tambahkan projek</button>
     </div>
 </div>
 
@@ -69,7 +69,7 @@ Project
                     <div class="modal-body" id="root">
                         <input type="hidden" id="id" name="id">
                         <div class="form-group row justify-content-center">
-                            <label>Image</label>
+                            <label>Gambar</label>
                             <div class="col-md-6 col-12">
                                 <div class="file-upload mb-3">
                                     <input type="hidden" name="image_available" value="false" id="image_available">
@@ -77,12 +77,12 @@ Project
                                         style="background-image: url({{asset('assets/img/attachment-3.jpg')}});">
                                         <div class="box-remove">
                                             <button type="button" onclick="removeUpload()"
-                                                class="btn btn-danger btn-sm">Remove</button>
+                                                class="btn btn-danger btn-sm">Hapus</button>
                                         </div>
                                         <input name="gambar" class="file-upload-input" type="file"
                                             onchange="readURL(this);" accept="gambar/*" />
                                         <div class="drag-text">
-                                            <h5>Click or drag an image.
+                                            <h5>Kilk atau geser gambar.
                                             </h5>
                                         </div>
                                     </div>
@@ -156,7 +156,7 @@ Project
                         </div> --}} -->
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
@@ -427,7 +427,7 @@ Project
         });
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Add Projek');
+        $('.modal-title').text('Tambah Projek');
     }
     function editForm(id) {
         removeUpload()
@@ -557,13 +557,13 @@ Project
     function deleteData(id){
         var csrf_token = $('meta[name="csrf-token"]').attr('content');
         swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah anda yakin?',
+            text: "Anda tidak akan dapat kembali!",
             type: 'warning',
             showCancelButton: true,
             cancelButtonColor: '#d33',
             confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Iya, hapus!'
         }).then(function () {
             $.ajax({
                 url : "{{ url('dashboard/project') }}" + '/' + id,

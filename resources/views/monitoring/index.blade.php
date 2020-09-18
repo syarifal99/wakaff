@@ -6,7 +6,7 @@ Monitoring Mitra
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h4 mb-0 text-gray-800">Management Monitoring Mitra</h1>
+    <h1 class="h4 mb-0 text-gray-800">Managemen Monitoring Mitra</h1>
 </div>
 
 <!-- Content Row -->
@@ -461,13 +461,13 @@ var myLineChart = new Chart(ctx, {
     function deleteData(id){
         var csrf_token = $('meta[name="csrf-token"]').attr('content');
         swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah anda yakin?',
+            text: "Anda tidak akan dapat kembali!",
             type: 'warning',
             showCancelButton: true,
             cancelButtonColor: '#d33',
             confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Iya, hapus!'
         }).then(function () {
             $.ajax({
                 url : "{{ url('dashboard/monitoring') }}" + '/' + id,

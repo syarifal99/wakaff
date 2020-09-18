@@ -310,13 +310,13 @@ Progres Project
     function deleteData(id){
         var csrf_token = $('meta[name="csrf-token"]').attr('content');
         swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah anda yakin?',
+            text: "Anda tidak akan dapat kembali!",
             type: 'warning',
             showCancelButton: true,
             cancelButtonColor: '#d33',
             confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Iya, hapus!'
         }).then(function () {
             $.ajax({
                 url : "{{ url('dashboard/pencairan') }}" + '/' + id,

@@ -44,7 +44,7 @@ Dashboard
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Project</div>
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Projek</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800">{{$projek_count}}</div>
                     </div>
                     <div class="col-auto">
@@ -239,7 +239,7 @@ Dashboard
             success: function(data) {
                 console.log(data)
                 $('#modal-form').modal('show');
-                $('.modal-title').text('Edit mitra');
+                $('.modal-title').text('Ubah mitra');
 
                 $('#id').val(data.id);
                 $('#name').val(data.name);

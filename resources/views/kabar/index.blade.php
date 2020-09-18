@@ -110,7 +110,7 @@ Mitra
                     <div class="modal-body" id="root">
                         <input type="hidden" id="id" name="id">
                         <div class="form-group row justify-content-center">
-                            <label>Image</label>
+                            <label>Gambar</label>
                             <div class="col-md-6 col-12">
                                 <div class="file-upload mb-3">
                                     <input type="hidden" name="image_available" value="false" id="image_available">
@@ -118,12 +118,12 @@ Mitra
                                         style="background-image: url({{asset('assets/img/attachment-3.jpg')}});">
                                         <div class="box-remove">
                                             <button type="button" onclick="removeUpload()"
-                                                class="btn btn-danger btn-sm">Remove</button>
+                                                class="btn btn-danger btn-sm">Hapus</button>
                                         </div>
                                         <input name="gambar" class="file-upload-input" type="file"
                                             onchange="readURL(this);" accept="gambar/*" />
                                         <div class="drag-text">
-                                            <h5>Click or drag an image.
+                                            <h5>Klik atau geser gambar.
                                             </h5>
                                         </div>
                                     </div>
@@ -144,7 +144,7 @@ Mitra
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
@@ -272,7 +272,7 @@ Mitra
         });
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Add kabar');
+        $('.modal-title').text('Tambah kabar');
     }
     function editForm(id) {
         removeUpload()
@@ -300,7 +300,7 @@ Mitra
             success: function(data) {
                 console.log(data)
                 $('#modal-form').modal('show');
-                $('.modal-title').text('Edit kabar');
+                $('.modal-title').text('Ubah kabar');
                 $('#id').val(data.id);
                 $('#judul').val(data.judul);
                 $('#konten').val(data.konten);
@@ -326,13 +326,13 @@ Mitra
     function deleteData(id){
         var csrf_token = $('meta[name="csrf-token"]').attr('content');
         swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah anda yakin?',
+            text: "Anda tidak akan dapat kembali!",
             type: 'warning',
             showCancelButton: true,
             cancelButtonColor: '#d33',
             confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Iya, hapus!'
         }).then(function () {
             $.ajax({
                 url : "{{ url('dashboard/kabar') }}" + '/' + id,

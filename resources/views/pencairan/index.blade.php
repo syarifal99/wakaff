@@ -6,7 +6,7 @@ Pencairan Dana
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h5 class="h4 mb-0 text-gray-800">Management Update Progress Project</h5>
+    <h5 class="h4 mb-0 text-gray-800">Managemen Update Progres Projek</h5>
 </div>
 
 <!-- Content Row -->
@@ -91,7 +91,7 @@ Pencairan Dana
                     </div>
                     
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
@@ -308,13 +308,13 @@ Pencairan Dana
     function deleteData(id){
         var csrf_token = $('meta[name="csrf-token"]').attr('content');
         swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah anda yakin?',
+            text: "Anda tidak akan dapat kembali!",
             type: 'warning',
             showCancelButton: true,
             cancelButtonColor: '#d33',
             confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Iya, hapus!'
         }).then(function () {
             $.ajax({
                 url : "{{ url('dashboard/pencairan') }}" + '/' + id,

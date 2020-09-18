@@ -58,7 +58,7 @@
     <li class="nav-item {{Request::is('dashboard/project')? 'active':''}}">
              <a class="nav-link" href="{{route('project.index')}}">
                  <i class="fas fa-fw fa-clipboard"></i>
-                 <span>Project</span></a>
+                 <span>Projek</span></a>
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->
@@ -66,7 +66,7 @@
         <a class="nav-link {{Request::is('dashboard/progres') || Request::is('dashboard/paset')? '':'collapsed'}}" href="#" data-toggle="collapse" data-target="#collapsePages2" aria-expanded="true"
             aria-controls="collapsePages2">
             <i class="fas fa-fw fa-info"></i>
-            <span>Progres Project</span>
+            <span>Progres Projek</span>
         </a>
         <div id="collapsePages2" class="collapse {{Request::is('dashboard/progres') || Request::is('dashboard/progresaset')? 'show':''}}" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
@@ -111,7 +111,7 @@
     <li class="nav-item {{Request::is('dashboard/project')? 'active':''}}">
              <a class="nav-link" href="{{route('project.index')}}">
                  <i class="fas fa-fw fa-clipboard"></i>
-                 <span>Project</span></a>
+                 <span>Projek</span></a>
     </li>
     
     <li class="nav-item {{Request::is('dashboard/pencairan')? 'active':''}}">

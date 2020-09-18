@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 
 @section('title')
-Login
+Masuk
 @endsection
 
 @section('content')
@@ -49,12 +49,12 @@ Login
                         <input class="custom-control-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                         <label class="custom-control-label" for="remember">
-                            {{ __('Remember Me') }}
+                            {{ __('Ingat saya') }}
                         </label>
                       </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-user btn-block">
-                        {{ __('Login') }}
+                        {{ __('Masuk') }}
                     </button>
                   </form>
                   <hr>

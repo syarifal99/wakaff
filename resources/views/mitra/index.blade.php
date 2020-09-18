@@ -10,7 +10,7 @@ Mitra
 </style>
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h4 mb-0 text-gray-800">Management Mitra</h1>
+    <h1 class="h4 mb-0 text-gray-800">Managemen Mitra</h1>
     <div class="btn-group btn-group-md">
         <button onclick="addForm()" class="btn btn-primary">Tambahkan mitra</button>
     </div>
@@ -67,7 +67,7 @@ Mitra
                     <div class="modal-body" id="root">
                         <input type="hidden" id="id" name="id">
                         <div class="form-group row justify-content-center">
-                            <label>Image</label>
+                            <label>Gambar</label>
                             <div class="col-md-6 col-12">
                                 <div class="file-upload mb-3">
                                     <input type="hidden" name="image_available" value="false" id="image_available">
@@ -75,12 +75,12 @@ Mitra
                                         style="background-image: url({{asset('assets/img/attachment-3.jpg')}});">
                                         <div class="box-remove">
                                             <button type="button" onclick="removeUpload()"
-                                                class="btn btn-danger btn-sm">Remove</button>
+                                                class="btn btn-danger btn-sm">Hapus</button>
                                         </div>
                                         <input name="image" class="file-upload-input" type="file"
                                             onchange="readURL(this);" accept="image/*" />
                                         <div class="drag-text">
-                                            <h5>Click or drag an image.
+                                            <h5>Klik atau geser gambar.
                                             </h5>
                                         </div>
                                     </div>
@@ -103,7 +103,7 @@ Mitra
                             <span class="help-block with-errors"></span>
                         </div>
                         <div class="form-group">
-                            <label>No HP.</label>
+                            <label>No Hp</label>
                             <input type="text" class="form-control" id="no_hp" name="no_hp" required>
                             <span class="help-block with-errors"></span>
                         </div>
@@ -124,14 +124,14 @@ Mitra
                             <span class="help-block with-errors"></span>
                         </div>
                         <div class="form-group">
-                            <label>Password Confirmation</label>
+                            <label>Konfirmasi Password</label>
                             <input type="password" autocomplete="off" class="form-control" id="password_confirmation"
                                 name="password_confirmation">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
@@ -268,7 +268,7 @@ Mitra
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Add mitra');
+        $('.modal-title').text('Tambah mitra');
     }
 
     function editForm(id) {
@@ -314,13 +314,13 @@ Mitra
     function deleteData(id){
         var csrf_token = $('meta[name="csrf-token"]').attr('content');
         swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah anda yakin?',
+            text: "Anda tidak akan dapat kembali!",
             type: 'warning',
             showCancelButton: true,
             cancelButtonColor: '#d33',
             confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Iya, hapus!'
         }).then(function () {
             $.ajax({
                 url : "{{ url('dashboard/mitra') }}" + '/' + id,
