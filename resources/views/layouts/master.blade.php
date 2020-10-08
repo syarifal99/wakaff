@@ -171,7 +171,7 @@
                     <div class="modal-body" id="root">
                         <input type="hidden" id="id" name="id">
                         <div class="form-group row justify-content-center">
-                            <label>Image</label>
+                            <label>Gambar</label>
                             <div class="col-md-6 col-12">
                                 <div class="file-upload mb-3">
                                     <input type="hidden" name="image_available" value="false" id="image_available">
@@ -179,7 +179,7 @@
                                         style="background-image: url({{asset('assets/img/attachment-3.jpg')}});">
                                         <div class="box-remove">
                                             <button type="button" onclick="removeUpload()"
-                                                class="waves-effect waves-light btn-small red lighten-2">Remove</button>
+                                                class="waves-effect waves-light btn-small red lighten-2">Hapus</button>
                                         </div>
                                         <input name="image" class="file-upload-input" type="file"
                                             onchange="readURL(this);" accept="image/*" />
@@ -197,6 +197,11 @@
                             <span class="help-block with-errors"></span>
                         </div>
                         <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="form-group">
                             <label>No HP.</label>
                             <input type="text" class="form-control" id="no_hp" name="no_hp" required>
                             <span class="help-block with-errors"></span>
@@ -204,11 +209,6 @@
                         <div class="form-group">
                             <label>No. Rek</label>
                             <input type="text" class="form-control" id="no_rek" name="no_rek">
-                            <span class="help-block with-errors"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
                             <span class="help-block with-errors"></span>
                         </div>
                         <div class="form-group">
@@ -229,7 +229,7 @@
                             <span class="help-block with-errors"></span>
                         </div>
                         <div class="form-group">
-                            <label>Password Confirmation</label>
+                            <label>Konfirmasi Password</label>
                             <input type="password" autocomplete="off" class="form-control" id="password_confirmation"
                                 name="password_confirmation">
                             <span class="help-block with-errors"></span>
@@ -237,7 +237,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" onclick="submitEditProfil()s">Submit</button>
                     </div>
                 </form>
             </div>
@@ -245,6 +245,7 @@
     </div>
    
     <!-- Bootstrap core JavaScript-->
+
     <script src="{{asset('assets/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
@@ -253,195 +254,11 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{asset('assets/js/sb-admin-2.min.js')}}"></script>
-
     @yield('js')
-
-    
-</body>
-
-</html>
-
-@section('js')
-{{-- Datatable --}}
-<script src="{{asset('assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('assets/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
-{{-- Validator --}}
-<script src="{{ asset('assets/vendor/validator/validator.min.js') }}"></script>
-<script type="text/javascript">
-    let _roles = {}
-    let _permissions = {}
-    const URL = `{{ asset('/') }}`
-    $(document).ready(function() {
-        $(document).on('change', '.cb_role', function() {
-            let isChecked = $(this).is(':checked')
-            if(isChecked) $(this).addClass('checked')
-            else $(this).removeClass('checked')
-            let choosen = $(this).val()
-            let idx = ''
-            $.each(_roles, (k,v)=>{
-                if(v.name == choosen) idx = k
-            })
-            let checkboxes = $('.cb_permission')
-            let permissions = _roles[idx].permissions
-            $.each(checkboxes, (k,v)=>{
-                permissions.forEach(p => {
-                    if(v.value == p.name) {
-                        if(isChecked) {
-                            v.checked = true
-                            $(v).attr('disabled', true).addClass('checked');
-                        } else {
-                            v.checked = false
-                            $(v).attr('disabled', false).removeClass('checked');
-                        }
-                    }
-                });
-            })
-        });
-        $(document).on('change', '.cb_permission', function() {
-            let isChecked = $(this).is(':checked')
-            if(isChecked) $(this).addClass('checked')
-            else $(this).removeClass('checked')
-        });
-        
-        // let title = ''
-        // let slug = ''
-        // const app = new Vue({
-        //     el: '#root',
-        //     data: {
-        //         title: title,
-        //         slug: slug
-        //     },
-            
-        //     watch: {
-        //         title: function(val) {
-        //             this.slug = Slugify(val)
-        //         }
-        //     }
-        // })
-        $('#btn-refresh').on('click', function(){
-            $('#users-table').DataTable().draw(true)
-        })
-        var table = $('#users-table').DataTable({
-            processing: true,
-            serverSide: true,
-            responsive: true,
-            scrollX: true,
-            ajax: "{{ route('api.users') }}",
-            columns: [
-                // protected $fillable = ['name', 'email', 'username', 'password', 'no_rek', 'no_hp', 'image'];
-                {data: 'id', name: 'id'},
-                {data: 'show_image', name: 'show_image'},
-                {data: 'name', name: 'name'},
-                {data: 'username', name: 'username'},
-                {data: 'email', name: 'email'},
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.no_hp) return '-'
-                        return data.no_hp
-                    }
-                },
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        if(!data.no_rek) return '-'
-                        return data.no_rek
-                    }
-                },
-                {
-                    data: null, orderable: false, width: '100px',
-                    render: function (data) {
-                        let str = ''
-                        $.each(data.roles, (key, val)=>{
-                            str += `<span class="badge badge-success">${val.name}</span> `
-                        })
-                        return str;
-                    }
-                },
-                {data: 'action', name: 'action', orderable: false, searchable: false}
-            ]
-        });
-
-        $('#modal-form form').validator().on('submit', function (e) {
-            if (!e.isDefaultPrevented()){
-                var id = $('#id').val();
-                if (save_method == 'add') url = "{{ url('dashboard/users') }}";
-                else url = "{{ url('dashboard/users') . '/' }}" + id;
-
-                let rCheckboxes = $('.cb_role')
-                let roleNameArr = ''
-                $.each(rCheckboxes, (k,v)=>{
-                    if($(v).hasClass('checked')){
-                        if(roleNameArr == '') roleNameArr += v.value
-                        else roleNameArr += '|' + v.value
-                    }
-                })
-                $('#role_name').val(roleNameArr)
-
-                let pCheckboxes = $('.cb_permission')
-                let permissionNameArr = ''
-                $.each(pCheckboxes, (k,v)=>{
-                    if($(v).hasClass('checked')){
-                        if(permissionNameArr == '') permissionNameArr += v.value
-                        else permissionNameArr += '|' + v.value
-                    }
-                })
-                $('#permission_name').val(permissionNameArr)
-                
-                $.ajax({
-                    url : url,
-                    type : "POST",
-                    //hanya untuk input data tanpa dokumen
-//                      data : $('#modal-form form').serialize(),
-                    data: new FormData($("#modal-form form")[0]),
-                    contentType: false,
-                    processData: false,
-                    success : function(data) {
-                        console.log(data)
-                        $('#modal-form').modal('hide');
-                        table.ajax.reload();
-                        swal({
-                            title: 'Success!',
-                            text: data.message,
-                            type: 'success',
-                            timer: '1500'
-                        })
-                    },
-                    error : function(data){
-                        console.log(data)
-                        var response = JSON.parse(data.responseText);
-                        let str = ''
-                        $.each(response.errors, function(key, value) {
-                            str += value + ', ';
-                        });
-                        swal({
-                            title: 'Punten...',
-                            text: str,
-                            type: 'error',
-                            timer: '1500'
-                        })
-                    }
-                });
-                return false;
-            }
-        });
-    } );
-    
-    function addForm() {
+    <script>
+        const URL = `{{ asset('/') }}`
+        function editProfil(id) {
         removeUpload()
-        initRoles()
-        initPermissions()
-        save_method = "add";
-        $('input[name=_method]').val('POST');
-        $('#modal-form').modal('show');
-        $('#modal-form form')[0].reset();
-        $('.modal-title').text('Add user');
-    }
-
-    function editForm(id) {
-        removeUpload()
-        initRoles()
-        initPermissions()
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $('#ProfilModal form')[0].reset();
@@ -450,13 +267,14 @@
             type: "GET",
             dataType: "JSON",
             success: function(data) {
-                $('#modal-form').modal('show');
-                $('.modal-title').text('Edit user');
-
+                console.log(data)
+                $('#ProfilModal').modal('show');
+                $('.modal-title').text('Edit Profil');
                 $('#id').val(data.id);
-                if(data.unit) $('#unit_id').val(data.unit.id);
                 $('#name').val(data.name);
                 $('#username').val(data.username);
+                $('#no_hp').val(data.no_hp);
+                $('#no_rek').val(data.no_rek);
                 $('#email').val(data.email);
                 if(data.image){
                     $(".image-upload-wrap").css({
@@ -477,129 +295,6 @@
         });
     }
 
-    function deleteData(id){
-        var csrf_token = $('meta[name="csrf-token"]').attr('content');
-        swal({
-            title: 'Apakah anda yakin?',
-            text: "Anda tidak akan dapat kembali!",
-            type: 'warning',
-            showCancelButton: true,
-            cancelButtonColor: '#d33',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Iya, hapus!'
-        }).then(function () {
-            $.ajax({
-                url : "{{ url('dashboard/users') }}" + '/' + id,
-                type : "POST",
-                data : {'_method' : 'DELETE', '_token' : csrf_token},
-                success : function(data) {
-                    $('#users-table').DataTable().draw(true);
-                    swal({
-                        title: 'Success!',
-                        text: data.message,
-                        type: 'success',
-                        timer: '1500'
-                    })
-                },
-                error : function (data) {
-                    console.log(data)
-                    swal({
-                        title: 'Oops...',
-                        text: data.message,
-                        type: 'error',
-                        timer: '1500'
-                    })
-                }
-            });
-        });
-    }
-    function initRoles(){
-        $.ajax({
-            url: "{{ url('dashboard/roles') }}",
-            type: "GET",
-            async: false,
-            dataType: "JSON",
-            success: function(roles) {
-                _roles = roles
-                let str = ''
-                $.each(roles, (k,v)=>{
-                    str += `<div class="col m6 s12">
-                                <p>
-                                    <label style="color:#000 !important;">
-                                        <input type="checkbox" class="cb_role filled-in" id="${v.id}" value="${v.name}"/>
-                                        <span>${v.name}</span>
-                                    </label>
-                                </p>
-                            </div>`
-                })
-                // onclick="return false;"
-                $('.roles').html(str)
-            },
-            error : function(err) {
-                console.log(err)
-                alert("Data not found!");
-            }
-        });
-    }
-    function initPermissions(){
-        $.ajax({
-            url: "{{ url('permissions') }}",
-            type: "GET",
-            async: false,
-            dataType: "JSON",
-            success: function(permissions) {
-                _permissions = permissions
-                let str = ''
-                $.each(permissions, (k,v)=>{
-                    str += `<div class="col m6 s12">
-                                <p>
-                                    <label style="color:#000 !important;">
-                                        <input type="checkbox" class="cb_permission filled-in" id="${v.id}" value="${v.name}"/>
-                                        <span>${v.name}</span>
-                                    </label>
-                                </p>
-                            </div>`
-                })
-                $('.permissions').html(str)
-            },
-            error : function(err) {
-                console.log(err)
-                alert("Data not found!");
-            }
-        });
-    }
-    let base_url = "{{url('/')}}"
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            let reader = new FileReader();
-
-            reader.onload = function(e) {
-                // $('.image-upload-wrap').hide();
-                $(".image-upload-wrap").css({
-                    "background-image": `url(${e.target.result})`,
-                    border: "0px solid #fff"
-                });
-                $(".image-upload-wrap h5").hide();
-
-                $('.file-upload-input').attr('src', e.target.result);
-                $(".box-remove").css("display", "absolute");
-                $(".box-remove").show();
-
-                $(".image-title").html(input.files[0].name);
-            };
-            $('#image_available').val(true)
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            $(".image-upload-wrap").css({
-                "background-image": `url(${base_url}/assets/img/attachment-3.jpg)`,
-                border: "2px dashed #949494"
-            });
-            $('#image_available').val(false)
-            $(".image-upload-wrap h5").show();
-            $(".box-remove").hide();
-        }
-    }
-
     function removeUpload() {
         $(".file-upload-input").val(null);
         $(".box-remove").hide();
@@ -611,5 +306,9 @@
         $('#image_available').val(false)
         $(".image-upload-wrap h5").show();
     }
-</script>
-@endsection
+    
+    </script>
+    
+</body>
+
+</html>
