@@ -8,7 +8,7 @@ Masuk
 <div class="container">
 
     <!-- Outer Row -->
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-5">
 
       <div class="col-xl-10 col-lg-12 col-md-9">
 
@@ -24,6 +24,13 @@ Masuk
                     <h1 class="h4 text-gray-900 mb-4">Selamat Datang di Sistem Wakaf</h1>
                   </div>
                   <form class ="user" method="POST" action="{{ route('login') }}">
+                    <div class="form-group">
+                        @if ($errors->any())
+                            @foreach ($errors->all() as $error)
+                                <span>{{$error}}</span>
+                            @endforeach
+                        @endif
+                    </div>
                     @csrf
                     <div class="form-group">
                       <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus aria-describedby="emailHelp" placeholder="Masukkan Alamat Email...">

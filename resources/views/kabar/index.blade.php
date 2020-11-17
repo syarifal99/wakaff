@@ -227,7 +227,7 @@ Mitra
                         $('#modal-form').modal('hide');
                         table.ajax.reload();
                         swal({
-                            title: 'Success!',
+                            title: 'Sukses!',
                             text: data.message,
                             type: 'success',
                             timer: '1500'
@@ -241,7 +241,7 @@ Mitra
                             str += value + ', ';
                         });
                         swal({
-                            title: 'Punten🙏🏻...',
+                            title: 'Maaf...',
                             text: str,
                             type: 'error',
                             timer: '1500'
@@ -341,7 +341,7 @@ Mitra
                 success : function(data) {
                     $('#kabar-table').DataTable().draw(true);
                     swal({
-                        title: 'Success!',
+                        title: 'Sukses!',
                         text: data.message,
                         type: 'success',
                         timer: '1500'
@@ -350,7 +350,7 @@ Mitra
                 error : function (data) {
                     console.log(data)
                     swal({
-                        title: 'Oops...',
+                        title: 'Maaf...',
                         text: data.message,
                         type: 'error',
                         timer: '1500'

@@ -572,7 +572,7 @@ Projek
                 success : function(data) {
                     $('#projek-table').DataTable().draw(true);
                     swal({
-                        title: 'Success!',
+                        title: 'Sukses!',
                         text: data.message,
                         type: 'success',
                         timer: '1500'
@@ -581,7 +581,7 @@ Projek
                 error : function (data) {
                     console.log(data)
                     swal({
-                        title: 'Oops...',
+                        title: 'Maaf...',
                         text: data.message,
                         type: 'error',
                         timer: '1500'

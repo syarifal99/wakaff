@@ -171,7 +171,7 @@
                     <div class="modal-body" id="root">
                         <input type="hidden" id="id" name="id">
                         <div class="form-group row justify-content-center">
-                            <label>Gambar</label>
+                            <label></label>
                             <div class="col-md-6 col-12">
                                 <div class="file-upload mb-3">
                                     <input type="hidden" name="image_available" value="false" id="image_available">
@@ -179,12 +179,12 @@
                                         style="background-image: url({{asset('assets/img/attachment-3.jpg')}});">
                                         <div class="box-remove">
                                             <button type="button" onclick="removeUpload()"
-                                                class="waves-effect waves-light btn-small red lighten-2">Hapus</button>
+                                                class="btn btn-danger btn-sm">Hapus</button>
                                         </div>
                                         <input name="image" class="file-upload-input" type="file"
                                             onchange="readURL(this);" accept="image/*" />
                                         <div class="drag-text">
-                                            <h5>Click or drag an image.
+                                            <h5>Klik atau tarik gambar.
                                             </h5>
                                         </div>
                                     </div>
@@ -218,14 +218,14 @@
                         </div>
                         <div class="form-group">
                             <label>Password Lama</label>
-                            <input type="password" autocomplete="new-password" class="form-control" id="password"
-                                name="password">
+                            <input type="password" autocomplete="new-password" class="form-control " id="password"
+                                name="password" >
                             <span class="help-block with-errors"></span>
                         </div>
                         <div class="form-group">
                             <label>Password Baru</label>
-                            <input type="password" autocomplete="off" class="form-control" id="password_confirmation"
-                                name="password_confirmation">
+                            <input type="password" autocomplete="off" class="form-control" id="password_new"
+                                name="password_new">
                             <span class="help-block with-errors"></span>
                         </div>
                         <div class="form-group">
@@ -236,8 +236,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" onclick="submitEditProfil()s">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
@@ -256,14 +256,13 @@
     <script src="{{asset('assets/js/sb-admin-2.min.js')}}"></script>
     @yield('js')
     <script>
-        const URL = `{{ asset('/') }}`
         function editProfil(id) {
         removeUpload()
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $('#ProfilModal form')[0].reset();
         $.ajax({
-            url: "{{ url('dashboard/users') }}" + '/' + id + "/edit",
+            url: "{{ url('dashboard/profile') }}" + '/' + id,
             type: "GET",
             dataType: "JSON",
             success: function(data) {
@@ -277,8 +276,9 @@
                 $('#no_rek').val(data.no_rek);
                 $('#email').val(data.email);
                 if(data.image){
+                    let  URL2 = `{{ url('/') }}`
                     $(".image-upload-wrap").css({
-                        "background-image": `url(${URL}${data.image})`,
+                        "background-image": `url(${URL2}${data.image})`,
                         border: "0px solid #fff"
                     });
                     $('#image_available').val(true)
@@ -295,6 +295,50 @@
         });
     }
 
+    $('#ProfilModal form').validator().on('submit', function (e) {
+        if (!e.isDefaultPrevented()){
+            var id = $('#id').val();
+            if (save_method == 'add') url = "{{ url('dashboard/users') }}";
+            else url = "{{ url('dashboard/profile') }}" + "/" + id + "/update";
+
+            $.ajax({
+                url : url,
+                type : "POST",
+                //hanya untuk input data tanpa dokumen
+//                      data : $('#modal-form form').serialize(),
+                data: new FormData($("#ProfilModal form")[0]),
+                contentType: false,
+                processData: false,
+                success : function(data) {
+                    console.log(data)
+                    $('#ProfilModal').modal('hide');
+                    swal({
+                        title: 'Sukses!',
+                        text: data.message,
+                        type: 'success',
+                        timer: '1500'
+                    })
+                    location.reload();
+                },
+                error : function(data){
+                    console.log(data)
+                    var response = JSON.parse(data.responseText);
+                    let str = ''
+                    $.each(response.errors, function(key, value) {
+                        str += value + ', ';
+                    });
+                    swal({
+                        title: 'Maaf...',
+                        text: str,
+                        type: 'error',
+                        timer: '1500'
+                    })
+                }
+            });
+            return false;
+        }
+    });
+    
     function removeUpload() {
         $(".file-upload-input").val(null);
         $(".box-remove").hide();

@@ -10,7 +10,7 @@ Mitra
 </style>
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h4 mb-0 text-gray-800">Managemen Mitra</h1>
+    <h1 class="h4 mb-0 text-gray-800">Manajemen Mitra</h1>
     <div class="btn-group btn-group-md">
         <button onclick="addForm()" class="btn btn-primary">Tambahkan mitra</button>
     </div>
@@ -67,7 +67,7 @@ Mitra
                     <div class="modal-body" id="root">
                         <input type="hidden" id="id" name="id">
                         <div class="form-group row justify-content-center">
-                            <label>Gambar</label>
+                            <label>Logo</label>
                             <div class="col-md-6 col-12">
                                 <div class="file-upload mb-3">
                                     <input type="hidden" name="image_available" value="false" id="image_available">
@@ -80,7 +80,7 @@ Mitra
                                         <input name="image" class="file-upload-input" type="file"
                                             onchange="readURL(this);" accept="image/*" />
                                         <div class="drag-text">
-                                            <h5>Klik atau geser gambar.
+                                            <h5>Klik atau tarik gambar.
                                             </h5>
                                         </div>
                                     </div>
@@ -236,7 +236,7 @@ Mitra
                         $('#modal-form').modal('hide');
                         table.ajax.reload();
                         swal({
-                            title: 'Success!',
+                            title: 'Sukses!',
                             text: data.message,
                             type: 'success',
                             timer: '1500'
@@ -250,7 +250,7 @@ Mitra
                             str += value + ', ';
                         });
                         swal({
-                            title: 'Punten🙏🏻...',
+                            title: 'Maaf...',
                             text: str,
                             type: 'error',
                             timer: '1500'
@@ -329,7 +329,7 @@ Mitra
                 success : function(data) {
                     $('#mitra-table').DataTable().draw(true);
                     swal({
-                        title: 'Success!',
+                        title: 'Sukses!',
                         text: data.message,
                         type: 'success',
                         timer: '1500'

@@ -6,7 +6,7 @@ Monitoring Mitra
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h4 mb-0 text-gray-800">Managemen Monitoring Mitra</h1>
+    <h1 class="h4 mb-0 text-gray-800">Manajemen Monitoring Mitra</h1>
 </div>
 
 <!-- Content Row -->
@@ -200,7 +200,7 @@ Monitoring Mitra
                         $('#modal-form').modal('hide');
                         table.ajax.reload();
                         swal({
-                            title: 'Success!',
+                            title: 'Sukses!',
                             text: data.message,
                             type: 'success',
                             timer: '1500'
@@ -214,7 +214,7 @@ Monitoring Mitra
                             str += value + ', ';
                         });
                         swal({
-                            title: 'Punten🙏🏻...',
+                            title: 'Maaf...',
                             text: str,
                             type: 'error',
                             timer: '1500'
@@ -476,7 +476,7 @@ var myLineChart = new Chart(ctx, {
                 success : function(data) {
                     $('#mitra-table').DataTable().draw(true);
                     swal({
-                        title: 'Success!',
+                        title: 'SSukses!',
                         text: data.message,
                         type: 'success',
                         timer: '1500'
@@ -485,7 +485,7 @@ var myLineChart = new Chart(ctx, {
                 error : function (data) {
                     console.log(data)
                     swal({
-                        title: 'Oops...',
+                        title: 'Maaf...',
                         text: data.message,
                         type: 'error',
                         timer: '1500'

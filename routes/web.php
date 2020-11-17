@@ -49,6 +49,8 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
     Route::get('/', 'DashboardController@dashboard')->name('dashboard');
+    Route::get('/profile/{id}', 'HomeController@myProfile')->name('myProfile');
+    Route::patch('/profile/{id}/update', 'HomeController@updateProfile')->name('updateProfile');
 
     Route::group(['middleware' => 'role:admin|superadmin|mitra'], function () {
 

@@ -372,7 +372,7 @@ Users
                         $('#modal-form').modal('hide');
                         table.ajax.reload();
                         swal({
-                            title: 'Success!',
+                            title: 'Sukses!',
                             text: data.message,
                             type: 'success',
                             timer: '1500'
@@ -386,7 +386,7 @@ Users
                             str += value + ', ';
                         });
                         swal({
-                            title: 'Punten...',
+                            title: 'Maaf...',
                             text: str,
                             type: 'error',
                             timer: '1500'
@@ -409,7 +409,7 @@ Users
         $('.modal-title').text('Add user');
     }
 
-    function editProfil(id) {
+    function editForm(id) {
         removeUpload()
         initRoles()
         initPermissions()

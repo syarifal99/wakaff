@@ -6,7 +6,7 @@ Pencairan Dana
 @section('content')
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h5 class="h4 mb-0 text-gray-800">Managemen Update Progres Projek</h5>
+    <h5 class="h4 mb-0 text-gray-800">Manajemen Update Progres Projek</h5>
 </div>
 
 <!-- Content Row -->
@@ -143,7 +143,7 @@ Pencairan Dana
                     console.log(data)
                     table.ajax.reload();
                     swal({
-                        title: 'Success!',
+                        title: 'Sukses',
                         text: data.message,
                         type: 'success',
                         timer: '1500'
@@ -191,7 +191,7 @@ Pencairan Dana
                         $('#modal-form').modal('hide');
                         table.ajax.reload();
                         swal({
-                            title: 'Success!',
+                            title: 'Sukses',
                             text: data.message,
                             type: 'success',
                             timer: '1500'
@@ -205,7 +205,7 @@ Pencairan Dana
                             str += value + ', ';
                         });
                         swal({
-                            title: 'Punten🙏🏻...',
+                            title: 'Maaf...',
                             text: str,
                             type: 'error',
                             timer: '1500'
